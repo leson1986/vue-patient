@@ -1,0 +1,4 @@
+src/assets/js/
+build/*.js
+config/*.js
+static/**/*.js

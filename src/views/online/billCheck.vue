@@ -1,0 +1,162 @@
+<template>
+	<mt-header fixed isgrey title="我的检查单">
+		<mt-button v-link="'/online/bill'" icon="back" slot="left"></mt-button>
+		<mt-button icon="more" slot="right" @click="showPopup"></mt-button>
+	</mt-header>
+	<mt-button-single>查看原图</mt-button-single>
+	<mt-content class-name="page-popup">
+		<div class="page-cell sick-title">
+			<a class="mint-cell">
+				<label class="mint-cell-title">
+					<i class="mintui mintui-more leh-c-blue"></i>
+					<span class="mint-cell-text">中山大学附属第三医院</span>
+					<p>检验目的：肝肾十五项</span></p>
+					<span class="mint-cell-label">2015年11月20日</span>
+				</label>
+				<div class="mint-cell-value"></div>
+			</a>
+		</div>
+		<div class="leh-null-box"></div>
+		<div class="page-cell check-list">
+			<a class="mint-cell">
+				<label class="mint-cell-title">
+					<span class="mint-cell-text leh-text-ellipsis">谷氨转氨酶谷氨转氨酶</span>
+					<span>(ALT)</span>
+				</label>
+				<div class="mint-cell-value">
+					<span>10</span>
+					<span class="fr">iu/ml</span>
+				</div>
+			</a>
+			<a class="mint-cell">
+				<label class="mint-cell-title">
+					<span class="mint-cell-text">谷氨转氨酶</span>
+					<span>(ALT)</span>
+				</label>
+				<div class="mint-cell-value">
+					<span>10</span>
+					<span class="fr">iu/ml</span>
+				</div>
+			</a>
+		</div>
+		<div class="check-text-box">
+			<span class="leh-c-blue">结论</span>
+			<p>从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况;从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况。</p>
+		</div>
+		<div class="page-button-group check-arr-btn">
+			<button class="mint-button mint-button--primary mint-button--large is-plain">
+				<i class="mintui mintui-back leh-c-grey-tint"></i>
+			</button>
+		</div>
+
+		<!-- 查看原图 -->
+		<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
+			<span class="check-photo-close">XX</span>
+
+			<mt-swipe class="my-swipe" :auto="0">
+				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+			</mt-swipe>
+		</div>
+
+		<!--侧滑内容-->
+		<mt-popup v-show="popup_visible" position="right" class="mint-popup-3 sick-popup-box" :modal="false">
+			<div class="leh-modal-transparent" @click="closePopup"></div>
+			<div class="sick-popup-content">
+				<div class="page-title">检查单列表</div>
+				<div class="page-cell">
+					<mt-cell class-name="sick-popup-title" title="2016年" :istitle="true"></mt-cell>
+					<mt-cell v-for="n in 4" title="2016年" value="感染性疾病科" :istitle="true" :reddot="true" :blackfont="true"></mt-cell>
+				</div>
+			</div>
+		</mt-popup>
+	</mt-content>
+</template>
+<script>
+	import MtContent from '../../components/content'
+	import MtHeader from '../../components/header.vue'
+	import MtPicture from '../../components/picture.vue'
+	import MtPicList from '../../components/picList.vue'
+	import MtButtonSingle from '../../components/buttonSingle'
+	import MtButton from '../../components/button.vue'
+	import MtSwipe from '../../components/swipe.vue'
+	import MtSwipeItem from '../../components/swipeItem.vue'
+	import MtPopup from '../../components/popup.vue'
+	import MtCell from '../../components/cell.vue'
+
+	export default{
+		data () {
+			return{
+				viewpic: false,
+				popup_visible: false
+			}
+		},
+
+		methods: {
+			showPic (){
+				this.viewpic =true;
+			},
+
+			closePic () {
+				this.viewpic =false;
+			},
+			showPopup () {
+				this.popup_visible = true;
+			}
+
+		},
+
+		events: {
+			'single-button-event' () {
+				this.showPic()
+			}
+		},
+
+		components: {
+			MtContent,
+			MtHeader,
+			MtPicture,
+			MtPicList,
+			MtButtonSingle,
+			MtButton,
+			MtSwipe,
+			MtSwipeItem,
+			MtPopup,
+			MtCell
+		}
+	}
+</script>
+
+<style>
+	.sick-title .mint-cell:after,.sick-title .mint-cell:before{border: 0;}
+	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:5px;border: 1px solid;border-radius: 50%;}
+	.sick-title .mint-cell-text{line-height: 25px;}
+	.sick-title p{padding-left: 30px;margin-top: 10px;}
+	.sick-title p span{margin-left: 10px;}
+	.sick-title span.mint-cell-label{margin-left: 30px;font-size: 14px;}
+	.sick-list .mint-cell-label{line-height: 25px;}
+	.sick-list .mint-cell:after,.sick-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-last-of-type(1):before{border: 0;}
+	.sick-from-list .mint-cell-label p{line-height: 25px;}
+
+	.check-list .mint-cell{margin-right: 10px;}
+	.check-list .mint-cell span{font-size: 14px;}
+	.check-list .mint-cell:after{border: 0;}
+	.check-list .mint-cell:before{left: 10px;}
+	.check-list .mint-cell-title span.mint-cell-text{max-width: 120px;float: left;}
+	.check-list .mint-cell-value span.fr{width: 50px;margin-left: 10px;}
+	.check-text-box{padding: 20px 10px;overflow: hidden;}
+	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
+	.check-arr-btn .mint-button--primary.is-plain{border: 0;}
+
+	/*侧滑*/
+	.sick-popup-box{z-index: 10;background-color: rgba(0,0,0,0.5) !important;}
+	.sick-popup-content{width: 70%;position: absolute;right: 0;top: 0;bottom: 0;background-color: #fff;overflow: auto;}
+	.sick-popup-title{background-color: #e5e5e5;margin: 0 !important;}
+	.sick-popup-title span.mint-cell-text{font-size: 16px !important;}
+	.sick-popup-content .mint-cell{margin-left: 20px;}
+	.sick-popup-content .mint-cell span{font-size: 14px;}
+	.sick-popup-content .mint-cell:nth-last-of-type(1):before{border: 0;}
+	.sick-popup-content .mint-cell .mint-cell-text:after{left: -10px;top: 4px;}
+
+</style>
