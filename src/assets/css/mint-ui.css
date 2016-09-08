@@ -451,6 +451,26 @@ body,html {
 	background-color: transparent;
 	color: #26a2ff
 }
+.mint-button--grey {
+	color: #fff;
+	background-color: #bfbfbf
+}
+
+.mint-button--grey.is-plain {
+	border: 1px solid #26a2ff;
+	background-color: transparent;
+	color: #26a2ff
+}
+.mint-button--blue {
+	color: #fff;
+	background-color: #1e94f4
+}
+
+.mint-button--blue.is-plain {
+	border: 1px solid #26a2ff;
+	background-color: transparent;
+	color: #26a2ff
+}
 
 .mint-button--danger {
 	color: #fff;

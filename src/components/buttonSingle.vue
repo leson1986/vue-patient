@@ -1,6 +1,6 @@
 <template>
-	<button class="leh-float-btn" :class="classed" @touchstart="handleClick">
-		<slot></slot>
+	<button class="leh-float-box" @touchstart="handleClick">
+		<div class="leh-float-btn" :class="classed"><slot></slot></div>
 	</button>
 </template>
 <script>

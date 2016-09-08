@@ -1,23 +1,26 @@
 <template>
-	<li class="sl-li ui-border-b">
+	<li class="sl-li ui-border-b" :class="classed">
 		<div class="sl-content">
 			<slot></slot>
 		</div>
-		<div class="sl-opts" v-if="delbtn" @click="del">
-			<span class="leh-bg-red leh-c-white">删除</span>
+		<div class="sl-opts" v-if="delbtn" @click="handleDel">
+			<span class="leh-bg-red leh-c-white" :id="text">删除</span>
 		</div>
 	</li>
 </template>
 <script>
+	import cx from 'classnames'
 	import $ from 'zepto'
+
 	export default{
 		props: {
-			delbtn: Boolean
+			text: String,
+			delbtn: Boolean,
+			className: String
 		},
 
 		data () {
 			return{
-				msg:'hello vue'
 			}
 		},
 
@@ -137,18 +140,22 @@
 
 			})();
 		},
-		components: {
-		},
 
 		methods: {
-			handleClick($event) {
-				if (this.disabled) {
-					$event.preventDefault();
-					$event.stopPropagation();
-				}
-
-				this.$dispatch('footer-button-event',$event)
+			handleDel($event) {
+				this.$dispatch('handle-del',$event)
 			}
+		},
+
+		computed: {
+			classed () {
+				return cx({
+					[this.className]: !!this.className
+				})
+			}
+		},
+
+		components: {
 		}
 	}
 </script>

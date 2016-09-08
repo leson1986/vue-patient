@@ -3,7 +3,9 @@
 		<mt-button v-link="'/home'" icon="back" slot="left"></mt-button>
 		<mt-button icon="more" slot="right"></mt-button>
 	</mt-header>
-	<mt-button-single>上传</mt-button-single>
+	<div class="leh-float-box">
+		<mt-button type="green">上传</mt-button>
+	</div>
 	<mt-content>
 		<div class="photo-img-box">
 			<img src="../../assets/img/photo-img.png" />

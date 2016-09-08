@@ -36,7 +36,7 @@ body {
 }
 
 .leh-null-box {
-	height: 10px;
+	height: 8px;
 	background-color: #f0f0f0;
 }
 
@@ -52,15 +52,15 @@ body {
 	font-size: 16px;
 	color: #fff;
 	display: flex;
+
 }
 
 
-.leh-float-btn {
+.leh-float-box button{
 	flex: 1;
-	background-color: #1faa2b;
-	border: 0;
+	border-radius: 0;
 	box-shadow: none;
-	outline: 0;
+	padding: 0;
 }
 .leh-not-apply{
 	text-align: center;
@@ -89,12 +89,12 @@ body {
 
 .leh-min-tip-btn {
 	font-size: 14px;
-	padding: 5px;
+	padding:2px 6px;
 	border-radius: 5px;
 	border-width: 1px;
 	border-style: solid;
-	height: 1.25rem;
-	line-height: 1.25rem;
+	font-size: 12px;
+	line-height: 12px;
 	display: inline-block;
 }
 
@@ -206,7 +206,7 @@ body {
 }
 
 .leh-bg-blue {
-	background-color: #1dadfe;
+	background-color: #2094f6;
 }
 
 .leh-bg-blue-tint {
@@ -232,13 +232,28 @@ body {
 	font-size: 12px;
 }
 
-
+.leh-fs-fourteen {
+	font-size: 14px;
+}
+.leh-fs-sixteen {
+	font-size: 16px !important;
+}
 /*省略文本*/
 
 .leh-text-ellipsis {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap
+}
+
+.leh-double-text-ellipsis{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: box;
+	display: -webkit-box;
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 
 
@@ -269,6 +284,63 @@ body {
 .leh-select-tap-list:nth-last-of-type(1) {
 	border-bottom: 0;
 }
+
+/*leh-popup弹框*/
+
+.leh-popup-box {
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	width: 80%;
+	padding: 0.8rem;
+	overflow: hidden;
+	margin-left: -40%;
+	border-radius: 5px;
+	background-color: #fff;
+}
+
+.leh-popup-content {
+	overflow: hidden;
+	padding-top: 10px;
+}
+
+.leh-popup-content p {
+	font-size: 14px;
+	color: #363636;
+	text-align: center;
+}
+
+.leh-popup-btn-box {
+	overflow: hidden;
+	padding: 15px 0;
+	text-align: center;
+}
+
+.leh-popup-btn-box .mint-button--large {
+	width: 80% !important;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	display: inline-block;
+}
+
+.leh-popup-btn-box .mint-button--small {
+	width: 40% !important;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+}
+
+.leh-popup-btn-box .mint-button--small:nth-of-type(1) {
+	float: left;
+	margin-left: 5%;
+}
+
+.leh-popup-btn-box .mint-button--small:nth-of-type(2) {
+	float: right;
+	margin-right: 5%;
+}
+
 
 
 /*呼吸灯*/
@@ -305,6 +377,106 @@ body {
 		box-shadow: 0 1px 30px rgba(45, 188, 56, 1);
 	}
 }
+/** 左边列固定table **/
+
+.leh-table-responsive {
+	min-height: .01%;
+	overflow-x: auto;
+	width: 100%;
+	overflow-y: hidden;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.leh-table-responsive>.leh-table-bordered {
+	border: 0;
+}
+
+.leh-table-responsive>.leh-grey-table {
+	margin-bottom: 0;
+}
+
+.leh-grey-table {
+	width: 100%;
+	max-width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	background-color: #f6fcff;
+}
+
+.leh-grey-table>tbody>tr>td,
+.leh-grey-table>tbody>tr>th,
+.leh-grey-table>tfoot>tr>td,
+.leh-grey-table>tfoot>tr>th,
+.leh-grey-table>thead>tr>td,
+.leh-grey-table>thead>tr>th {
+	padding: 10px;
+	vertical-align: center;
+	border-top: 1px dotted #e5e5e5;
+	font-size: 14px;
+}
+.leh-grey-table>thead>tr>th {
+	border-top: 0;
+	font-weight: normal;
+}
+.leh-grey-table>thead>tr>th>p{
+	margin-top: 5px;
+}
+.leh-grey-table>thead>tr>th:nth-of-type(1){
+	padding: 0;
+	font-size: 35px;
+	color: #f3f2f2;
+	margin-top: 8px;
+}
+.leh-grey-table>tbody>tr>td,
+.leh-grey-table>tfoot>tr>td,
+.leh-grey-table>thead>tr>td {
+	height: 50px;
+	font-size: 14px;
+}
+
+.leh-grey-table>tbody>tr>th,
+.leh-grey-table>tfoot>tr>th,
+.leh-grey-table>thead>tr>th {
+	line-height: 1;
+}
+
+.leh-table-responsive>.leh-grey-table>tbody>tr>td,
+.leh-table-responsive>.leh-grey-table>tbody>tr>th,
+.leh-table-responsive>.leh-grey-table>tfoot>tr>td,
+.leh-table-responsive>.leh-grey-table>tfoot>tr>th,
+.leh-table-responsive>.leh-grey-table>thead>tr>td,
+.leh-table-responsive>.leh-grey-table>thead>tr>th {
+	white-space: nowrap;
+	vertical-align: center;
+	text-align: center;
+}
+
+.leh-table-responsive>.leh-grey-table>thead>tr>th:first-child,
+.leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child {
+	position: absolute;
+	width: 110px;
+	white-space: normal;
+	text-align: center;
+	line-height: 32px;
+}
+
+.leh-table-responsive>.leh-grey-table>thead>tr>th:first-child,
+.leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child {
+	left: 0;
+}
+
+.leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child {
+	background-color: #f6fcff;
+}
+
+.leh-table-responsive>.leh-grey-table>thead>tr>th {
+	background-color: #fff;
+}
+
+
+
+
+
 
 
 /*======*/

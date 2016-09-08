@@ -77,15 +77,15 @@
 </script>
 
 <style>
-	.register-box{height: 100%;background-color: #1faa2b;overflow: hidden;}
-	.register-title-img{width: 50%;margin: 10% auto 15%;text-align: center;}
+	.register-box{background-color: #1faa2b;overflow: hidden;}
+	.register-title-img{width: 50%;margin: 8% auto;text-align: center;}
 	.register-ipt-box{width: 78%;margin: 0 auto;}
 	.register-ipt-box .mint-cell{background-color: transparent;color: #fff;}
 	.register-ipt-box .mint-cell:after{border-top: 0;}
 	.register-ipt-box .mint-cell:before{border-bottom-color: rgba(255,255,255,0.5);}
 	.register-ipt-box .mint-cell input{background-color: transparent;color: #fff;}
 	.register-mint-cell-value-hight{height: 25px;}
-	.register-ipt-box p{font-size: 12px;color: #fff;margin: 20px 0 60px;line-height: 20px;}
+	.register-ipt-box p{font-size: 12px;color: #fff;margin: 20px 0 40px;line-height: 20px;}
 	.register-take-box{margin-bottom: 15px;color: #fff;font-size: 12px;overflow: hidden;position: relative;left: 50%;margin-left: -25%;line-height: 14px;}
 	.register-take{width: 12px;height: 12px;border: 1px solid #fff;display: inline-block;float: left;line-height: 12px;text-align: center;margin-right: 10px;}
 	.register-btn{border-color: #8fd595 !important;}

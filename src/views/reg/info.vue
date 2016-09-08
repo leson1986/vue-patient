@@ -3,15 +3,24 @@
 
 	<mt-content>
 		<div class="page-cell register-entity-box">
-			<mt-cell :istitle="true" v-for="list in lists" :title="list.name" @click="doList($event)"></mt-cell>
+			<mt-cell
+					:istitle="true"
+					v-for="list in lists"
+					:title="list.name"
+					@click="selected(list)"
+					:class="{'leh-active': activeName == list}"
+			></mt-cell>
 		</div>
 	</mt-content>
-	<mt-button-single class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button-single>
+	<div class="leh-float-box">
+		<mt-button type="green" class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button>
+	</div>
+<!--	<mt-button-single class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button-single>-->
 </template>
 <script>
 	import MtContent from '../../components/content'
 	import MtHeader from '../../components/header.vue'
-	import MtButtonSingle from '../../components/buttonSingle'
+	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
 	import $ from 'zepto'
 
@@ -19,6 +28,7 @@
 	  data () {
 	    return{
 		    is_conf: false,
+		    activeName: '',
 		    lists: [
 		    		{
 			        name: '乙肝'
@@ -37,7 +47,7 @@
 	  },
 
 		events: {
-			'single-button-event' () {
+			'footer-button-event' () {
 				if(this.is_conf){
 					this.$route.router.go('/home')
 				}
@@ -46,7 +56,7 @@
 
 		methods: {
 			// 切换病种选项
-			doList (e) {
+			/*doList (e) {
 				if($(e.target).hasClass('mint-cell')) {
 					$(e.target).siblings(".leh-active").removeClass('leh-active')
 					$(e.target).addClass('leh-active')
@@ -57,14 +67,22 @@
 
 				// 激活按钮
 				this.is_conf = true
+				$(this.$els.conf).find('.leh-float-btn').removeClass('leh-bg-grey-btn')
+			},*/
+			selected: function(gameName) {
+
+				this.activeName = gameName
+				// 激活按钮
+				this.is_conf = true
 				$(this.$els.conf).removeClass('leh-bg-grey-btn')
+
 			}
 		},
 
 		components: {
 			MtContent,
 			MtHeader,
-			MtButtonSingle,
+			MtButton,
 			MtCell
 		}
 	}

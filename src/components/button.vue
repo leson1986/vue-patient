@@ -20,7 +20,7 @@
 	 * mt-header
 	 * @module components/button
 	 * @desc 按钮
-	 * @param {string} [type=default] - 显示类型，接受 default, primary, danger, green
+	 * @param {string} [type=default] - 显示类型，接受 default, primary, danger, green, blue, grey
 	 * @param {boolean} [disabled=false] - 禁用
 	 * @param {boolean} [plain=false] - 幽灵按钮
 	 * @param {string} [size=normal] - 尺寸，接受 normal, small, large
@@ -50,7 +50,9 @@
 								'default',
 								'danger',
 								'primary',
-								'green'
+								'green',
+								'blue',
+								'grey'
 							].indexOf(value) > -1;
 				}
 			},

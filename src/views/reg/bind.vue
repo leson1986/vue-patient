@@ -24,11 +24,12 @@
 	import MtButton from '../../components/button.vue'
 	import MtField from '../../components/field.vue'
 	import MtPopup from '../../components/popup.vue'
+	import $ from 'zepto'
 
 	export default{
 	  data () {
 	    return{
-	    	tips: '',
+	    	tips: '123',
 		    tel_val:'',
 		    code_val:'',
 		    show_popup: false
@@ -37,16 +38,42 @@
 
 		events: {
 			'footer-button-event' () {
-				this.tel_val = this.$refs.tels.value;
-				this.code_val = this.$refs.codes.value;
 
+				let tels = $(this.$refs.tels)
+				let codes = $(this.$refs.codes)
 
-				if(this.tel_val === '' || this.code_val === ''){
-					this.tips = '手机号码和验证码不能为空'
+				this.tel_val = tels.val()
+				this.code_val = codes.val()
+
+				if(this.tel_val === ''){
+
+					this.tips = '手机号码不能为空'
 					this.show_popup = true
-				}else {
-					this.$route.router.go('/reg/register')
+					return
+
+				}else if(new RegExp("^((1[0-9]))[0-9]{9,9}$").test(this.tel_val) == false){
+
+					this.tips = '手机号码填写不正确'
+					this.show_popup = true
+					return
+
 				}
+
+				if(this.code_val === ''){
+
+					this.tips = '验证码不能为空'
+					this.show_popup = true
+					return
+
+				}/*else if(）{
+
+					this.tips = '验证码不正确'
+					this.show_popup = true
+					return
+
+				}*/
+
+				this.$route.router.go('/reg/register')
 			}
 		},
 
