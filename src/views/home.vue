@@ -31,7 +31,7 @@
 								</a>
 							</div>
 							<div class="page-cell consult-list-main">
-								<a class="mint-cell">
+								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}">
 									<label class="mint-cell-title">
 										<span>ii</span>
 										<span class="mint-cell-text leh-red-dot">待转换</span>
@@ -45,7 +45,7 @@
 										<i class="mint-cell-allow-right"></i>
 									</div>
 								</a>
-								<a class="mint-cell" v-link="{path: '/online/bill', replace: true}">
+								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}">
 									<label class="mint-cell-title">
 										<span>ii</span>
 										<span class="mint-cell-text leh-red-dot">病历</span>
@@ -57,7 +57,7 @@
 										<i class="mint-cell-allow-right"></i>
 									</div>
 								</a>
-								<a class="mint-cell">
+								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}">
 									<label class="mint-cell-title">
 										<span>ii</span>
 										<span class="mint-cell-text leh-red-dot">检查单</span>

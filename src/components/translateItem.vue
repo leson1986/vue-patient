@@ -4,7 +4,7 @@
 			<slot></slot>
 		</div>
 		<div class="sl-opts" v-if="delbtn" @click="handleDel">
-			<span class="leh-bg-red leh-c-white" :id="text">删除</span>
+			<span class="leh-bg-red leh-c-white" :id="name">删除</span>
 		</div>
 	</li>
 </template>
@@ -14,7 +14,8 @@
 
 	export default{
 		props: {
-			text: String,
+			title: '',
+			name: '',
 			delbtn: Boolean,
 			className: String
 		},
@@ -25,7 +26,6 @@
 		},
 
 		ready() {
-
 			var listItem = $('.sl-content'),
 					listOpts = $('.sl-opts');
 

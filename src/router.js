@@ -69,6 +69,21 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/online/remind'], resolve)
 		  }
+	  },
+	  '/online/remindAdd': {
+		  component (resolve) {
+			  require(['./views/online/remindAdd'], resolve)
+		  }
+	  },
+	  '/online/scheme': {
+		  component (resolve) {
+			  require(['./views/online/scheme'], resolve)
+		  }
+	  },
+	  '/online/schemeAdd': {
+		  component (resolve) {
+			  require(['./views/online/schemeAdd'], resolve)
+		  }
 	  }
   })
 

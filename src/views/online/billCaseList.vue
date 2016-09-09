@@ -1,9 +1,11 @@
 <template>
 	<mt-header fixed isgrey title="我的病历">
-		<mt-button v-link="'/online/bill'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="back" slot="left"></mt-button>
 		<mt-button icon="more" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
-	<mt-button-single v-el:conf>查看原图</mt-button-single>
+	<div class="leh-float-box">
+		<mt-button type="green">查看原图</mt-button>
+	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
 			<a class="mint-cell">
@@ -119,7 +121,6 @@
 	import MtHeader from '../../components/header.vue'
 	import MtPicture from '../../components/picture.vue'
 	import MtPicList from '../../components/picList.vue'
-	import MtButtonSingle from '../../components/buttonSingle'
 	import MtButton from '../../components/button.vue'
 	import MtSwipe from '../../components/swipe.vue'
 	import MtSwipeItem from '../../components/swipeItem.vue'
@@ -176,7 +177,6 @@
 			MtHeader,
 			MtPicture,
 			MtPicList,
-			MtButtonSingle,
 			MtButton,
 			MtSwipe,
 			MtSwipeItem,

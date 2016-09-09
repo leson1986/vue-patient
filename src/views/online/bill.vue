@@ -4,22 +4,13 @@
 			<div class="mint-header-button is-left" @click="lehBack">
 				<i class="mintui mintui-back leh-c-white"></i>
 			</div>
-			<mt-button size="small" @click.prevent="active = 'tab-container1'" class-name="leh-active">病历</mt-button>
-			<mt-button size="small" @click.prevent="active = 'tab-container2'" class-name="">检查单</mt-button>
-			<mt-button size="small" @click.prevent="active = 'tab-container3'" class-name="">转换中</mt-button>
-			<!--<button class="mint-button mint-button&#45;&#45;default mint-button&#45;&#45;small leh-active">
-				<label class="mint-button-text">病历</label>
-			</button>
-			<button class="mint-button mint-button&#45;&#45;default mint-button&#45;&#45;small">
-				<label class="mint-button-text">检查单</label>
-			</button>
-			<button class="mint-button mint-button&#45;&#45;default mint-button&#45;&#45;small">
-				<label class="mint-button-text">转换中</label>
-			</button>-->
+			<mt-button size="small" @click.prevent="active = 'case'" :class="{'leh-active' : selected === 'case'}">病历</mt-button>
+			<mt-button size="small" @click.prevent="active = 'checked'" :class="{'leh-active' : selected === 'checked'}">检查单</mt-button>
+			<mt-button size="small" @click.prevent="active = 'turn'" :class="{'leh-active' : selected === 'turn'}">转换中</mt-button>
 		</div>
 		<div class="page-tab-container">
 			<mt-tab-container class="page-tabbar-tab-container" :active.sync="active">
-				<mt-tab-container-item id="tab-container1">
+				<mt-tab-container-item id="case">
 					<div class="page-cell document-index-title">
 						<a class="mint-cell" v-link="{path: '/online/billCase', replace: true}">
 							<span class="mint-cell-mask"></span>
@@ -53,7 +44,7 @@
 						</a>
 					</div>
 				</mt-tab-container-item>
-				<mt-tab-container-item id="tab-container2">
+				<mt-tab-container-item id="checked" :active.sync="active">
 					<a class="mint-cell document-index-check-list" v-for="n in 6" v-link="{path: '/online/billCheck', replace: true}">
 						<span class="mint-cell-mask"></span>
 						<label class="mint-cell-title">
@@ -64,7 +55,7 @@
 						</div>
 					</a>
 				</mt-tab-container-item>
-				<mt-tab-container-item id="tab-container3">
+				<mt-tab-container-item id="turn" :active.sync="active">
 					<a class="mint-cell document-index-check-list" v-for="n in 8" v-link="{path: '/online/billTurn', replace: true}">
 						<span class="mint-cell-mask"></span>
 						<label class="mint-cell-title">
@@ -89,20 +80,32 @@
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data (transition) {
+				this.selected = ''
+				this.active = ''
+				this.selected = transition.to.query.actives
+				this.active = transition.to.query.actives
+			}
+		},
+
 		data () {
 			return{
-				active: 'tab-container1'
+				active: '',
+				selected: ''
 			}
 		},
 
 		methods: {
 			lehBack () {
+				$(".leh-active").removeClass('leh-active')
 				this.$route.router.go('/home')
 			}
 		},
 
 		events: {
 			'footer-button-event' (e) {
+				console.log(e.target)
 					$(e.target).siblings(".leh-active").removeClass('leh-active')
 					$(e.target).addClass('leh-active')
 			}

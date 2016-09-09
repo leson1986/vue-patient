@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="转换中单据">
-		<mt-button v-link="'/online/bill'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}" icon="back" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="transform-list-box">

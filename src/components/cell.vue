@@ -16,6 +16,7 @@
 			</slot>
 		</div>
 		<i v-if="isLink" class="mint-cell-allow-right"></i>
+		<i v-if="isIcon"><span :class="icons"></span></i>
 	</a>
 </template>
 
@@ -49,10 +50,12 @@
 			title: String,
 			label: String,
 			isLink: Boolean,
+			isIcon: Boolean,
 			value: String,
 			istitle: Boolean,
 			blackfont: Boolean,
 			reddot: Boolean,
+			icons: String,
 			className: String
 		},
 

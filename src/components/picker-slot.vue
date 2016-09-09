@@ -1,108 +1,20 @@
 <template>
   <div class="picker-slot {{classNames}}" :style="{ flex: flex }">
     <div v-if="!divider" v-el:wrapper class="picker-slot-wrapper" :class="{ dragging: dragging }" :style="{ height: contentHeight + 'px' }">
-      <div class="picker-item" v-for="itemValue in values" :class="{ 'picker-selected': itemValue === value }">{{ itemValue }}</div>
+      <div class="picker-item" v-for="itemValue in values" :class="{ 'picker-selected': itemValue === value }" v-if="values.length===24 ? unitName='时' : unitName='分'">{{ itemValue }}</div>
     </div>
+	  <div class="reminders-add-picker-hour" v-if="isUnit" v-text="unitName"></div>
     <div v-if="divider">{{ content }}</div>
   </div>
 </template>
 
-<style>
-  .picker-slot {
-    font-size: 18px;
-    overflow: hidden;
-    position: relative;
-    max-height: 100%
-  }
-
-  .picker-slot.picker-slot-left {
-    text-align: left;
-  }
-
-  .picker-slot.picker-slot-center {
-    text-align: center;
-  }
-
-  .picker-slot.picker-slot-right {
-    text-align: right;
-  }
-
-  .picker-slot.picker-slot-divider {
-    color: #000;
-    display: flex;
-    align-items: center
-  }
-
-  .picker-slot-wrapper {
-    transition-duration: 0.3s;
-    transition-timing-function: ease-out;
-    backface-visibility: hidden;
-  }
-
-  .picker-slot-wrapper.dragging,
-  .picker-slot-wrapper.dragging .picker-item {
-    transition-duration: 0s;
-  }
-
-  .picker-item {
-    height: 36px;
-    line-height: 36px;
-    padding: 0 10px;
-    white-space: nowrap;
-    position: relative;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #707274;
-    left: 0;
-    top: 0;
-    width: 100%;
-    box-sizing: border-box;
-    transition-duration: .3s;
-    backface-visibility: hidden;
-  }
-
-  .picker-slot-absolute .picker-item {
-    position: absolute;
-  }
-
-  .picker-item.picker-item-far {
-    pointer-events: none
-  }
-
-  .picker-item.picker-selected {
-    color: #000;
-    transform: translate3d(0, 0, 0) rotateX(0);
-  }
-
-  .picker-3d .picker-items {
-    overflow: hidden;
-    perspective: 700px;
-  }
-
-  .picker-3d .picker-item,
-  .picker-3d .picker-slot,
-  .picker-3d .picker-slot-wrapper {
-    transform-style: preserve-3d
-  }
-
-  .picker-3d .picker-slot {
-    overflow: visible
-  }
-
-  .picker-3d .picker-item {
-    transform-origin: center center;
-    backface-visibility: hidden;
-    transition-timing-function: ease-out
-  }
-</style>
-
 <script type="text/babel">
   import Vue from 'vue';
-  import draggable from './draggable';
-  import translateUtil from './translate';
+  import draggable from '../components/draggable';
+  import translateUtil from '../components/translate';
   import { once } from 'wind-dom/src/event';
   import { addClass, removeClass } from 'wind-dom/src/class';
-  require('raf.js');
+ // require('raf.js');
 
   var rotateElement = function(element, angle) {
     if (!element) return;
@@ -111,7 +23,7 @@
     element.style[transformProperty] = element.style[transformProperty].replace(/rotateX\(.+?deg\)/gi, '') + ` rotateX(${angle}deg)`;
   };
 
-  const ITEM_HEIGHT = 36;
+  const ITEM_HEIGHT = 40;
   const VISIBLE_ITEMS_ANGLE_MAP = {
     3: -45,
     5: -20,
@@ -145,13 +57,18 @@
       },
       flex: {},
       className: {},
-      content: {}
+      content: {},
+	    isUnit: {
+		    type: Boolean,
+		    default: false
+	    }
     },
 
     data() {
       return {
         dragging: false,
-        animationFrameId: null
+        animationFrameId: null,
+	      unitName: ''
       };
     },
 
@@ -357,6 +274,8 @@
     },
 
     ready() {
+
+    	console.log(this.values.length)
       this.ready = true;
 
       if (!this.divider) {

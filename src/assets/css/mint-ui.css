@@ -333,7 +333,7 @@ body,html {
 	background-color: transparent;
 	border: 0;
 	box-shadow: none;
-	color: inherit;
+	color: #1faa2b;
 	display: inline-block;
 	padding: 0;
 	font-size: inherit
@@ -474,7 +474,7 @@ body,html {
 
 .mint-button--danger {
 	color: #fff;
-	background-color: #ef4f4f
+	background-color: #FF6160
 }
 
 .mint-button--danger.is-plain {
@@ -1891,8 +1891,8 @@ body,html {
 }
 
 .picker-item {
-	height: 36px;
-	line-height: 36px;
+	height: 40px;
+	line-height: 40px;
 	padding: 0 10px;
 	white-space: nowrap;
 	position: relative;

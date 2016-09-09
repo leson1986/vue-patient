@@ -1,7 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="手写病历">
-		<mt-button v-link="'/online/bill'" icon="back" slot="left"></mt-button>
-		<mt-button icon="more" slot="right"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="back" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="page-cell">
@@ -16,42 +15,23 @@
 			</a>
 		</div>
 		<mt-picture class-name="document-written-content">
-			<mt-pic-list reddot>
-				<img src="http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/"/>
-			</mt-pic-list>
-			<mt-pic-list reddot>
-				<img src="http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/"/>
-			</mt-pic-list>
-			<mt-pic-list>
+			<mt-pic-list v-for="n in 4" :reddot="n===2" @click="showPic">
 				<img src="http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/"/>
 			</mt-pic-list>
 		</mt-picture>
 
 
-		<div class="page-swipe">
-			<swipe class="my-swipe">
-				<swipe-item class="slide1">Slide1</swipe-item>
-				<swipe-item class="slide2">Slide2</swipe-item>
-				<swipe-item class="slide3">Slide3</swipe-item>
-			</swipe>
-			<swipe class="my-swipe" :auto="0">
-				<swipe-item class="slide1">Slide1</swipe-item>
-				<swipe-item class="slide2">Slide2</swipe-item>
-				<swipe-item class="slide3">Slide3</swipe-item>
-			</swipe>
+		<!-- 查看原图 -->
+		<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
+			<span class="check-photo-close">X</span>
 
-			<br>
-
-			<swipe class="my-swipe" :speed="900" :auto="0" :show-indicators="false">
-				<swipe-item class="slide1">SINGLE SLIDE</swipe-item>
-			</swipe>
-
-			<br>
-
-			<swipe class="my-swipe" :speed="900" :auto="0" :show-indicators="false" :no-drag="true">
-				<swipe-item class="slide1">SINGLE SLIDE</swipe-item>
-			</swipe>
+			<mt-swipe class="my-swipe" :auto="0">
+				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
+			</mt-swipe>
 		</div>
+
 	</mt-content>
 </template>
 <script>
@@ -60,18 +40,30 @@
 	import MtPicture from '../../components/picture.vue'
 	import MtPicList from '../../components/picList.vue'
 	import MtButton from '../../components/button.vue'
-	import Swipe from '../../components/swipe.vue'
-	import SwipeItem from '../../components/swipeItem.vue'
+	import MtSwipe from '../../components/swipe.vue'
+	import MtSwipeItem from '../../components/swipeItem.vue'
 
 	export default{
 	  data () {
 	    return{
-	      msg:'hello vue'
+	      isdot: false,
+		    viewpic: false
+
 	    }
 	  },
 
 		ready() {
 
+		},
+
+		methods: {
+			showPic (){
+				this.viewpic =true;
+			},
+
+			closePic () {
+				this.viewpic =false;
+			}
 		},
 
 		components: {
@@ -80,8 +72,8 @@
 			MtPicture,
 			MtPicList,
 			MtButton,
-			Swipe,
-			SwipeItem
+			MtSwipe,
+			MtSwipeItem
 		}
 	}
 </script>

@@ -1,22 +1,16 @@
 <template>
-	<mt-popup :visible.sync="visible" position="bottom" class="mint-datetime">
     <mt-picker
       :slots="dateSlots"
       @change="onChange"
-      :visible-item-count="7"
+      :visible-item-count="3"
       class="mint-datetime-picker"
-      v-ref:picker
-      show-toolbar>
-      <span class="mint-datetime-action mint-datetime-cancel" @click="visible = false">{{ cancelText }}</span>
-      <span class="mint-datetime-action mint-datetime-confirm" @click="confirm">{{ confirmText }}</span>
+      v-ref:picker>
     </mt-picker>
-  </mt-popup>
 </template>
 
 
 <script type="text/babel">
 
-	import MtPopup from '../components/popup.vue'
 	import MtPicker from '../components/picker.vue'
   const FORMAT_MAP = {
     Y: 'year',
@@ -76,7 +70,11 @@
         type: String,
         default: '{value}'
       },
-      value: null
+      value: null,
+	    isUnit: {
+		    type: Boolean,
+		    default: false
+	    },
     },
 
     data() {
@@ -98,7 +96,6 @@
     },
 
     components: {
-	    MtPopup,
 	    MtPicker
     },
 
@@ -235,7 +232,8 @@
       pushSlots(type, start, end) {
         this.dateSlots.push({
           flex: 1,
-          values: this.fillValues(type, start, end)
+	        values: this.fillValues(type, start, end),
+	        isUnit: this.isUnit
         });
       },
 
@@ -341,7 +339,6 @@
     },
 
     ready() {
-    	alert(this.visible)
       this.setSlots();
       if (this.type.indexOf('date') > -1 && !this.value) {
         this.value = this.startDate;

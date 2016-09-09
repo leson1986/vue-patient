@@ -15,14 +15,14 @@
 			</a>
 			<a class="mint-cell">
 				<label class="mint-cell-title">
-					<span class="mint-cell-text leh-c-green">选择医生</span>
+					<span class="mint-cell-text leh-c-green">留言内容</span>
 					<textarea rows="1" placeholder="请输入你需要留言的内容"></textarea>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
 			<a class="mint-cell">
 				<label class="mint-cell-title">
-					<span class="mint-cell-text leh-c-green">选择医生</span>
+					<span class="mint-cell-text leh-c-green">上传图片</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>

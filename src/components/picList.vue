@@ -18,7 +18,6 @@
 		},
 
 		ready() {
-			console.log(this.reddot)
 		},
 
 		components: {

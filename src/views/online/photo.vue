@@ -1,7 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="拍照上传">
 		<mt-button v-link="'/home'" icon="back" slot="left"></mt-button>
-		<mt-button icon="more" slot="right"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
 		<mt-button type="green">上传</mt-button>
@@ -73,7 +72,6 @@
 <script>
 	import MtContent from '../../components/content'
 	import MtHeader from '../../components/header.vue'
-	import MtButtonSingle from '../../components/buttonSingle'
 	import MtButton from '../../components/button.vue'
 	import MtSwipe from '../../components/swipe.vue'
 	import MtSwipeItem from '../../components/swipeItem.vue'
@@ -98,7 +96,6 @@
 		components: {
 			MtContent,
 			MtHeader,
-			MtButtonSingle,
 			MtButton,
 			MtSwipe,
 			MtSwipeItem
