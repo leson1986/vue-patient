@@ -2,7 +2,7 @@
 	<mt-content>
 		<div class="nav document-index-head leh-bg-green">
 			<div class="mint-header-button is-left" @click="lehBack">
-				<i class="mintui mintui-back leh-c-white"></i>
+				<i class="iconfont icon-wx-arr-left leh-c-white"></i>
 			</div>
 			<mt-button size="small" @click.prevent="active = 'case'" :class="{'leh-active' : selected === 'case'}">病历</mt-button>
 			<mt-button size="small" @click.prevent="active = 'checked'" :class="{'leh-active' : selected === 'checked'}">检查单</mt-button>

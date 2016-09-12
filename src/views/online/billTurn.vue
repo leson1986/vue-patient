@@ -1,11 +1,11 @@
 <template>
 	<mt-header fixed isgrey title="转换中单据">
-		<mt-button v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}" icon="back" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="transform-list-box">
 			<mt-translate>
-				<mt-translate-item v-for="n in 10">
+				<mt-translate-item v-for="n in 1">
 					<div class="transform-list-img-box">
 						<img src="../../assets/img/photo-img.png"/>
 					</div>
@@ -15,10 +15,10 @@
 					</div>
 					<span class="fr">转换中</span>
 				</mt-translate-item>
-				<mt-translate-item v-for="n in 10" delbtn>
+				<mt-translate-item v-for="n in 2" delbtn>
 					<div class="transform-list-img-box">
 						<img src="../../assets/img/photo-img.png"/>
-						<span class="transform-img-ico">X</span>
+						<span class="transform-img-ico iconfont icon-wx-close"></span>
 					</div>
 					<div class="transform-list-text" >
 						<p>图片过于模糊或无法识别</p>
@@ -59,7 +59,5 @@
 	.transform-list-text{float: left;padding-top: 10px;padding-left: 20px;}
 	.transform-list-text p{font-size: 12px;color: #919191;}
 	.transform-list-box span.fr{line-height: 50px;font-size: 14px;}
-	.transform-img-ico{position: absolute;bottom: -10px;right: -4px;font-size: 20px;font-weight:bold;color: #ff6060;}
-
-
+	.transform-img-ico{position: absolute;bottom: -7px;right: -7px;font-size: 14px;font-weight:bold;color: #ff6060;}
 </style>

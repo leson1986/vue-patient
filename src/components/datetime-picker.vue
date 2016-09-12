@@ -285,6 +285,7 @@
       },
 
       confirm() {
+
         this.visible = false;
         this.$emit('confirm', this.value);
       }
@@ -341,7 +342,6 @@
     },
 
     ready() {
-    	alert(this.visible)
       this.setSlots();
       if (this.type.indexOf('date') > -1 && !this.value) {
         this.value = this.startDate;

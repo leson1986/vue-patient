@@ -1,4 +1,5 @@
 <template>
+	<span class="check-photo-close iconfont icon-wx-close-thin" v-if="closeBtn"></span>
 	<div class="swipe">
 		<div class="swipe-items-wrap" v-el:wrap>
 			<slot></slot>
@@ -68,6 +69,11 @@
 			auto: {
 				type: Number,
 				default: 3000
+			},
+
+			closeBtn: {
+				type: Boolean,
+				default: false
 			},
 
 			continuous: {
@@ -416,6 +422,7 @@
 		},
 
 		ready() {
+			console.log(this.closeBtn)
 			this.ready = true;
 
 			if (this.auto > 0) {

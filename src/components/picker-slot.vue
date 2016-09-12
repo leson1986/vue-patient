@@ -23,7 +23,7 @@
     element.style[transformProperty] = element.style[transformProperty].replace(/rotateX\(.+?deg\)/gi, '') + ` rotateX(${angle}deg)`;
   };
 
-  const ITEM_HEIGHT = 40;
+  const ITEM_HEIGHT = 41;
   const VISIBLE_ITEMS_ANGLE_MAP = {
     3: -45,
     5: -20,
@@ -275,7 +275,6 @@
 
     ready() {
 
-    	console.log(this.values.length)
       this.ready = true;
 
       if (!this.divider) {

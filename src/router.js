@@ -15,6 +15,8 @@ export default function (router) {
 			  require(['./views/home'], resolve)
 		  }
 	  },
+
+	  // 注册
 	  '/reg/bind': {
 		  component (resolve) {
 			  require(['./views/reg/bind'], resolve)
@@ -30,6 +32,8 @@ export default function (router) {
 			  require(['./views/reg/info'], resolve)
 		  }
 	  },
+
+	  // 在线门诊
 	  '/online/photo': {
 		  component (resolve) {
 			  require(['./views/online/photo'], resolve)
@@ -83,6 +87,30 @@ export default function (router) {
 	  '/online/schemeAdd': {
 		  component (resolve) {
 			  require(['./views/online/schemeAdd'], resolve)
+		  }
+	  },
+
+	  // 我的医生
+	  '/mydoctor/doctor': {
+		  component (resolve) {
+			  require(['./views/mydoctor/doctor'], resolve)
+		  }
+	  },
+	  '/mydoctor/doctorRate': {
+		  component (resolve) {
+			  require(['./views/mydoctor/doctorRate'], resolve)
+		  }
+	  },
+	  '/mydoctor/doctorVisits': {
+		  component (resolve) {
+			  require(['./views/mydoctor/doctorVisits'], resolve)
+		  }
+	  },
+
+	  // 个人信息
+	  '/user/info': {
+		  component (resolve) {
+			  require(['./views/user/info'], resolve)
 		  }
 	  }
   })

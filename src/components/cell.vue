@@ -3,7 +3,7 @@
 		<span class="mint-cell-mask" v-if="isLink"></span>
 		<label class="mint-cell-title" v-if="istitle">
 			<slot name="icon">
-				<i v-if="icon" class="mintui" :class="'mintui-' + icon"></i>
+				<i v-if="icon" class="iconfont" :class="'icon-wx-' + icon"></i>
 			</slot>
 			<slot name="title">
 				<span class="mint-cell-text" :class="{'leh-red-dot':reddot}" v-text="title"></span>
@@ -14,9 +14,9 @@
 			<slot>
 				<span :class="{'leh-c-black':blackfont}" v-text="value"></span>
 			</slot>
+			<span  v-if="isIcon" class="iconfont" :class="'icon-wx-'+icons"></span>
 		</div>
 		<i v-if="isLink" class="mint-cell-allow-right"></i>
-		<i v-if="isIcon"><span :class="icons"></span></i>
 	</a>
 </template>
 

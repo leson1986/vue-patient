@@ -20,7 +20,9 @@
 		<div class="photo-tap-box">
 			<!--未上传-->
 			<div class="photo-frist-tap">
-				<div class="photo-frist-ico-box">i</div>
+				<div class="photo-frist-ico-box">
+					<span class="iconfont icon-wx-camera"></span>
+				</div>
 				<p>点击上传图片</p>
 			</div>
 			<!--上传-->
@@ -34,7 +36,7 @@
 										<li @click="showPic" class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
 										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
 										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<span class="photo-del-btn">-</span>
+											<span class="leh-img-del-btn iconfont icon-wx-reduce"></span>
 										</li>
 										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
 											<div class="weui_uploader_status_content">
@@ -46,7 +48,7 @@
 										</li>
 									</ul>
 									<div class="weui_uploader_input_wrp">
-										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
+										<span class="iconfont icon-wx-add"></span>
 									</div>
 								</div>
 							</div>
@@ -109,11 +111,8 @@
 	.photo-text-box p{font-size: 14px;line-height: 20px;color: #363636;}
 	.photo-frist-tap{overflow: hidden;}
 	.photo-frist-ico-box{width: 107px;height: 107px;background-color: #f0f0f0;margin: 30px auto 10px;border-radius:5px;line-height: 107px;text-align: center;}
+	.photo-frist-ico-box .icon-wx-camera{font-size: 60px;}
 	.photo-frist-tap p{text-align: center;}
 	.photo-tap .weui_cells:before,.photo-tap .weui_cells:after{border: 0;}
 	.photo-tap .weui_uploader_input_wrp,.photo-tap .weui_uploader_file{margin-top: 8px;}
-	.photo-tap .weui_uploader_file{position: relative;}
-	.photo-del-btn{position: absolute;right: -8px;top:-8px;width: 16px;height: 16px;line-height:16px;text-align: center;color:#fff;border-radius:50%;background-color: #ed2533;}
-
-
 </style>

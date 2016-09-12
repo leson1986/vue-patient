@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="用药提醒">
-		<mt-button v-link="'/home'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
@@ -18,10 +18,10 @@
 						v-for="(index, item) in 3"
 						:class="{'leh-active': index%2 == 0}"
 						:name="index"
-						v-link="{path: '/online/remindAdd', query: {id: index, isEdit: true}, replace: true}"
+
 						delbtn>
 					<a class="mint-cell">
-						<label class="mint-cell-title">
+						<label class="mint-cell-title" v-link="{path: '/online/remindAdd', query: {id: index, isEdit: true}, replace: true}">
 							<span class="mint-cell-text leh-red-dot">
 								<span>{{index}}对乙酰氨基酚片</span>
 							</span>
@@ -121,7 +121,6 @@
 				this.ispopup  = false
 			},
 			conf () {
-				alert(this.ids)
 				this.ispopup  = false
 			},
 			remindAdd (id) {
@@ -129,13 +128,12 @@
 			}
 		},
 
-/*		events: {
+		events: {
 			'handle-del' (e) {
 				this.ispopup  = true
 				this.ids = $(e.target).attr('id')
-				console.log($(e.target))
 			}
-		},*/
+		},
 
 		components: {
 			MtContent,

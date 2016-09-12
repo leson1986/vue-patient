@@ -40,7 +40,7 @@ body {
 	background-color: #f0f0f0;
 }
 
-.leh-float-box{
+.leh-float-box {
 	height: 40px;
 	line-height: 40px;
 	width: 100%;
@@ -52,22 +52,21 @@ body {
 	font-size: 16px;
 	color: #fff;
 	display: flex;
-
 }
 
-
-.leh-float-box button{
+.leh-float-box button {
 	flex: 1;
 	border-radius: 0;
 	box-shadow: none;
 	padding: 0;
 }
-.leh-not-apply{
+
+.leh-not-apply {
 	text-align: center;
 	line-height: 80px;
 }
 
-.leh-black-shade{
+.leh-black-shade {
 	position: fixed;
 	top: 0;
 	bottom: 0;
@@ -75,12 +74,18 @@ body {
 	right: 0;
 	z-index: 5;
 	overflow: hidden;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
-.leh-full-btn{
+.leh-full-btn {
 	padding: 25px 10px;
 }
+
+
+.leh-img-del-btn{
+	position: absolute;font-size:10px !important;right: -8px;top:-8px;width: 16px;height: 16px;line-height:16px;text-align: center;color:#fff;border-radius:50%;background-color: #ed2533;
+}
+
 
 /*-------*/
 
@@ -89,7 +94,7 @@ body {
 
 .leh-min-tip-btn {
 	font-size: 14px;
-	padding:2px 6px;
+	padding: 2px 6px;
 	border-radius: 5px;
 	border-width: 1px;
 	border-style: solid;
@@ -221,7 +226,7 @@ body {
 	background-color: #ff9992;
 }
 
-.leh-bg-transparent{
+.leh-bg-transparent {
 	background-color: transparent;
 }
 
@@ -235,9 +240,12 @@ body {
 .leh-fs-fourteen {
 	font-size: 14px;
 }
+
 .leh-fs-sixteen {
 	font-size: 16px !important;
 }
+
+
 /*省略文本*/
 
 .leh-text-ellipsis {
@@ -246,7 +254,7 @@ body {
 	white-space: nowrap
 }
 
-.leh-double-text-ellipsis{
+.leh-double-text-ellipsis {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: box;
@@ -284,6 +292,42 @@ body {
 .leh-select-tap-list:nth-last-of-type(1) {
 	border-bottom: 0;
 }
+
+
+/*input输入框下的下拉列表*/
+
+.leh-select-drag-box {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	float: left;
+	min-width: 96%;
+	padding: 5px 0;
+	margin: 0 2%;
+	font-size: 14px;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, .15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.leh-select-drag-box li {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.42857143;
+	color: #333;
+	white-space: nowrap;
+}
+
 
 /*leh-popup弹框*/
 
@@ -342,7 +386,6 @@ body {
 }
 
 
-
 /*呼吸灯*/
 
 .breathe-btn {
@@ -377,6 +420,8 @@ body {
 		box-shadow: 0 1px 30px rgba(45, 188, 56, 1);
 	}
 }
+
+
 /** 左边列固定table **/
 
 .leh-table-responsive {
@@ -414,19 +459,23 @@ body {
 	border-top: 1px dotted #e5e5e5;
 	font-size: 14px;
 }
+
 .leh-grey-table>thead>tr>th {
 	border-top: 0;
 	font-weight: normal;
 }
-.leh-grey-table>thead>tr>th>p{
+
+.leh-grey-table>thead>tr>th>p {
 	margin-top: 5px;
 }
-.leh-grey-table>thead>tr>th:nth-of-type(1){
+
+.leh-grey-table>thead>tr>th:nth-of-type(1) {
 	padding: 0;
 	font-size: 35px;
 	color: #f3f2f2;
 	margin-top: 8px;
 }
+
 .leh-grey-table>tbody>tr>td,
 .leh-grey-table>tfoot>tr>td,
 .leh-grey-table>thead>tr>td {
@@ -474,14 +523,11 @@ body {
 }
 
 
-
-
-
-
-
 /*======*/
 
+
 /*拖滑按钮样式*/
+
 .sl-li {
 	height: 100%;
 	position: relative;
@@ -489,15 +535,17 @@ body {
 	transform: translateZ(0);
 	-webkit-transform: translateZ(0);
 }
+
 .sl-li .sl-content {
 	height: 100%;
 	overflow: hidden;
-	padding:12px 10px;
+	padding: 12px 10px;
 	position: relative;
 	z-index: 10;
 	background-color: #fff;
 }
-.sl-li .sl-content:after{
+
+.sl-li .sl-content:after {
 	width: 100%;
 	position: absolute;
 	left: 10px;
@@ -505,7 +553,8 @@ body {
 	border-bottom: 1px solid #e5e5e5;
 	content: "";
 }
-.sl-li:nth-last-of-type(1) .sl-content:after{
+
+.sl-li:nth-last-of-type(1) .sl-content:after {
 	border: 0;
 }
 
@@ -513,6 +562,7 @@ body {
 	-webkit-transition: -webkit-transform .2s ease-out;
 	transition: transform .2s ease-out;
 }
+
 .sl-li .sl-opts {
 	height: 100%;
 	display: -webkit-box;
@@ -523,6 +573,7 @@ body {
 	right: 0;
 	z-index: 0;
 }
+
 .sl-li .sl-opts span {
 	height: 100%;
 	padding: 0 20px;
@@ -531,7 +582,9 @@ body {
 	-webkit-box-align: center;
 }
 
+
 /*we-ui样式*/
+
 .weui_cells {
 	margin-top: 1.17647059em;
 	background-color: #fff;
@@ -578,7 +631,8 @@ body {
 	width: 79px;
 	height: 79px;
 	background: no-repeat 50%;
-	background-size: cover
+	background-size: cover;
+	position: relative;
 }
 
 .weui_uploader_status {
@@ -682,4 +736,215 @@ body {
 
 .weui_icon_warn:before {
 	content: "\EA0B"
+}
+
+.weui_uploader_input_wrp {
+	text-align: center;
+	line-height: 75px;
+}
+
+.weui_uploader_input_wrp:before,
+.weui_uploader_input_wrp:after {
+	display: none;
+}
+
+.weui_uploader_input_wrp .icon-wx-add,
+.weui_uploader_input_wrp .icon-wx-camera {
+	font-size: 45px;
+	color: #aaa;
+}
+
+
+/*字体图标*/
+
+@font-face {
+	font-family: "iconfont";
+	src: url('../fonts/iconfont.eot?t=1473399281');
+	/* IE9*/
+	src: url('../fonts/iconfont.eot?t=1473399281#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	url('../fonts/iconfont.woff?t=1473399281') format('woff'), /* chrome, firefox */
+	url('../fonts/iconfont.ttf?t=1473399281') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+	url('../fonts/iconfont.svg?t=1473399281#iconfont') format('svg');
+	/* iOS 4.1- */
+}
+
+.iconfont {
+	font-family: "iconfont" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke-width: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-wx-footer-add:before {
+	content: "\e60c";
+}
+
+.icon-wx-ask-round:before {
+	content: "\e607";
+}
+
+.icon-wx-gan:before {
+	content: "\e601";
+}
+
+.icon-wx-durg:before {
+	content: "\e602";
+}
+
+.icon-wx-ddi:before {
+	content: "\e603";
+}
+
+.icon-wx-snak:before {
+	content: "\e604";
+}
+
+.icon-wx-flower:before {
+	content: "\e605";
+}
+
+.icon-wx-family:before {
+	content: "\e606";
+}
+
+.icon-wx-notice:before {
+	content: "\e600";
+}
+
+.icon-wx-loading:before {
+	content: "\e60a";
+}
+
+.icon-wx-take-shrill:before {
+	content: "\e608";
+}
+
+.icon-wx-mark:before {
+	content: "\e60d";
+}
+
+.icon-wx-take-round:before {
+	content: "\e60b";
+}
+
+.icon-wx-camera:before {
+	content: "\e609";
+}
+
+.icon-wx-add:before {
+	content: "\e60e";
+}
+
+.icon-wx-add-round:before {
+	content: "\e60f";
+}
+
+.icon-wx-aftermoon:before {
+	content: "\e610";
+}
+
+.icon-wx-arr-down:before {
+	content: "\e611";
+}
+
+.icon-wx-arr-left:before {
+	content: "\e612";
+}
+
+.icon-wx-arr-right:before {
+	content: "\e613";
+}
+
+.icon-wx-arr-up:before {
+	content: "\e614";
+}
+
+.icon-wx-check:before {
+	content: "\e615";
+}
+
+.icon-wx-close:before {
+	content: "\e616";
+}
+
+.icon-wx-double-arr-down:before {
+	content: "\e617";
+}
+
+.icon-wx-double-arr-up:before {
+	content: "\e62a";
+}
+
+.icon-wx-evening:before {
+	content: "\e618";
+}
+
+.icon-wx-female:before {
+	content: "\e619";
+}
+
+.icon-wx-hospital:before {
+	content: "\e61a";
+}
+
+.icon-wx-item:before {
+	content: "\e61b";
+}
+
+.icon-wx-ling:before {
+	content: "\e61c";
+}
+
+.icon-wx-male:before {
+	content: "\e61d";
+}
+
+.icon-wx-meun:before {
+	content: "\e61e";
+}
+
+.icon-wx-morning:before {
+	content: "\e61f";
+}
+
+.icon-wx-reduce:before {
+	content: "\e62b";
+}
+
+.icon-wx-reduce-round:before {
+	content: "\e621";
+}
+
+.icon-wx-sick:before {
+	content: "\e622";
+}
+
+.icon-wx-take:before {
+	content: "\e623";
+}
+
+.icon-wx-triangle:before {
+	content: "\e624";
+}
+
+.icon-wx-writte:before {
+	content: "\e625";
+}
+
+.icon-wx-announcement:before {
+	content: "\e626";
+}
+
+.icon-wx-disease:before {
+	content: "\e627";
+}
+
+.icon-wx-link:before {
+	content: "\e628";
+}
+
+.icon-wx-note:before {
+	content: "\e629";
 }

@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="在线留言">
-		<mt-button v-link="'/home'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="page-cell online-msg-ipt-box">
@@ -8,9 +8,14 @@
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
 					<input type="text" />
+					<ul class="leh-select-drag-box">
+						<li>博路定</li>
+						<li>博路定</li>
+						<li>博路定</li>
+					</ul>
 				</label>
 				<div class="mint-cell-value">
-					<span>i</span>
+					<span class="iconfont icon-wx-arr-down"></span>
 				</div>
 			</a>
 			<a class="mint-cell">
@@ -88,15 +93,16 @@
 </script>
 
 <style>
-	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;}
+
+	.online-msg-ipt-box {overflow: hidden}
+	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
 	.online-msg-ipt-box .mint-cell:after,.online-msg-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.online-msg-ipt-box .mint-cell:before{left: 10px;transform: scaleY(1);}
 	.online-msg-ipt-box input,.online-msg-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;}
-	.online-msg-ipt-box .mint-cell .mint-cell-value span{margin-top: 35px;padding-left: 10px;}
+	.online-msg-ipt-box .mint-cell .mint-cell-value span{margin-top: 35px;padding-left: 10px;color: #aaa;}
+	.online-msg-ipt-box .mint-cell .leh-select-drag-box{padding: 0 5px;}
 	.online-msg-tap .weui_cells{margin-top: 0;}
 	.online-msg-tap .weui_cells:before,.online-msg-tap .weui_cells:after{border: 0;}
 	.online-msg-tap .weui_uploader_input_wrp,.online-msg-tap .weui_uploader_file{margin-top: 8px;}
-	.online-msg-tap .weui_uploader_file{position: relative;}
-	.online-msg-del-btn{position: absolute;right: -8px;top:-8px;width: 16px;height: 16px;line-height:16px;text-align: center;color:#fff;border-radius:50%;background-color: #ed2533;}
 
 </style>

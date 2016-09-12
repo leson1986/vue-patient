@@ -11,6 +11,10 @@
 
 
 		props: {
+			visible: {
+				default: true
+			},
+
 			modal: {
 				default: true
 			},

@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey :title="title">
-		<mt-button v-link="'/online/remind'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="'/online/remind'" icon="arr-left" slot="left"></mt-button>
 		<mt-button slot="right" v-show="is_visible">保存</mt-button>
 	</mt-header>
 
@@ -13,14 +13,10 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">药品名</span>
-					<input type="text" placeholder="请输入药品名称"/>
-					<div class="reminders-add-medecine" style="display: none">
-						<ul>
-							<li>博路定</li>
-							<li>博路定</li>
-							<li>博路定</li>
-						</ul>
-					</div>
+					<input type="text" placeholder="请输入药品名称" v-model="drug"/>
+					<mt-select-drag>
+						<mt-li-item v-for="n in 3">adsf</mt-li-item>
+					</mt-select-drag>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
@@ -38,63 +34,34 @@
 
 		<div class="page-cell reminders-add-tap-box">
 
-			<mt-cell title="重复" label="仅一次" is-icon icons="ppp" istitle></mt-cell>
-			<mt-cell title="用量" label="3mg" is-icon icons="ppp" istitle></mt-cell>
+			<mt-cell title="重复" label="仅一次" is-icon icons="triangle" istitle @click="repeat"></mt-cell>
+			<mt-cell title="用量" label="3mg" is-icon icons="triangle" istitle @click="dosage"></mt-cell>
 		</div>
 		<p class="reminders-add-txt">温馨提示：为提高用药依从性，如同一药品同一天需多次服药，只需在“重复”框填写次数即可，系统将根据科学的时间安排给出提醒时间。</p>
 
-		<!--用量弹框-->
-		<div class="leh-black-shade" style="display: none">
-			<div class="leh-remind-popup-box">
-				<div class="leh-remind-popup-title">用量</div>
-				<div class="leh-remind-popup-content">
-					<div class="reminders-add-dosage-ipt">
-						<input type="number"/>
-					</div>
-					<ul class="reminders-add-dosage-ul">
-						<li class="reminders-add-dosage-list leh-active"><span>克</span></li>
-						<li class="reminders-add-dosage-list"><span>毫克</span></li>
-						<li class="reminders-add-dosage-list"><span>丸</span></li>
-						<li class="reminders-add-dosage-list"><span>支</span></li>
-						<li class="reminders-add-dosage-list"><span>片</span></li>
-						<li class="reminders-add-dosage-list"><span>毫升</span></li>
-						<li class="reminders-add-dosage-list"><span>粒</span></li>
-						<li class="reminders-add-dosage-list"><span>瓶</span></li>
-					</ul>
-				</div>
-				<div class="leh-remind-popup-footer">
-					<button class="mint-button mint-button--default mint-button--small leh-remind-popup-cencel-btn">
-						<label class="mint-button-text">取消</label>
-					</button>
-					<button class="mint-button mint-button--default mint-button--small leh-remind-popup-comfirm-btn">
-						<label class="mint-button-text">确定</label>
-					</button>
-				</div>
+		<mt-popup-work title="重复" :visible.sync="visible1" class-name="repeat">
+			<div class="reminders-add-again-box">
+				<input type="number" />
+				<span>天</span>
+				<input type="number" />
+				<span>次</span>
 			</div>
-		</div>
-		<!--重复弹框-->
-		<div class="leh-black-shade" style="display: none">
-			<div class="leh-remind-popup-box">
-				<div class="leh-remind-popup-title">重复</div>
-				<div class="leh-remind-popup-content">
-					<div class="reminders-add-again-box">
-						<input type="number" />
-						<span>天</span>
-						<input type="number" />
-						<span>次</span>
-					</div>
-				</div>
-				<div class="leh-remind-popup-footer">
-					<button class="mint-button mint-button--default mint-button--small leh-remind-popup-cencel-btn">
-						<label class="mint-button-text">取消</label>
-					</button>
-					<button class="mint-button mint-button--default mint-button--small leh-remind-popup-comfirm-btn">
-						<label class="mint-button-text">确定</label>
-					</button>
-				</div>
+		</mt-popup-work>
+		<mt-popup-work title="用量" :visible.sync="visible2" class-name="dosage">
+			<div class="reminders-add-dosage-ipt">
+				<input type="number"/>
 			</div>
-		</div>
-
+			<ul class="reminders-add-dosage-ul">
+				<li class="reminders-add-dosage-list leh-active"><span>克</span></li>
+				<li class="reminders-add-dosage-list"><span>毫克</span></li>
+				<li class="reminders-add-dosage-list"><span>丸</span></li>
+				<li class="reminders-add-dosage-list"><span>支</span></li>
+				<li class="reminders-add-dosage-list"><span>片</span></li>
+				<li class="reminders-add-dosage-list"><span>毫升</span></li>
+				<li class="reminders-add-dosage-list"><span>粒</span></li>
+				<li class="reminders-add-dosage-list"><span>瓶</span></li>
+			</ul>
+		</mt-popup-work>
 		<!-- 弹出窗 -->
 		<mt-popup-box v-if="ispopup">
 			<p slot="info">是否删除此提醒？</p>
@@ -115,6 +82,9 @@
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
 	import MtDatetimeOnly from '../../components/datetime-only.vue'
+	import MtPopupWork from '../../components/popupWork.vue'
+	import MtSelectDrag from '../../components/selectDrag.vue'
+	import MtLiItem from '../../components/liItem.vue'
 	import $ from 'zepto'
 
 	export default{
@@ -139,12 +109,22 @@
 			return{
 				is_visible: false,
 				ispopup: false,
+				visible1: false,
+				visible2: false,
 				title: '',
 				bgcolor: '',
 				active_name: '',
 				value: '00:00',
-				visible3: true
+				visible3: true,
+				drug: ''
 			}
+		},
+
+		ready () {
+
+			$('#medicineName').focus( () => {
+				console.log($('#medicineName').val())
+			});
 		},
 
 		methods: {
@@ -167,19 +147,32 @@
 					message: '已选择 ' + value.toString(),
 					position: 'bottom'
 				});
+			},
+			repeat () {
+				this.visible1 = true
+			},
+			dosage () {
+				this.visible2 = true
 			}
 		},
-/*
-		events: {
-			'footer-button-event' (e) {
-				if(this.is_visible){
-					alert('编辑')
-				}else{
-					alert('保存')
-				}
 
+		events: {
+			'popup-work' (e) {
+				let _self = e;
+				if(_self.hasClass('repeat')) {
+					console.log('repeat')
+				}
+				if(_self.hasClass('dosage')) {
+					console.log('dosage')
+				}
 			}
-		},*/
+		},
+
+		watch: {
+			drug (newVal) {
+				console.log(newVal)
+			}
+		},
 
 		components: {
 			MtContent,
@@ -190,7 +183,10 @@
 			MtTranslate,
 			MtTranslateItem,
 			MtPopupBox,
-			MtDatetimeOnly
+			MtDatetimeOnly,
+			MtPopupWork,
+			MtSelectDrag,
+			MtLiItem
 		}
 	}
 </script>
@@ -199,29 +195,25 @@
 	.reminders-add-title .mint-cell{overflow: visible;}
 	.reminders-add-title .mint-cell:after,.reminders-add-title .mint-cell:before{border: 0;}
 	.reminders-add-title .mint-cell-title{position: relative;}
-	.reminders-add-medecine{position: absolute;left: 0px;background-color: #e5e5e5;width: 100%;z-index: 6;max-height: 200px;overflow-y: auto;}
-	.reminders-add-medecine ul{padding-left: 10px;}
-	.reminders-add-medecine li{padding: 10px 10px 10px 0;border-bottom: 1px solid #e0e0e0;font-size: 14px;}
 	.reminders-add-title input{width: 100%;margin-top: 10px;font-size: 12px;border: 0;}
 	.reminders-add-picker-box{padding: 20px 10px 0;position: relative;}
 	.reminders-add-picker-box .mint-datetime-picker{border-bottom: 1px solid #e5e5e5;}
 	.reminders-add-picker-box .picker-items{margin-bottom: 20px;}
-	.reminders-add-picker-box .picker-item.picker-item{font-size: 30px;}
 	.reminders-add-picker-box .picker-item.picker-selected{height: 55px;line-height: 55px;font-size: 48px;color: #ff7559;}
 	.reminders-add-picker-box .picker-center-highlight{height: 55px !important;}
 	.reminders-add-picker-box .picker-center-highlight:after,
 	.reminders-add-picker-box .picker-center-highlight:before{height: 0;}
 	.reminders-add-picker-hour{position: absolute;top: 50%;left:50%;margin-left:50px;margin-top:8px;font-size: 12px;color: #ff7559;}
 	.reminders-add-picker-min{position: absolute;top: 50%;left:50%;margin-left:20px;margin-top:8px;font-size: 12px;color: #ff7559;}
-	.reminders-add-picker-up-bg{position: absolute;top: 20px;left: 0;width: 100%;height: 38px;z-index:2;background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); }
-	.reminders-add-picker-down-bg{position: absolute;bottom: 20px;left: 0;width: 100%;height: 38px;z-index:2;background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);}
+	.reminders-add-picker-up-bg{position: absolute;top: 10px;left: 0;width: 100%;height: 38px;z-index:2;background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); }
+	.reminders-add-picker-down-bg{position: absolute;bottom: 0px;left: 0;width: 100%;height: 38px;z-index:2;background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);}
 	.reminders-add-tap-box{padding-right: 10px;}
 	.reminders-add-tap-box .mint-cell{padding-right: 0;}
 	.reminders-add-tap-box .mint-cell:after{border: 0;}
 	.reminders-add-tap-box .mint-cell:before{left: 10px;}
 	.reminders-add-tap-box .mint-cell-text{font-size: 14px;}
 	.reminders-add-tap-box .mint-cell-label{font-size: 12px;}
-	.reminders-add-tap-box .mint-cell-value span{margin-left: 10px;color: #363636;}
+	.reminders-add-tap-box .mint-cell-value span{margin-left: 10px;color: #aaa;font-size: 10px;}
 	.reminders-add-dosage-ipt{padding: 0 10px;}
 	.reminders-add-dosage-ipt input{width: 100%;border: 0;border-bottom: 1px solid #2eb039;font-size: 14px;}
 	.reminders-add-dosage-ul{margin: 8px 0 0;overflow: hidden;}
@@ -230,6 +222,5 @@
 	.reminders-add-again-box{overflow: hidden;margin-bottom: 8px;}
 	.reminders-add-again-box input{float: left;width: 27%;margin-left: 25px;border:0;border-bottom: 1px solid #1faa2b;}
 	.reminders-add-again-box span{float: left;font-size: 14px;margin:0 5px;}
-	.reminders-add-txt{padding: 10px;font-size: 12px;color: #919191;}
-
+	.reminders-add-txt{padding: 10px;font-size: 12px;color: #919191;line-height: 20px;}
 </style>

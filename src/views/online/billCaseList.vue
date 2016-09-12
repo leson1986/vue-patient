@@ -1,16 +1,16 @@
 <template>
 	<mt-header fixed isgrey title="我的病历">
-		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="back" slot="left"></mt-button>
-		<mt-button icon="more" slot="right" @click="showPopup"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
-		<mt-button type="green">查看原图</mt-button>
+		<mt-button type="green" @click="showPic">查看原图</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
 			<a class="mint-cell">
 				<label class="mint-cell-title">
-					<i class="mintui mintui-more leh-c-blue"></i>
+					<i class="iconfont icon-wx-hospital leh-c-blue"></i>
 					<span class="mint-cell-text">中山大学附属第三医院</span>
 					<p>感染性疾病<span>林小小</span></p>
 					<span class="mint-cell-label">2015年11月20日</span>
@@ -152,12 +152,6 @@
 
 		},
 
-		events: {
-			'single-button-event' () {
-				this.showPic()
-			}
-		},
-
 		watch: {
 			popupVisible2(val) {
 				if (val) {
@@ -196,6 +190,7 @@
 	.sick-list .mint-cell-label{line-height: 25px;}
 	.sick-list .mint-cell:after,.sick-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.sick-from-list .mint-cell-label p{line-height: 25px;}
+
 
 	/*侧滑*/
 	.sick-popup-box{z-index: 10;background-color: rgba(0,0,0,0.5) !important;}

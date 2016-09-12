@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="手写病历">
-		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="back" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="page-cell">

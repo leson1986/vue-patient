@@ -1,16 +1,16 @@
 <template>
 	<mt-header fixed isgrey title="我的检查单">
-		<mt-button v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}" icon="back" slot="left"></mt-button>
-		<mt-button icon="more" slot="right" @click="showPopup"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
-		<mt-button type="green">查看原图</mt-button>
+		<mt-button type="green" @click="showPic">查看原图</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
 			<a class="mint-cell">
 				<label class="mint-cell-title">
-					<i class="mintui mintui-more leh-c-blue"></i>
+					<span class="iconfont icon-wx-hospital leh-c-blue"></span>
 					<span class="mint-cell-text">中山大学附属第三医院</span>
 					<p>检验目的：肝肾十五项</span></p>
 					<span class="mint-cell-label">2015年11月20日</span>
@@ -45,17 +45,13 @@
 			<span class="leh-c-blue">结论</span>
 			<p>从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况;从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况。</p>
 		</div>
-		<div class="page-button-group check-arr-btn">
-			<button class="mint-button mint-button--primary mint-button--large is-plain">
-				<i class="mintui mintui-back leh-c-grey-tint"></i>
-			</button>
+		<div class="check-arr-btn">
+			<span class="iconfont icon-wx-double-arr-down leh-c-grey-tint"></span>
 		</div>
 
 		<!-- 查看原图 -->
 		<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
-			<span class="check-photo-close">XX</span>
-
-			<mt-swipe class="my-swipe" :auto="0">
+			<mt-swipe class="my-swipe" :auto="0" :close-btn="true">
 				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
 				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
 				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
@@ -111,11 +107,6 @@
 
 		},
 
-		events: {
-			'single-button-event' () {
-				this.showPic()
-			}
-		},
 
 		components: {
 			MtContent,
@@ -150,16 +141,18 @@
 	.check-list .mint-cell-value span.fr{width: 50px;margin-left: 10px;}
 	.check-text-box{padding: 20px 10px;overflow: hidden;}
 	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
-	.check-arr-btn .mint-button--primary.is-plain{border: 0;}
+	.check-arr-btn{border: 0;text-align: center;height: 40px;}
 
 	/*侧滑*/
 	.sick-popup-box{z-index: 10;background-color: rgba(0,0,0,0.5) !important;}
-	.sick-popup-content{width: 70%;position: absolute;right: 0;top: 0;bottom: 0;background-color: #fff;overflow: auto;}
+	.sick-popup-content{width: 70%;z-index:10;position: fixed;right: 0;top: 0;bottom: 0;background-color: #fff;overflow: auto;}
 	.sick-popup-title{background-color: #e5e5e5;margin: 0 !important;}
 	.sick-popup-title span.mint-cell-text{font-size: 16px !important;}
-	.sick-popup-content .mint-cell{margin-left: 20px;}
+	.sick-popup-content .mint-cell{margin-left: 7px;}
+	.sick-popup-content .mint-cell:not(.sick-popup-title) .mint-cell-text{margin-left: 7px;}
 	.sick-popup-content .mint-cell span{font-size: 14px;}
 	.sick-popup-content .mint-cell:nth-last-of-type(1):before{border: 0;}
-	.sick-popup-content .mint-cell .mint-cell-text:after{left: -10px;top: 4px;}
+	.sick-popup-content .mint-cell:before{left: 17px;}
+	.sick-popup-content .mint-cell .mint-cell-text:after{left: -13px;top: 4px;}
 
 </style>

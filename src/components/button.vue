@@ -8,10 +8,10 @@
 			@touchstart="handleClick">
     <span class="mint-button-icon" v-if="icon || _slotContents.icon">
       <slot name="icon">
-        <i v-if="icon" class="mintui" :class="'mintui-' + icon"></i>
+        <i v-if="icon" class="iconfont" :class="'icon-wx-' + icon"></i>
       </slot>
     </span>
-		<label class="mint-button-text"><slot></slot></label>
+		<label class="mint-button-text" :class="{'leh-red-dot':reddot}" ><slot></slot></label>
 	</button>
 </template>
 
@@ -41,6 +41,7 @@
 			disabled: Boolean,
 			plain: Boolean,
 			className: String,
+			reddot: Boolean,
 			id: String,
 			type: {
 				type: String,
