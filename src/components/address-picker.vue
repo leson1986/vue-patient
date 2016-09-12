@@ -3,7 +3,8 @@
 		<mt-picker
 				:slots="addressSlots"
 				@change="onAddressChange"
-				:visible-item-count="5">
+				:visible-item-count="5"
+				show-toolbar>
 
 			<span class="mint-datetime-action mint-datetime-cancel" @click="visible = false">{{ cancelText }}</span>
 			<span class="mint-datetime-action mint-datetime-confirm" @click="confirm">{{ confirmText }}</span>
@@ -89,7 +90,12 @@
 			confirm() {
 
 				this.visible = false;
-				this.$emit('confirm', this.value);
+
+
+				this.$emit('confirm', {
+					province: this.addressProvince,
+					city: this.addressCity
+				});
 			}
 		},
 

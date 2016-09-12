@@ -2,7 +2,19 @@
   <div class="picker" :class="{ 'picker-3d': rotateEffect }">
     <div class="picker-toolbar" v-if="showToolbar"><slot></slot></div>
     <div class="picker-items">
-      <picker-slot v-for="slot in slots" :values="slot.values || []" :text-align="slot.textAlign || 'center'" :visible-item-count="visibleItemCount" :class-name="slot.className" :flex="slot.flex" :value.sync="values[slot.valueIndex]" :rotate-effect="rotateEffect" :divider="slot.divider" :content="slot.content" :is-unit="slot.isUnit"></picker-slot>
+      <picker-slot
+		      v-for="slot in slots"
+		      :values="slot.values || []"
+		      :text-align="slot.textAlign || 'center'"
+		      :visible-item-count="visibleItemCount"
+		      :class-name="slot.className"
+		      :flex="slot.flex"
+		      :value.sync="values[slot.valueIndex]"
+		      :rotate-effect="rotateEffect"
+		      :divider="slot.divider"
+		      :content="slot.content"
+		      :is-unit="slot.isUnit">
+      </picker-slot>
       <div class="picker-center-highlight"></div>
     </div>
   </div>
@@ -34,8 +46,8 @@
       var slots = this.slots || [];
       this.values = [];
       var values = this.values;
-      var valueIndexCount = 0;
-      slots.forEach(function(slot) {
+	    var valueIndexCount = 0;
+	    slots.forEach(function(slot) {
         if (!slot.divider) {
           slot.valueIndex = valueIndexCount++;
           values[slot.valueIndex] = (slot.values || [])[slot.defaultIndex || 0];
@@ -115,8 +127,7 @@
         slots.forEach(function(slot) {
           if (!slot.divider) values.push(slot.value);
         });
-
-        return values;
+	      return values;
       },
       slotCount() {
         var slots = this.slots || [];

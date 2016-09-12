@@ -62,8 +62,14 @@ body {
 }
 
 .leh-not-apply {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #fff;
 	text-align: center;
-	line-height: 80px;
+	line-height: 160px;
 }
 
 .leh-black-shade {
@@ -81,9 +87,18 @@ body {
 	padding: 25px 10px;
 }
 
-
-.leh-img-del-btn{
-	position: absolute;font-size:10px !important;right: -8px;top:-8px;width: 16px;height: 16px;line-height:16px;text-align: center;color:#fff;border-radius:50%;background-color: #ed2533;
+.leh-img-del-btn {
+	position: absolute;
+	font-size: 10px !important;
+	right: -8px;
+	top: -8px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	text-align: center;
+	color: #fff;
+	border-radius: 50%;
+	background-color: #ed2533;
 }
 
 
@@ -777,6 +792,10 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-wx-close-thin:before {
+	content: "\e620";
+}
+
 .icon-wx-footer-add:before {
 	content: "\e60c";
 }
@@ -873,10 +892,6 @@ body {
 	content: "\e617";
 }
 
-.icon-wx-double-arr-up:before {
-	content: "\e62a";
-}
-
 .icon-wx-evening:before {
 	content: "\e618";
 }
@@ -907,10 +922,6 @@ body {
 
 .icon-wx-morning:before {
 	content: "\e61f";
-}
-
-.icon-wx-reduce:before {
-	content: "\e62b";
 }
 
 .icon-wx-reduce-round:before {
@@ -947,4 +958,12 @@ body {
 
 .icon-wx-note:before {
 	content: "\e629";
+}
+
+.icon-wx-double-arr-up:before {
+	content: "\e62a";
+}
+
+.icon-wx-reduce:before {
+	content: "\e62c";
 }

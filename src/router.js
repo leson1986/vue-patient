@@ -112,6 +112,26 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/user/info'], resolve)
 		  }
+	  },
+	  '/user/irritability': {
+		  component (resolve) {
+			  require(['./views/user/irritability'], resolve)
+		  }
+	  },
+	  '/user/sick': {
+		  component (resolve) {
+			  require(['./views/user/sick'], resolve)
+		  }
+	  },
+	  '/user/notice': {
+		  component (resolve) {
+			  require(['./views/user/notice'], resolve)
+		  }
+	  },
+	  '/user/noticeDetail': {
+		  component (resolve) {
+			  require(['./views/user/noticeDetail'], resolve)
+		  }
 	  }
   })
 

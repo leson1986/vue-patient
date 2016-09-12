@@ -3,7 +3,7 @@
 		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
-		<mt-button type="green" @click="save">新增日程</mt-button>
+		<mt-button type="green" v-link="'/online/schemeAdd'">新增日程</mt-button>
 	</div>
 	<mt-content>
 		<!--无日程-->
@@ -45,7 +45,7 @@
 			<mt-popup-box v-if="ispopup">
 				<p slot="info">是否删除此日程？</p>
 				<div slot="button">
-					<mt-button type="grey" size="small" @click="cancle">确定</mt-button>
+					<mt-button type="grey" size="small" @click="cancle">取消</mt-button>
 					<mt-button type="blue" size="small" @click="conf">确定</mt-button>
 				</div>
 			</mt-popup-box>
@@ -77,7 +77,6 @@
 				this.ispopup  = false
 			},
 			conf () {
-				alert(this.ids)
 				this.ispopup  = false
 			},
 			remindAdd (id) {

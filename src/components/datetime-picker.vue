@@ -48,14 +48,22 @@
       },
       startDate: Date,
       endDate: Date,
-      startHour: {
-        type: Number,
-        default: 0
-      },
-      endHour: {
-        type: Number,
-        default: 23
-      },
+	    startY: {
+		    type: Number,
+		    default: 10
+	    },
+	    endY: {
+		    type: Number,
+		    default: 10
+	    },
+	    startHour: {
+		    type: Number,
+		    default: 0
+	    },
+	    endHour: {
+		    type: Number,
+		    default: 23
+	    },
       yearFormat: {
         type: String,
         default: '{value}'
@@ -93,7 +101,8 @@
         shortMonthDates: [],
         longMonthDates: [],
         febDates: [],
-        leapFebDates: []
+        leapFebDates: [],
+	      dateTimeArr: []
       };
     },
 
@@ -129,11 +138,11 @@
           let hour = this.typeStr.indexOf('H') > -1 ? this.getTrueValue(values[this.typeStr.indexOf('H')]) : 0;
           let minute = this.typeStr.indexOf('m') > -1 ? this.getTrueValue(values[this.typeStr.indexOf('m')]) : 0;
           value = new Date(year, month - 1, date, hour, minute);
+
         }
         return value;
       },
-
-      onChange(picker, values) {
+			onChange(picker, values) {
         if (this.selfTriggered) {
           this.selfTriggered = false;
           return;
@@ -177,10 +186,13 @@
             this.dateSlots[2].values = this.longMonthDates.map(item => item);
           }
         }
-        this.value = currentValue;
+				this.value = currentValue;
         if (this.type.indexOf('date') > -1) {
           this.rimDetect(this.dateSlots[2].values);
         }
+
+
+				this.value = this.formatDateTime(this.value)
         this.$emit('change', this.value);
       },
 
@@ -267,8 +279,9 @@
           let valueArr = this.value.split(':');
           setSlotValue(0, this.hourFormat.replace('{value}', valueArr[0]));
           setSlotValue(1, this.minuteFormat.replace('{value}', valueArr[1]));
+
         }
-        if (this.type !== 'time' && ({}).toString.call(this.value) === '[object Date]') {
+        if (this.type !== 'time') {
           let year = this.value.getFullYear();
           let month = this.value.getMonth() + 1;
           let date = this.value.getDate();
@@ -284,9 +297,21 @@
         }
       },
 
-      confirm() {
+	    formatDateTime (date) {
+		    var y = date.getFullYear();
+		    var m = date.getMonth() + 1;
+		    m = m < 10 ? ('0' + m) : m;
+		    var d = date.getDate();
+		    d = d < 10 ? ('0' + d) : d;
+		    var h = date.getHours();
+		    h = h < 10 ? ('0' + h) : h;
+		    var minute = date.getMinutes();
+		    minute = minute < 10 ? ('0' + minute) : minute;
+		    return y + '-' + m + '-' + d+' '+h+':'+minute;
+	    },
 
-        this.visible = false;
+			confirm() {
+	      this.visible = false;
         this.$emit('confirm', this.value);
       }
     },
@@ -320,8 +345,8 @@
 
     created() {
       let now = new Date();
-      this.startDate = this.startDate || new Date(now.getFullYear() - 10, 0, 1);
-      this.endDate = this.endDate || new Date(now.getFullYear() + 10, 11, 31);
+      this.startDate = this.startDate || new Date(now.getFullYear() - this.startY, 0, 1);
+      this.endDate = this.endDate || new Date(now.getFullYear() + this.endY, 11, 31);
       this.startYear = this.startDate.getFullYear();
       this.endYear = this.endDate.getFullYear();
       if (this.startYear === this.endYear) {
@@ -347,6 +372,7 @@
         this.value = this.startDate;
         this.trimSlots('start', this.value, 1);
         this.trimSlots('start', this.value, 2);
+	      this.value = this.formatDateTime(this.value)
       }
     }
   };

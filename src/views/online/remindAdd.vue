@@ -28,7 +28,7 @@
 			<div class="reminders-add-picker-up-bg"></div>
 			<div class="reminders-add-picker-down-bg"></div>
 			<!--------->
-			<mt-datetime-only :visible.sync="visible3" type="time" is-unit @confirm="handleChange" :value="value"></mt-datetime-only>
+			<mt-datetime-only :visible.sync="visible3" type="time" is-unit @confirm="handleChange" :value.sync="value"></mt-datetime-only>
 
 		</div>
 
@@ -114,7 +114,7 @@
 				title: '',
 				bgcolor: '',
 				active_name: '',
-				value: '00:00',
+				value: '2015:09:12:01:02',
 				visible3: true,
 				drug: ''
 			}

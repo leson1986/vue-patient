@@ -135,10 +135,10 @@
 					</div>
 					<div class="center-content">
 						<div class="page-cell">
-							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon reddot></mt-cell>
-							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon></mt-cell>
-							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon></mt-cell>
-							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon></mt-cell>
+							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon reddot v-link="{path: '/user/notice', replace: true}"></mt-cell>
+							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon v-link="{path: '/user/recode', replace: true}"></mt-cell>
+							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
+							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
 					</div>
 				</mt-tab-container-item>

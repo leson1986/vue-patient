@@ -273,8 +273,7 @@
       }
     },
 
-    ready() {
-
+	  ready () {
       this.ready = true;
 
       if (!this.divider) {

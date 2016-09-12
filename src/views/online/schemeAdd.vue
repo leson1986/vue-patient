@@ -1,24 +1,18 @@
 <template>
-	<header class="mint-header is-fixed leh-bg-grey-head">
-		<div class="mint-header-button is-left">
-			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
-		</div>
-		<h1 class="mint-header-title leh-c-black">新增日程</h1>
-		<div class="mint-header-button is-right">
-			<span class="leh-c-green" style="display: none">保存</span>
-		</div>
-	</header>
+	<mt-header fixed isgrey :title="title">
+		<mt-button v-link="'/online/scheme'" icon="arr-left" slot="left"></mt-button>
+		<mt-button slot="right" v-show="is_visible">保存</mt-button>
+	</mt-header>
+
 	<div class="leh-float-box">
-		<button class="mint-button mint-button--green mint-button--large">
-			<label class="mint-button-text">保存</label>
-		</button>
+		<mt-button :type="bgcolor" @click="save">{{active_name}}</mt-button>
 	</div>
-	<div class="leh-wrap">
+	<mt-content>
 		<div class="page-cell schedule-add-list">
-			<a class="mint-cell">
+			<a class="mint-cell" @click="visible = true">
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">2016-8-12</span>
-					<span class="mint-cell-label">09:00</span>
+					<span class="mint-cell-text" v-text="date"></span>
+					<span class="mint-cell-label" v-text="time"></span>
 				</label>
 				<div class="mint-cell-value">
 					<span class="iconfont icon-wx-arr-right"></span>
@@ -28,7 +22,7 @@
 				<span class="mint-cell-mask iconfont icon-wx-item"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">提醒事项</span>
-					<ul class="leh-select-drag-box" style="display: none;">
+					<ul class="leh-select-drag-box">
 						<li>博路定</li>
 						<li>博路定</li>
 						<li>博路定</li>
@@ -49,17 +43,140 @@
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-
-	</div>
+		<mt-datetime-picker
+				:visible.sync="visible"
+				:value.sync="value"
+				:start-y=0
+				@confirm="handleChange">
+		</mt-datetime-picker>
+	</mt-content>
 </template>
 <script>
+	import MtContent from '../../components/content'
+	import MtHeader from '../../components/header.vue'
+	import MtCell from '../../components/cell.vue'
+	import MtButton from '../../components/button.vue'
+	import MtTranslate from '../../components/translate.vue'
+	import MtTranslateItem from '../../components/translateItem.vue'
+	import MtPopupBox from '../../components/popupBox.vue'
+	import MtDatetimePicker from '../../components/datetime-picker.vue'
+	import MtPopupWork from '../../components/popupWork.vue'
+	import MtSelectDrag from '../../components/selectDrag.vue'
+	import MtLiItem from '../../components/liItem.vue'
+	import $ from 'zepto'
+
 	export default{
-	  data () {
-	    return{
-	      msg:'hello vue'
-	    }
-	  },
+		route : {
+			data (transition) {
+				this.is_visible = transition.to.query.isEdit;
+				if(transition.to.query.isEdit){
+					this.title = '编辑日程'
+					this.bgcolor = 'danger'
+					this.active_name = '删除日程'
+				}else {
+					this.title = '新增提醒'
+					this.bgcolor = 'green'
+					this.active_name = '保存'
+				}
+			}
+		},
+
+		data () {
+			return{
+				value: new Date(),
+				is_visible: false,
+				ispopup: false,
+				visible: false,
+				visible1: false,
+				visible2: false,
+				title: '',
+				bgcolor: '',
+				active_name: '',
+				visible3: true,
+				drug: '',
+				date: '',
+				time: ''
+			}
+		},
+
+		created () {
+			let date = new Date()
+			this.date = this.formatDate(date)
+			this.time = this.formatTime(date)
+		},
+
+		methods: {
+			cancle () {
+				this.ispopup  = false
+			},
+			conf () {
+				alert(this.ids)
+				this.ispopup  = false
+			},
+			save () {
+				if(this.is_visible){
+					alert('编辑')
+				}else{
+					alert('保存')
+				}
+			},
+			handleChange(value) {
+				this.date = value.slice(0,10)
+				this.time = value.slice(11)
+			},
+			repeat () {
+				this.visible1 = true
+			},
+			dosage () {
+				this.visible2 = true
+			},
+			formatDate (date) {
+				var y = date.getFullYear();
+				var m = date.getMonth() + 1;
+				m = m < 10 ? '0' + m : m;
+				var d = date.getDate();
+				d = d < 10 ? ('0' + d) : d;
+				return y + '-' + m + '-' + d;
+			},
+			formatTime (date) {
+				var h = date.getHours();
+				h = h < 10 ? ('0' + h) : h;
+				var minute = date.getMinutes();
+				minute = minute < 10 ? ('0' + minute) : minute;
+				return h+':'+minute;
+			}
+	},
+
+		events: {
+			'popup-work' (e) {
+				let _self = e;
+				if(_self.hasClass('repeat')) {
+					console.log('repeat')
+				}
+				if(_self.hasClass('dosage')) {
+					console.log('dosage')
+				}
+			}
+		},
+
+		watch: {
+			drug (newVal) {
+				console.log(newVal)
+			}
+		},
+
 		components: {
+			MtContent,
+			MtHeader,
+			MtCell,
+			MtButton,
+			MtTranslate,
+			MtTranslateItem,
+			MtPopupBox,
+			MtDatetimePicker,
+			MtPopupWork,
+			MtSelectDrag,
+			MtLiItem
 		}
 	}
 </script>

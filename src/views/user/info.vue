@@ -51,11 +51,11 @@
 							<span class="mint-cell-text">性别</span>
 						</label>
 						<div class="mint-cell-value">
-							<div class="info-sex leh-active">
+							<div class="info-sex" :class="{'leh-active': sex}" @click="sex = 1">
 								<span class="iconfont icon-wx-male"></span>
 								<span>男</span>
 							</div>
-							<div class="info-sex">
+							<div class="info-sex" :class="{'leh-active': !sex}" @click="sex = 0">
 								<span class="iconfont icon-wx-female"></span>
 								<span>女</span>
 							</div>
@@ -85,7 +85,7 @@
 							<span class="mint-cell-text">省市</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" type="text" maxlength="10">
+							<input readonly class="mint-field-core" type="text" maxlength="10" @click="showPicker" :value="province + city">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -146,8 +146,7 @@
 							<span class="iconfont icon-wx-arr-right"></span>
 						</div>
 					</a>
-
-					<div><p class="page-picker-desc">地址: {{ addressProvince }} {{ addressCity }}</p></div>
+				</div>
 				<div class="mint-field info-main-list">
 					<a class="mint-cell mint-field-cell">
 						<label class="mint-cell-title">
@@ -166,7 +165,7 @@
 					</a>
 				</div>
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability'}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">过敏史</span>
 						</label>
@@ -185,8 +184,8 @@
 			</div>
 		</div>
 
-		<mt-button @click="showPicker" size="large">设定初始值</mt-button>
-		<mt-address-picker :visible.sync="visible"></mt-address-picker>
+		<mt-address-picker :visible.sync="visible" @confirm="handleChange" :value.sync="value"></mt-address-picker>
+
 	</mt-content>
 </template>
 <script>
@@ -200,17 +199,20 @@
 	export default{
 	  data () {
 	    return{
-		    visible: false
+		    visible: false,
+		    province: '',
+		    city: '',
+		    sex: 1
 	    }
 	  },
 
 		methods: {
 			showPicker () {
 				this.visible = true
-				console.log(this.visible)
 			},
 			handleChange(value) {
-
+				this.province = value.province
+				this.city = value.city
 			}
 		},
 
