@@ -54,3 +54,6 @@ npm run build
 
 ### 更新记录
 参看 [CHANGELOG.md](./CHANGELOG.md)
+
+### 项目参考
+参看 eteplus/vue-sui-demo  https://github.com/eteplus/vue-sui-demo
