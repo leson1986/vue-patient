@@ -2,10 +2,10 @@
   "name": "leh-patient",
   "description": "leh patient wx-mobile",
   "author": "Ls.c <cls-leson@163.com>",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eteplus/vue-sui-demo.git"
+    "url": "https://github.com/leson1986/vue-patient.git"
   },
   "private": false,
   "scripts": {

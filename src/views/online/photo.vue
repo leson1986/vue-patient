@@ -1,9 +1,12 @@
 <template>
 	<mt-header fixed isgrey title="拍照上传">
-		<mt-button v-link="'/home'" icon="back" slot="left"></mt-button>
+		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
-	<div class="leh-float-box">
+	<div class="leh-float-box ">
 		<mt-button type="green">上传</mt-button>
+		<div class="photo-btn-tip-img-box">
+			<img src="../../assets/img/photo-updata-btn.png"/>
+		</div>
 	</div>
 	<mt-content>
 		<div class="photo-img-box">
@@ -19,12 +22,17 @@
 		<div class="leh-null-box"></div>
 		<div class="photo-tap-box">
 			<!--未上传-->
-			<div class="photo-frist-tap">
+			<div class="photo-frist-tap leh-guide">
 				<div class="photo-frist-ico-box">
-					<span class="iconfont icon-wx-camera"></span>
+					<span class="iconfont icon-wx-camera">
+							<div class="photo-tip-img-box">
+								<img src="../../assets/img/photo-updata-tip.png"/>
+							</div>
+					</span>
 				</div>
 				<p>点击上传图片</p>
 			</div>
+			<div class="leh-black-shade"></div>
 			<!--上传-->
 			<div class="photo-tap">
 				<div class="weui_cells weui_cells_form">
@@ -109,10 +117,27 @@
 	.photo-img-box{margin: 20px auto;text-align: center;}
 	.photo-text-box{padding: 0 10px 20px;}
 	.photo-text-box p{font-size: 14px;line-height: 20px;color: #363636;}
-	.photo-frist-tap{overflow: hidden;}
 	.photo-frist-ico-box{width: 107px;height: 107px;background-color: #f0f0f0;margin: 30px auto 10px;border-radius:5px;line-height: 107px;text-align: center;}
 	.photo-frist-ico-box .icon-wx-camera{font-size: 60px;}
 	.photo-frist-tap p{text-align: center;}
 	.photo-tap .weui_cells:before,.photo-tap .weui_cells:after{border: 0;}
 	.photo-tap .weui_uploader_input_wrp,.photo-tap .weui_uploader_file{margin-top: 8px;}
+
+	.photo-tip-img-box{display:none;position: absolute;top:-260%;left:-110%;margin-left:-31%;z-index: 6;width: 400%;}
+	.photo-frist-tap~.leh-black-shade{display: none;}
+	.photo-btn-tip-img-box{
+		display: none;
+		position: absolute;
+		bottom: 10px;
+		left: 40%;
+		z-index: 7;
+		width: 60%;
+	}
+	.leh-guide .icon-wx-camera{position: relative;z-index: 7;color: #fff;}
+	.leh-guide.leh-float-box{z-index: 99;}
+	.leh-guide .mint-button--large{position: relative;overflow: visible;background-color: #1faa2b;}
+	.leh-guide .photo-tip-img-box,
+	.leh-guide~.leh-black-shade,
+	.leh-guide.leh-float-box~.leh-wrap .leh-black-shade,
+	.leh-guide .photo-btn-tip-img-box{display: block;}
 </style>

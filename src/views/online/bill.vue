@@ -105,7 +105,6 @@
 
 		events: {
 			'footer-button-event' (e) {
-				console.log(e.target)
 					$(e.target).siblings(".leh-active").removeClass('leh-active')
 					$(e.target).addClass('leh-active')
 			}

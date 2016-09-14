@@ -23,7 +23,8 @@ module.exports = {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
-	    'views': path.resolve(__dirname, '../src/views')
+	    'views': path.resolve(__dirname, '../src/views'),
+	    'util': path.resolve(__dirname, '../src/lib/ls-util.js')
     }
   },
   resolveLoader: {

@@ -1,6 +1,7 @@
 <template>
 	<div v-show="visible" class="mint-popup" :class="[position ? 'mint-popup-' + position : '']" :transition="popupTransition">
 		<slot></slot>
+
 	</div>
 </template>
 
@@ -12,11 +13,11 @@
 
 		props: {
 			visible: {
-				default: true
+				default: false
 			},
 
 			modal: {
-				default: true
+				default: false
 			},
 
 			closeOnClickModal: {

@@ -54,7 +54,14 @@
 											<div class="weui_uploader_status_content">50%</div>
 										</li>
 									</ul>
+									<!--未上传图片时-->
+									<div class="weui_uploader_input_wrp" style="display: none;">
+										<span class="iconfont icon-wx-camera"></span>
+										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
+									</div>
+									<!--已上传一张或一张以上图片时-->
 									<div class="weui_uploader_input_wrp">
+										<span class="iconfont icon-wx-add"></span>
 										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
 									</div>
 								</div>

@@ -828,6 +828,10 @@ body {
 	content: "\e606";
 }
 
+.icon-wx-image:before {
+	content: "\e62b";
+}
+
 .icon-wx-notice:before {
 	content: "\e600";
 }

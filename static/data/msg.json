@@ -1,0 +1,48 @@
+{
+	"code": 200,
+	"message": "获取成功",
+	"data":	[
+		{
+			"id": "0",
+			"info": "第1位",
+			"pic": [
+				{
+					"url": "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2819504303,2145532625&fm=58",
+					"title": "第一张图"
+				},
+				{
+					"url": "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2819504303,2145532625&fm=58",
+					"title": "第二张图"
+				},
+				{
+					"url": "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2819504303,2145532625&fm=58",
+					"title": "第三张图"
+				}
+			]
+		},
+		{
+			"id": "0",
+			"info": "第2位",
+			"pic": [
+				{
+					"url": "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=301655466,888443682&fm=58",
+					"title": "第一张图"
+				},
+				{
+					"url": "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=301655466,888443682&fm=58",
+					"title": "第二张图"
+				}
+			]
+		},
+		{
+			"id": "0",
+			"info": "第3位",
+			"pic": [
+				{
+					"url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=275143657,4039181608&fm=58",
+					"title": "第一张图"
+				}
+			]
+		}
+	]
+}

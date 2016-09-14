@@ -24,16 +24,16 @@
 						v-for="(index, item) in 3"
 						:class="{'leh-active': index%2 == 0}"
 						:name="index"
-
 						delbtn>
 					<a class="mint-cell">
-
 						<span class="mint-cell-mask"></span>
-						<label class="mint-cell-title">
-							<span class="mint-cell-text leh-red-dot">08-12</span>
-							<span class="mint-cell-label">9:00</span>
+						<label class="mint-cell-title" v-link="'/online/schemeAdd'">
+							<div class="schedule-apply-main">
+								<span class="mint-cell-text">08-12</span>
+								<span class="mint-cell-label">9:00</span>
+							</div>
+							<div class="schedule-apply-txt">医院复诊</div>
 						</label>
-						<div class="schedule-apply-txt">医院复诊</div>
 						<div class="mint-cell-value">
 							<span class="iconfont icon-wx-ling"></span>
 						</div>
@@ -114,7 +114,9 @@
 	.schedule-apply-list .mint-cell-value span{font-size: 22px;}
 	.schedule-apply-list.leh-active .mint-cell-value span{color: #ff6060;}
 	.schedule-apply-list .mint-cell:before{left: 10px;}
+	.schedule-apply-main{width: 60px;float: left;}
 	.schedule-apply-list .mint-cell-text{font-size: 16px;}
 	.schedule-apply-list .mint-cell-label{font-size: 22px;margin-top: 5px;}
-	.schedule-apply-txt{flex: 4;border-left: 1px solid #e5e5e5;padding-left: 15px;height: 40px;line-height: 40px;font-size: 14px;}
+	.schedule-apply-txt{float:left;border-left: 1px solid #e5e5e5;padding-left: 15px;height: 40px;line-height: 40px;font-size: 14px;}
+
 </style>

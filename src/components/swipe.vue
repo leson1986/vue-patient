@@ -422,7 +422,6 @@
 		},
 
 		ready() {
-			console.log(this.closeBtn)
 			this.ready = true;
 
 			if (this.auto > 0) {

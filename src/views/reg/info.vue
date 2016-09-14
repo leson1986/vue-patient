@@ -1,6 +1,10 @@
 <template>
 	<mt-header fixed isgrey title="选择病种"></mt-header>
 
+	<div class="leh-float-box">
+		<mt-button type="green" class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button>
+	</div>
+
 	<mt-content>
 		<div class="page-cell register-entity-box">
 			<mt-cell
@@ -12,10 +16,6 @@
 			></mt-cell>
 		</div>
 	</mt-content>
-	<div class="leh-float-box">
-		<mt-button type="green" class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button>
-	</div>
-<!--	<mt-button-single class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button-single>-->
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -25,13 +25,17 @@
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data() {
+			}
+		},
 	  data () {
 	    return{
 		    is_conf: false,
 		    activeName: '',
 		    lists: [
 		    		{
-			        name: '乙肝'
+			        name: '乙肝123'
 				    },
 				    {
 					    name: '丙肝'
@@ -42,9 +46,13 @@
 				    {
 					    name: '免疫性疾病'
 				    }
-			    ]
+			    ],
+		    item: []
 	    }
 	  },
+
+		ready() {
+		},
 
 		events: {
 			'footer-button-event' () {

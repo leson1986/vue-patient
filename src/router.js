@@ -132,6 +132,31 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/user/noticeDetail'], resolve)
 		  }
+	  },
+	  '/user/about': {
+		  component (resolve) {
+			  require(['./views/user/about'], resolve)
+		  }
+	  },
+	  '/user/profile': {
+		  component (resolve) {
+			  require(['./views/user/profile'], resolve)
+		  }
+	  },
+	  '/user/terms': {
+		  component (resolve) {
+			  require(['./views/user/terms'], resolve)
+		  }
+	  },
+	  '/user/note': {
+		  component (resolve) {
+			  require(['./views/user/note'], resolve)
+		  }
+	  },
+	  '/user/noteDetail': {
+		  component (resolve) {
+			  require(['./views/user/noteDetail'], resolve)
+		  }
 	  }
   })
 

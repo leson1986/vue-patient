@@ -32,7 +32,7 @@ Vue.http.options.root = process.env.NODE_ENV === 'development' ? 'src/assets/dat
 Vue.http.options.emulateJSON = true
 
 // Directive
-//Vue.directive('slideleft', slideleft)
+//Vue.directive('util', util)
 
 // Filters
 Vue.filter('date', filters.dateFilter)

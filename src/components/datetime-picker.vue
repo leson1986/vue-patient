@@ -1,5 +1,5 @@
 <template>
-	<mt-popup :visible.sync="visible" position="bottom" class="mint-datetime">
+	<mt-popup :visible.sync="visible" position="bottom" class="mint-datetime" :modal="true">
     <mt-picker
       :slots="dateSlots"
       @change="onChange"

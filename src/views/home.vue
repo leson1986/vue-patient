@@ -6,10 +6,16 @@
 				<mt-tab-container-item id="在线门诊">
 					<div class="mint-tab-container-item">
 						<div class="consult-tap-box">
-							<mt-tab-item v-link="{path: '/online/photo', replace: true}">
+							<mt-tab-item class="" v-link="{path: '/online/photo', replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								拍照上传
+
+								<div class="consult-tip-img-box">
+									<img src="../assets/img/consult-index-tip.png"/>
+								</div>
 							</mt-tab-item>
+
+							<div class="leh-black-shade"></div>
 							<mt-tab-item v-link="{path: '/online/remind', replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								用药提醒
@@ -136,7 +142,7 @@
 					<div class="center-content">
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon reddot v-link="{path: '/user/notice', replace: true}"></mt-cell>
-							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon v-link="{path: '/user/recode', replace: true}"></mt-cell>
+							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon v-link="{path: '/user/note', replace: true}"></mt-cell>
 							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
@@ -170,31 +176,24 @@
 	import MtTabbar from '../components/tabbar.vue'
 	import MtTabItem from '../components/tab-item.vue'
 	import MtCell from '../components/cell.vue'
+	import {getJson} from 'util'
 
 	export default{
 		name: 'page-tabbar',
+		route: {
+			data () {
+				getJson(this, '../../../static/data/twTs.json', '', (rsp)=>{
+					this.$set('daylist', rsp)
+				})
+			}
+		},
+
 		data() {
 			return {
 				selected: '在线门诊',
 				istitle: true,
-				daylist: [
-					{
-						title: '8月15日',
-						value: '医院复诊'
-					},
-					{
-						title: '8月16日',
-						value: '医院复诊'
-					},
-					{
-						title: '8月17日',
-						value: '医院复诊'
-					},
-					{
-						title: '8月18日',
-						value: '医院复诊'
-					}
-				]
+				tasks: [],
+				daylist: []
 			};
 		},
 
@@ -270,4 +269,14 @@
 	.center-content .icon-wx-disease{color: #8ad650;}
 	.center-content .icon-wx-link{color: #ffb67f;}
 	.center-content .mint-cell-value .icon-wx-arr-right{color: #aaa;}
+
+	.consult-tip-img-box{display:none;position: absolute;top: 30%;left: 75%;z-index: 7;width: 200%;}
+	.consult-tap-box .mint-tab-item~.leh-black-shade{display: none;}
+	.leh-guide.mint-tab-item{position: relative;z-index: 6;}
+	.leh-guide .mint-tab-item-label{color: #fff;}
+	.leh-guide .consult-tip-img-box,.leh-guide~.leh-black-shade{display: block !important;}
+
+
+
+
 </style>

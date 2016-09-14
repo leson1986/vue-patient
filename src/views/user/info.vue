@@ -227,7 +227,7 @@
 </script>
 
 <style>
-	.info-box .mint-cell-text,.info-box input{font-size: 14px;}
+	.info-box .mint-cell-text,.info-box input{font-size: 14px;background-color: transparent;}
 	.info-img-box,.info-main-box{margin-bottom: 8px;}
 	.info-main-box:nth-last-of-type(1){margin-bottom: 0;}
 	.info-img-list .mint-cell:after,
