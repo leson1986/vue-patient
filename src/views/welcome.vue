@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
--webkit-keyframes rotate_pacman_half_up {
+@-webkit-keyframes rotate_pacman_half_up {
   0% {
     -webkit-transform: rotate(270deg);
     transform: rotate(270deg);

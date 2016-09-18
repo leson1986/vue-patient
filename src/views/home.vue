@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true"></mt-header>
-	<mt-content class-name="page-tabbar" :class="{'leh-bg-grey-body' : selected==='个人中心'}">
+	<mt-content class-name="page-tabbar page-popup" :class="{'leh-bg-grey-body' : selected==='个人中心'}">
 		<div class="page-wrap consult-padding-bottom">
 			<mt-tab-container :active.sync="selected">
 				<mt-tab-container-item id="在线门诊">
@@ -16,7 +16,7 @@
 							</mt-tab-item>
 
 							<div class="leh-black-shade"></div>
-							<mt-tab-item v-link="{path: '/online/remind', replace: true}">
+							<mt-tab-item @click="showpopup = true">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								用药提醒
 							</mt-tab-item>
@@ -113,23 +113,30 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="我的医生">
 					<div class="page-cell doctor-index-box">
-						<a class="mint-cell" v-for="n in 4" v-link="{path: '/mydoctor/doctor', replace: true}">
-							<span class="mint-cell-mask leh-red-dot">
-								<div class="doctor-img">
-									<img src="../assets/img/private.jpg"/>
-								</div>
-							</span>
-							<label class="mint-cell-title">
-								<span class="mint-cell-text">
-									<span>高志良</span>
-									<span>主任医师</span>
-									<span class="leh-c-green">感染科</span>
-								</span>
-								<span class="mint-cell-label leh-c-black">中山大学附属第三医院</span>
-							</label>
-							<div class="mint-cell-value"></div>
-						</a>
-
+						<div class="page-cell disease-list page-infinite-wrapper" v-el:wrapper :style="{ height: wrapperHeight + 'px' }">
+							<div class="page-infinite-list" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
+								<a class="mint-cell" v-for="item in list" v-link="{path: '/mydoctor/doctor', replace: true}">
+									<span class="mint-cell-mask leh-red-dot">
+										<div class="doctor-img">
+											<img src="../assets/img/private.jpg"/>
+										</div>
+									</span>
+									<label class="mint-cell-title">
+										<span class="mint-cell-text">
+											<span>高志良</span>
+											<span>主任医师</span>
+											<span class="leh-c-green">感染科</span>
+										</span>
+										<span class="mint-cell-label leh-c-black">中山大学附属第三医院</span>
+									</label>
+									<div class="mint-cell-value"></div>
+								</a>
+							</div>
+							<p v-show="loading" class="page-infinite-loading">
+								<mt-spinner type="fading-circle"></mt-spinner>
+								加载中...
+							</p>
+						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="个人中心" class="consult-container-item-hight">
@@ -143,7 +150,7 @@
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon reddot v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon v-link="{path: '/user/note', replace: true}"></mt-cell>
-							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
+							<!--<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>-->
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
 					</div>
@@ -164,6 +171,11 @@
 				个人中心
 			</mt-tab-item>
 		</mt-tabbar>
+
+
+		<mt-popup v-show="showpopup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
 	</mt-content>
 </template>
 
@@ -176,6 +188,8 @@
 	import MtTabbar from '../components/tabbar.vue'
 	import MtTabItem from '../components/tab-item.vue'
 	import MtCell from '../components/cell.vue'
+	import MtPopup from '../components/popup.vue'
+	import MtSpinner from '../components/spinner.vue'
 	import {getJson} from 'util'
 
 	export default{
@@ -183,18 +197,78 @@
 		route: {
 			data () {
 				getJson(this, '../../../static/data/twTs.json', '', (rsp)=>{
-					this.$set('daylist', rsp)
+					//this.$set('daylist', rsp)
 				})
 			}
 		},
 
 		data() {
 			return {
+				list: [],
+				loading: false,
+				allLoaded: false,
+				wrapperHeight: 0,
 				selected: '在线门诊',
 				istitle: true,
+				showpopup: false,
+				tips: '用药提醒功能，暂未开放！',
 				tasks: [],
-				daylist: []
+				daylist: [
+					{
+						"title": "8月12日",
+						"value": "医院复诊1"
+					},
+					{
+						"title": "8月13日",
+						"value": "医院复诊"
+					},
+					{
+						"title": "8月14日",
+						"value": "医院复诊"
+					},
+					{
+						"title": "8月15日",
+						"value": "医院复诊"
+					},
+					{
+						"title": "8月16日",
+						"value": "医院复诊"
+					}
+				]
 			};
+		},
+
+		methods: {
+			loadMore() {
+				this.loading = true;
+				setTimeout(() => {
+					let last = this.list[this.list.length - 1];
+					for (let i = 1; i <= 10; i++) {
+						this.list.push(last + i);
+					}
+					this.loading = false;
+				}, 2500);
+			}
+		},
+
+		compiled() {
+			for (let i = 1; i <= 20; i++) {
+				this.list.push(i);
+			}
+		},
+
+		ready() {
+			this.wrapperHeight = document.documentElement.clientHeight - this.$els.wrapper.getBoundingClientRect().top;
+		},
+
+		watch: {
+			showpopup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.showpopup = false;
+					}, 2000);
+				}
+			}
 		},
 
 		components: {
@@ -204,7 +278,9 @@
 			MtTabContainerItem,
 			MtTabbar,
 			MtTabItem,
-			MtCell
+			MtCell,
+			MtPopup,
+			MtSpinner
 		}
 	}
 
@@ -260,7 +336,7 @@
 	.center-content .mint-cell:after,
 	.center-content .mint-cell:nth-of-type(3):before,
 	.center-content .mint-cell:nth-of-type(4):before{border: 0;}
-	.center-content .mint-cell:nth-of-type(3){margin-bottom: 8px;}
+	.center-content .mint-cell:nth-of-type(2){margin-bottom: 8px;}
 	.center-content .mint-cell:before{left: 10px;}
 	.center-content .mint-cell-text{font-size: 14px;}
 	.center-content .mint-cell-mask{margin-right: 10px;}

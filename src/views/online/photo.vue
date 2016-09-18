@@ -32,7 +32,7 @@
 				</div>
 				<p>点击上传图片</p>
 			</div>
-			<div class="leh-black-shade"></div>
+			<!--<div class="leh-black-shade"></div>-->
 			<!--上传-->
 			<div class="photo-tap">
 				<div class="weui_cells weui_cells_form">
@@ -54,8 +54,11 @@
 										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
 											<div class="weui_uploader_status_content">50%</div>
 										</li>
+										<li class="weui_uploader_file weui_uploader_status">
+												<img id="imgpath" />
+										</li>
 									</ul>
-									<div class="weui_uploader_input_wrp">
+									<div class="weui_uploader_input_wrp" @click="addPic">
 										<span class="iconfont icon-wx-add"></span>
 									</div>
 								</div>
@@ -85,12 +88,19 @@
 	import MtButton from '../../components/button.vue'
 	import MtSwipe from '../../components/swipe.vue'
 	import MtSwipeItem from '../../components/swipeItem.vue'
+	import wx from 'wx'
+	import {pageConfig,getOpenID} from 'wxconfig'
 
 	export default{
 		data () {
 			return{
 				viewpic: false
 			}
+		},
+
+		ready () {
+			pageConfig()
+			getOpenID()
 		},
 
 		methods: {
@@ -100,6 +110,20 @@
 
 			closePic () {
 				this.viewpic =false;
+			},
+
+			addPic () {
+				console.log(wx)
+				wx.chooseImage({
+					count: 1, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+
+						document.getElementById("imgpath").src = localIds;
+					}
+				});
 			}
 		},
 

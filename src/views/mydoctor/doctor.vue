@@ -79,7 +79,7 @@
 </script>
 
 <style>
-	.doctor-details-head{position: fixed;top: 0;bottom: 0;width: 100%;height: 130px;background-color: #1faa2b;padding:0 10px;}
+	.doctor-details-head{position: fixed;top: 0;bottom: 0;width: 100%;height: 130px;background-color: #1faa2b;padding:0 10px; z-index: 10;}
 	.doctor-details-head-arr{position: absolute;top: 3px;left: 10px;width: 15%;height: 60px;display: inline-block;padding-top: 10px;color: #fff;}
 	.doctor-details-img{width: 65px;height: 65px;margin: 20px auto 10px;border-radius:50%;overflow: hidden;}
 	.doctor-details-head p{font-size: 14px;color: #fff;text-align: center;}

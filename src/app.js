@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import VueValidator  from 'vue-validator'
+import infiniteScroll from 'vue-infinite-scroll'
 import routerConfig from './router'
 import * as filters from './filters'
 import 'assets/css/mint-ui.css';
@@ -11,7 +12,6 @@ import app from './main'
 
 // Router
 Vue.use(VueRouter)
-
 
 const router = new VueRouter({
   hashbang: true,
@@ -24,6 +24,8 @@ routerConfig(router)
 
 // Resource
 Vue.use(VueResource)
+
+Vue.use(infiniteScroll)
 
 // VueValidator
 Vue.use(VueValidator)

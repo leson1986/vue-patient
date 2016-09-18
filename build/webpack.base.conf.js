@@ -24,7 +24,8 @@ module.exports = {
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
 	    'views': path.resolve(__dirname, '../src/views'),
-	    'util': path.resolve(__dirname, '../src/lib/ls-util.js')
+	    'util': path.resolve(__dirname, '../src/lib/ls-util.js'),
+	    'wxconfig': path.resolve(__dirname, '../src/lib/wx.config.js')
     }
   },
   resolveLoader: {

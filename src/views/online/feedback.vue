@@ -7,7 +7,7 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
-					<input type="text" />
+					<input type="text" v-model="doctorname"/>
 					<ul class="leh-select-drag-box">
 						<li>博路定</li>
 						<li>博路定</li>
