@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="留言详情">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: form_path}" icon="arr-left" slot="left"></mt-button>
 		<mt-button slot="right" v-if="!ismsg" @click="ispopup=true">关闭</mt-button>
 	</mt-header>
 	<div class="leh-float-box" v-if="ismsg">
@@ -123,6 +123,13 @@
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data ({from, next}) {
+				this.form_path = from.path
+				next()
+			}
+		},
+
 		data () {
 			return{
 				msg: '',
@@ -130,6 +137,7 @@
 				ismsg: false,
 				addpic: false,
 				showpic: false,
+				form_path: '',
 				message: [
 					{
 						"id": "0",

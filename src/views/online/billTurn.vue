@@ -5,7 +5,9 @@
 	<mt-content>
 		<div class="transform-list-box">
 			<mt-translate>
-				<mt-translate-item v-for="n in 1">
+				<mt-translate-item
+						v-for="(index,n) in 1"
+						:name="index">
 					<div class="transform-list-img-box">
 						<img src="../../assets/img/photo-img.png"/>
 					</div>
@@ -15,7 +17,10 @@
 					</div>
 					<span class="fr">转换中</span>
 				</mt-translate-item>
-				<mt-translate-item v-for="n in 2" delbtn>
+				<mt-translate-item
+						v-for="(index,n) in 4"
+						:name="index"
+						delbtn>
 					<div class="transform-list-img-box">
 						<img src="../../assets/img/photo-img.png"/>
 						<span class="transform-img-ico iconfont icon-wx-close"></span>
@@ -36,12 +41,36 @@
 	import MtButton from '../../components/button.vue'
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
+	import MessageBox from 'vue-msgbox'
+
 	export default{
 	  data () {
 	    return{
-	      msg:'hello vue'
+	      msg:'hello vue',
+		    ids: ''
 	    }
 	  },
+
+		methods: {
+
+			msgBox (ids) {
+
+				MessageBox({
+				 title: '提示',
+				 message: '是否删除此单据?',
+				 showCancelButton: true
+				 }).then(action => {
+				 console.log('callback:', ids);
+				 });
+			}
+		},
+
+		events: {
+			'handle-del' (e) {
+				this.ids = $(e.target).attr('id')
+				this.msgBox(this.ids)
+			}
+		},
 
 		components: {
 			MtContent,

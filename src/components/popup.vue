@@ -6,10 +6,12 @@
 </template>
 
 <script type="text/babel">
+	import Popup from 'vue-popup';
 
 	export default {
 		name: 'mt-popup',
 
+		mixins: [Popup],
 
 		props: {
 			visible: {
@@ -17,7 +19,7 @@
 			},
 
 			modal: {
-				default: false
+				default: true
 			},
 
 			closeOnClickModal: {

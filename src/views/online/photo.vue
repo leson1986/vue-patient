@@ -22,7 +22,7 @@
 		<div class="leh-null-box"></div>
 		<div class="photo-tap-box">
 			<!--未上传-->
-			<div class="photo-frist-tap leh-guide">
+			<div class="photo-frist-tap leh-guide" @click="msgBox">
 				<div class="photo-frist-ico-box">
 					<span class="iconfont icon-wx-camera">
 							<div class="photo-tip-img-box">
@@ -70,7 +70,7 @@
 		</div>
 
 		<!-- 查看原图 -->
-		<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
+		<!--<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
 			<span class="check-photo-close">X</span>
 
 			<mt-swipe class="my-swipe" :auto="0">
@@ -78,8 +78,35 @@
 				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
 				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
 			</mt-swipe>
-		</div>
+		</div>-->
+		<div class="page-swipe">
+			<h1 class="page-title">Swipe</h1>
+			<p class="page-swipe-desc">基础用法</p>
+			<mt-swipe :auto="4000">
+				<mt-swipe-item class="slide1">1</mt-swipe-item>
+				<mt-swipe-item class="slide2">2</mt-swipe-item>
+				<mt-swipe-item class="slide3">3</mt-swipe-item>
+			</mt-swipe>
 
+			<p class="page-swipe-desc">隐藏 indicators</p>
+			<mt-swipe :show-indicators="false">
+				<mt-swipe-item class="slide1">1</mt-swipe-item>
+				<mt-swipe-item class="slide2">2</mt-swipe-item>
+				<mt-swipe-item class="slide3">3</mt-swipe-item>
+			</mt-swipe>
+
+			<p class="page-swipe-desc">取消自动播放</p>
+			<mt-swipe :auto="0">
+				<mt-swipe-item class="slide1">1</mt-swipe-item>
+				<mt-swipe-item class="slide2">2</mt-swipe-item>
+				<mt-swipe-item class="slide3">3</mt-swipe-item>
+			</mt-swipe>
+
+			<p class="page-swipe-desc">单个幻灯片</p>
+			<mt-swipe :show-indicators="false">
+				<mt-swipe-item class="slide1">SINGLE SLIDE</mt-swipe-item>
+			</mt-swipe>
+		</div>
 	</mt-content>
 </template>
 <script>
@@ -88,8 +115,9 @@
 	import MtButton from '../../components/button.vue'
 	import MtSwipe from '../../components/swipe.vue'
 	import MtSwipeItem from '../../components/swipeItem.vue'
-	import wx from 'wx'
+	import MessageBox from 'vue-msgbox'
 	import {pageConfig,getOpenID} from 'wxconfig'
+	import wx from 'wx'
 
 	export default{
 		data () {
@@ -113,7 +141,7 @@
 			},
 
 			addPic () {
-				console.log(wx)
+
 				wx.chooseImage({
 					count: 1, // 默认9
 					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -124,6 +152,18 @@
 						document.getElementById("imgpath").src = localIds;
 					}
 				});
+			},
+
+			msgBox () {
+
+				/*MessageBox({
+					title: 'I\'m a title',
+					message: 'I\'m a message',
+					showCancelButton: true
+				}).then(action => {
+					console.log('callback:', action);
+				});*/
+				MessageBox('提示', '一次只能添加9张图片');
 			}
 		},
 

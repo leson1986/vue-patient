@@ -36,48 +36,6 @@
 					</a>
 				</mt-translate-item>
 			</mt-translate>
-			<!--<ul>
-				<li class="sl-li ui-border-b reminds-apply-list">
-					<div class="sl-content">
-						<a class="mint-cell">
-							<label class="mint-cell-title">
-									<span class="mint-cell-text leh-red-dot">
-										<span>对乙酰氨基酚片</span>
-									</span>
-								<span class="mint-cell-label">
-										<p>一天一次    一次一片</p>
-										<p>8:00/14:30/22:30</p>
-									</span>
-							</label>
-							<div class="mint-cell-value">
-								<div class="reminds-apply-switch"></div>
-							</div>
-						</a>
-					</div>
-					<div class="sl-opts">
-						<span class="leh-bg-red leh-c-white">删除</span>
-					</div>
-				</li>
-				<li class="sl-li ui-border-b reminds-apply-list leh-active">
-					<div class="sl-content">
-						<a class="mint-cell">
-							<label class="mint-cell-title">
-								<span class="mint-cell-text">对乙酰氨基酚片</span>
-								<span class="mint-cell-label">
-										<p>一天一次    一次一片</p>
-										<p>8:00/14:30/22:30</p>
-									</span>
-							</label>
-							<div class="mint-cell-value">
-								<div class="reminds-apply-switch"></div>
-							</div>
-						</a>
-					</div>
-					<div class="sl-opts">
-						<span class="leh-bg-red leh-c-white">删除</span>
-					</div>
-				</li>
-			</ul>-->
 		</div>
 
 		<!-- 弹出窗 -->
@@ -109,12 +67,6 @@
 				ids: ''
 			}
 		},
-/*
-		events: {
-			'footer-button-event' () {
-				this.$route.router.go('/online/remindAdd')
-			}
-		},*/
 
 		methods: {
 			cancle () {
@@ -125,13 +77,24 @@
 			},
 			remindAdd (id) {
 				this.$route.router.go('/online/remindAdd')
+			},
+			msgBox (ids) {
+
+				MessageBox({
+					title: '提示',
+					message: '是否删除此单据?',
+					showCancelButton: true
+				}).then(action => {
+					console.log('callback:', ids);
+				});
 			}
 		},
 
 		events: {
 			'handle-del' (e) {
-				this.ispopup  = true
+				//this.ispopup  = true
 				this.ids = $(e.target).attr('id')
+				this.msgBox(this.ids)
 			}
 		},
 

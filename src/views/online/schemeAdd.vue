@@ -7,7 +7,7 @@
 	<div class="leh-float-box">
 		<mt-button :type="bgcolor" @click="save">{{active_name}}</mt-button>
 	</div>
-	<mt-content>
+	<mt-content class="page-popup">
 		<div class="page-cell schedule-add-list">
 			<a class="mint-cell" @click="visible = true">
 				<label class="mint-cell-title">
@@ -22,7 +22,7 @@
 				<span class="mint-cell-mask iconfont icon-wx-item"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">提醒事项</span>
-					<ul class="leh-select-drag-box">
+					<ul class="leh-select-drag-box" style="display: none">
 						<li>博路定</li>
 						<li>博路定</li>
 						<li>博路定</li>
@@ -47,12 +47,14 @@
 				:visible.sync="visible"
 				:value.sync="value"
 				:start-y=0
-				@confirm="handleChange">
+				@confirm="handleChange"
+				:modal="true">
 		</mt-datetime-picker>
 	</mt-content>
+	<mt-modal v-if="visible"></mt-modal>
 </template>
 <script>
-	import MtContent from '../../components/content'
+	import MtContent from '../../components/content.vue'
 	import MtHeader from '../../components/header.vue'
 	import MtCell from '../../components/cell.vue'
 	import MtButton from '../../components/button.vue'
@@ -63,6 +65,8 @@
 	import MtPopupWork from '../../components/popupWork.vue'
 	import MtSelectDrag from '../../components/selectDrag.vue'
 	import MtLiItem from '../../components/liItem.vue'
+	import MtModal from '../../components/modal.vue'
+	import MessageBox from 'vue-msgbox'
 	import $ from 'zepto'
 
 	export default{
@@ -85,10 +89,7 @@
 			return{
 				value: new Date(),
 				is_visible: false,
-				ispopup: false,
 				visible: false,
-				visible1: false,
-				visible2: false,
 				title: '',
 				bgcolor: '',
 				active_name: '',
@@ -106,30 +107,20 @@
 		},
 
 		methods: {
-			cancle () {
-				this.ispopup  = false
-			},
-			conf () {
-				alert(this.ids)
-				this.ispopup  = false
-			},
+
 			save () {
 				if(this.is_visible){
-					alert('编辑')
+					this.msgBox('编辑')
 				}else{
 					alert('保存')
 				}
 			},
+
 			handleChange(value) {
 				this.date = value.slice(0,10)
 				this.time = value.slice(11)
 			},
-			repeat () {
-				this.visible1 = true
-			},
-			dosage () {
-				this.visible2 = true
-			},
+
 			formatDate (date) {
 				var y = date.getFullYear();
 				var m = date.getMonth() + 1;
@@ -138,14 +129,26 @@
 				d = d < 10 ? ('0' + d) : d;
 				return y + '-' + m + '-' + d;
 			},
+
 			formatTime (date) {
 				var h = date.getHours();
 				h = h < 10 ? ('0' + h) : h;
 				var minute = date.getMinutes();
 				minute = minute < 10 ? ('0' + minute) : minute;
 				return h+':'+minute;
+			},
+
+			msgBox (ids) {
+
+				MessageBox({
+					title: '提示',
+					message: '是否确认删除本日程?',
+					showCancelButton: true
+				}).then(action => {
+					console.log('callback:', ids);
+				});
 			}
-	},
+		},
 
 		events: {
 			'popup-work' (e) {
@@ -176,7 +179,8 @@
 			MtDatetimePicker,
 			MtPopupWork,
 			MtSelectDrag,
-			MtLiItem
+			MtLiItem,
+			MtModal
 		}
 	}
 </script>

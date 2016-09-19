@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true"></mt-header>
-	<mt-content class-name="page-tabbar page-popup" :class="{'leh-bg-grey-body' : selected==='个人中心'}">
+	<mt-content class-name="page-tabbar page-popup" :class="[{'leh-bg-grey-body' : selected==='个人中心'},{'doctor-index' : selected==='我的医生'}]">
 		<div class="page-wrap consult-padding-bottom">
 			<mt-tab-container :active.sync="selected">
 				<mt-tab-container-item id="在线门诊">
@@ -327,6 +327,7 @@
 	.doctor-index-box .mint-cell-text span:nth-of-type(2){font-size: 12px;margin: 0 5px;}
 	.doctor-index-box .mint-cell-text span:nth-of-type(3){font-size: 13px;}
 	.doctor-index-box .mint-cell-label{font-size: 14px;}
+	.doctor-index {bottom: 100px}
 	/*个人中心*/
 	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;}
 	.center-head-img{width: 55px;height: 55px;border: 1px solid #fff;border-radius: 50%;margin: 50px auto 15px;overflow: hidden;text-align: center;}

@@ -7,9 +7,9 @@
 	</div>
 	<mt-content>
 		<!--无日程-->
-		<div class="leh-not-apply" style="display: none;">暂无日程安排</div>
+		<div class="leh-not-apply" v-if="is_visible">暂无日程安排</div>
 		<!--有日程-->
-		<div class="schedule-apply">
+		<div class="schedule-apply" v-if="!is_visible">
 			<div class="page-cell schedule-apply-title">
 				<a class="mint-cell">
 					<label class="mint-cell-title">
@@ -26,8 +26,7 @@
 						:name="index"
 						delbtn>
 					<a class="mint-cell">
-						<span class="mint-cell-mask"></span>
-						<label class="mint-cell-title" v-link="'/online/schemeAdd'">
+						<label class="mint-cell-title" v-link="{path: '/online/schemeAdd', query: {id: index, isEdit: true}, replace: true}">
 							<div class="schedule-apply-main">
 								<span class="mint-cell-text">08-12</span>
 								<span class="mint-cell-label">9:00</span>
@@ -42,13 +41,13 @@
 			</mt-translate>
 
 			<!-- 弹出窗 -->
-			<mt-popup-box v-if="ispopup">
+			<!--<mt-popup-box v-if="ispopup">
 				<p slot="info">是否删除此日程？</p>
 				<div slot="button">
 					<mt-button type="grey" size="small" @click="cancle">取消</mt-button>
 					<mt-button type="blue" size="small" @click="conf">确定</mt-button>
 				</div>
-			</mt-popup-box>
+			</mt-popup-box>-->
 		</div>
 	</mt-content>
 </template>
@@ -61,6 +60,7 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
+	import MessageBox from 'vue-msgbox'
 	import $ from 'zepto'
 
 	export default{
@@ -81,13 +81,24 @@
 			},
 			remindAdd (id) {
 				this.$route.router.go('/online/remindAdd')
+			},
+			msgBox (ids) {
+
+				MessageBox({
+					title: '提示',
+					message: '是否确认删除本日程?',
+					showCancelButton: true
+				}).then(action => {
+					console.log('callback:', ids);
+				});
 			}
 		},
 
 		events: {
 			'handle-del' (e) {
-				this.ispopup  = true
+				//this.ispopup  = true
 				this.ids = $(e.target).attr('id')
+				this.msgBox(this.ids)
 			}
 		},
 

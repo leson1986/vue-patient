@@ -2,13 +2,13 @@
 	<mt-header fixed isgrey title="在线留言">
 		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
-	<mt-content>
+	<mt-content class="page-popup">
 		<div class="page-cell online-msg-ipt-box">
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
 					<input type="text" v-model="doctorname"/>
-					<ul class="leh-select-drag-box">
+					<ul class="leh-select-drag-box" style="display: none">
 						<li>博路定</li>
 						<li>博路定</li>
 						<li>博路定</li>
@@ -21,7 +21,7 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">留言内容</span>
-					<textarea rows="1" placeholder="请输入你需要留言的内容"></textarea>
+					<textarea rows="1" placeholder="请输入你需要留言的内容" v-model="msg_val"></textarea>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
@@ -72,8 +72,12 @@
 			</div>
 		</div>
 		<div class="leh-full-btn">
-			<mt-button size="large" type="green">下一步</mt-button>
+			<mt-button size="large" type="green" @click="nestStep">下一步</mt-button>
 		</div>
+
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
 	</mt-content>
 </template>
 <script>
@@ -82,10 +86,58 @@
 	import MtButton from '../../components/button.vue'
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
+	import MtPopup from '../../components/popup.vue'
+	import MessageBox from 'vue-msgbox'
+
 	export default{
 		data () {
 			return{
-				msg:'hello vue'
+				msg_val:'',
+				tips: '请填写留言内容',
+				show_popup: false
+			}
+		},
+
+		methods: {
+			msgBox () {
+
+				/*MessageBox({
+				 title: 'I\'m a title',
+				 message: 'I\'m a message',
+				 showCancelButton: true
+				 }).then(action => {
+				 console.log('callback:', action);
+				 });*/
+				MessageBox('提示', '一次只能添加5张图片');
+			},
+
+			nestStep () {
+				if(this.msg_val === '') {
+					this.show_popup = true
+					return
+				}
+				this.$route.router.go('/user/noteDetail')
+			}
+		},
+
+		events: {
+			'footer-button-event' () {
+
+				/*let msg = $(this.$refs.msg)
+
+				this.msg_val = msg.val()*/
+
+
+			}
+		},
+
+		watch: {
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+					}, 2000);
+				}
 			}
 		},
 
@@ -94,7 +146,8 @@
 			MtHeader,
 			MtButton,
 			MtTranslate,
-			MtTranslateItem
+			MtTranslateItem,
+			MtPopup
 		}
 	}
 </script>
