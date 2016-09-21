@@ -1,7 +1,7 @@
 <template>
 	<mt-header fixed isgrey title="留言详情">
 		<mt-button v-link="{path: form_path}" icon="arr-left" slot="left"></mt-button>
-		<mt-button slot="right" v-if="!ismsg" @click="ispopup=true">关闭</mt-button>
+		<mt-button slot="right" v-if="!ismsg" @click="closeMsg">关闭</mt-button>
 	</mt-header>
 	<div class="leh-float-box" v-if="ismsg">
 		<mt-button type="green">给医生留言</mt-button>
@@ -119,6 +119,7 @@
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
+	import MessageBox from 'vue-msgbox'
 	import {getJson} from 'util'
 	import $ from 'zepto'
 
@@ -162,13 +163,6 @@
 		},
 
 		methods: {
-			cancle () {
-				this.ispopup  = false
-			},
-			conf () {
-				this.ispopup  = false
-				this.ismsg = true
-			},
 			addPic () {
 
 				let bdbox = $(this.$els.bodybox)
@@ -199,6 +193,21 @@
 					},100)
 				})
 
+			},
+
+			// 关闭
+			closeMsg () {
+				MessageBox({
+					title: '提示',
+					message: '是否关闭本次留言，关闭后将不能继续留言。',
+					showCancelButton: true
+				}).then(action => {
+					if(action === 'confirm'){
+						//this.save()
+					}else {
+						//this.$route.router.go({path: '/user/info'})
+					}
+				});
 			}
 		},
 

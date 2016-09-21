@@ -5,7 +5,7 @@
 	<div class="leh-float-box">
 		<mt-button type="green" @click="save">保存</mt-button>
 	</div>
-	<div class="leh-bg-grey-body info-content">
+	<div class="info-content">
 		<div class="page-field info-box">
 			<div class="page-part info-img-box">
 				<div class="mint-field info-img-list">
@@ -28,6 +28,7 @@
 					</a>
 				</div>
 			</div>
+			<div class="leh-null-box"></div>
 			<div class="page-part info-main-box">
 				<div class="mint-field info-main-list">
 					<a class="mint-cell mint-field-cell">
@@ -35,7 +36,7 @@
 							<span class="mint-cell-text">用户名</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="请输入姓名" type="text" maxlength="10">
+							<input readonly class="mint-field-core" placeholder="请输入姓名" type="text" value="ls.c">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -68,7 +69,7 @@
 							<span class="mint-cell-text">生日</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="请输入生日" type="date">
+							<input class="mint-field-core" placeholder="请输入生日" type="month" name="month">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -96,18 +97,34 @@
 						</div>
 					</a>
 				</div>
-				<mt-field class="info-main-list" label="手机号" placeholder="请输入手机号" istitle type="tel"></mt-field>
-				<mt-field class="info-main-list" label="个人邮箱" placeholder="登录邮箱" istitle type="email"></mt-field>
-			</div>
-			<div class="page-part info-main-box">
 				<div class="mint-field info-main-list">
 					<a class="mint-cell mint-field-cell">
+						<label class="mint-cell-title">
+							<span class="mint-cell-text">手机号</span>
+						</label>
+						<div class="mint-cell-value">
+							<input readonly class="mint-field-core" placeholder="请输入手机号" type="text" value="15800158000">
+							<div class="mint-field-clear" style="display: none;">
+								<i class="mintui mintui-field-error"></i>
+							</div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+						</div>
+					</a>
+				</div>
+				<mt-field class="info-main-list" label="个人邮箱" placeholder="登录邮箱" istitle type="email" :attr="{ maxlength: 50 }"></mt-field>
+			</div>
+			<div class="leh-null-box"></div>
+			<div class="page-part info-main-box">
+				<div class="mint-field info-main-list">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/reg/disease', query: {'from': true}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">所患疾病</span>
 							<span class="leh-c-red">*</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled">
+							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled" v-model="disease">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -124,7 +141,7 @@
 							<span class="mint-cell-text">患病起始年限</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="请输入日期" type="date">
+							<input class="mint-field-core" placeholder="请输入日期" type="month" name="month">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -136,12 +153,12 @@
 					</a>
 				</div>
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability'}">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability', query: {'irritability': irritability}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">过敏史</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled">
+							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled" v-model="irritability">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -171,12 +188,28 @@
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data (transition) {
+
+				if(transition.to.query.irritability !== undefined){
+					this.irritability = transition.to.query.irritability
+					if(this.irritability.length > 10) {
+						this.irritability = this.irritability.substr(0,10) + '...'
+					}
+				}else{
+					this.disease = transition.to.query.disease
+				}
+			}
+		},
+
 	  data () {
 	    return{
 		    visible: false,
 		    province: '',
 		    city: '',
-		    sex: 1
+		    sex: 1,
+		    disease: '',
+		    irritability: ''
 	    }
 	  },
 
@@ -205,7 +238,7 @@
 <style>
 	.info-content {padding: 40px 0;}
 	.info-box .mint-cell-text,.info-box input{font-size: 14px;background-color: transparent;}
-	.info-img-box,.info-main-box{margin-bottom: 8px;}
+	.info-img-box,.info-main-box{margin-bottom: 0;}
 	.info-main-box:nth-last-of-type(1){margin-bottom: 0;}
 	.info-img-list .mint-cell:after,
 	.info-img-list .mint-cell:before,

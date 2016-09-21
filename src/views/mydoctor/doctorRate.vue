@@ -1,5 +1,5 @@
 <template>
-	<div class="leh-wrap">
+	<mt-content class="page-infinite">
 		<div class="evaluation-head">
 			<span class="iconfont icon-wx-arr-left evaluation-head-arr" v-link="'/mydoctor/doctor'"></span>
 			<div class="evaluation-head-title">患者评价</div>
@@ -12,44 +12,87 @@
 						</span>
 					<label class="mint-cell-title">
 							<span class="mint-cell-text">
-								<span>张医生</span>
-								<span class="leh-fs-fourteen">副主任医师</span>
-								<span class="leh-fs-fourteen">消化内科</span>
+								<span v-text="name"></span>
+								<span class="leh-fs-fourteen" v-text="title"></span>
+								<span class="leh-fs-fourteen" v-text="department"></span>
 							</span>
-						<span class="mint-cell-label">中山大学附属第一医院</span>
+						<span class="mint-cell-label" v-text="hospital"></span>
 					</label>
 					<div class="mint-cell-value">
 						<div>
 							<span class="mint-cell-text">评价</span>
-							<span class="mint-cell-label">1211</span>
+							<span class="mint-cell-label" v-text="assess"></span>
 						</div>
 					</div>
 				</a>
 			</div>
 		</div>
 		<div class="evaluation-content">
-			<div class="doctor-details-comment-list-box">
-				<ul>
-					<li class="doctor-details-comment-list" v-for="n in 4">
-						<p class="leh-double-text-ellipsis">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗</p>
-						<div class="doctor-details-comment-list-bd">
-							<span class="fl">陈**</span>
-							<span class="fr">2016-02-30</span>
-						</div>
-					</li>
-				</ul>
+			<div class="doctor-details-comment-list-box page-infinite-wrapper" v-el:wrapper :style="{ height: wrapperHeight + 'px' }">
+				<div class="page-infinite-list" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
+					<ul>
+						<li class="doctor-details-comment-list" v-for="item in list">
+							<p class="leh-double-text-ellipsis">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗</p>
+							<div class="doctor-details-comment-list-bd">
+								<span class="fl">陈**</span>
+								<span class="fr">2016-02-30</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<p v-show="loading" class="page-infinite-loading">
+					<mt-spinner type="fading-circle"></mt-spinner>
+					加载中...
+				</p>
 			</div>
 		</div>
-	</div>
+	</mt-content>
 </template>
 <script>
+	import MtContent from '../../components/content.vue'
+	import MtSpinner from '../../components/spinner.vue'
+
 	export default{
 	  data () {
 	    return{
-	      msg:'hello vue'
+	      name:'张医生',
+		    title: '副主任医师',
+		    department: '消化内科',
+		    hospital: '中山大学附属第三医院',
+		    assess: '1002',
+		    list: [],
+		    loading: false,
+		    allLoaded: false,
+		    wrapperHeight: 0
 	    }
 	  },
+
+		methods: {
+			loadMore() {
+				this.loading = true;
+				setTimeout(() => {
+					let last = this.list[this.list.length - 1];
+					for (let i = 1; i <= 10; i++) {
+						this.list.push(last + i);
+					}
+					this.loading = false;
+				}, 2500);
+			}
+		},
+
+		compiled() {
+			for (let i = 1; i <= 10; i++) {
+				this.list.push(i);
+			}
+		},
+
+		ready() {
+			this.wrapperHeight = document.documentElement.clientHeight - this.$els.wrapper.getBoundingClientRect().top;
+		},
+
 		components: {
+			MtContent,
+			MtSpinner
 		}
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="在线留言">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: from_path}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class="page-popup">
 		<div class="page-cell online-msg-ipt-box">
@@ -90,11 +90,19 @@
 	import MessageBox from 'vue-msgbox'
 
 	export default{
+		route: {
+			data ({from,next}) {
+				this.from_path = from.path
+				next()
+			}
+		},
+
 		data () {
 			return{
 				msg_val:'',
 				tips: '请填写留言内容',
-				show_popup: false
+				show_popup: false,
+				from_path: ''
 			}
 		},
 

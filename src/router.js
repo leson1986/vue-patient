@@ -27,9 +27,9 @@ export default function (router) {
 			  require(['./views/reg/register'], resolve)
 		  }
 	  },
-	  '/reg/info': {
+	  '/reg/disease': {
 		  component (resolve) {
-			  require(['./views/reg/info'], resolve)
+			  require(['./views/reg/disease'], resolve)
 		  }
 	  },
 

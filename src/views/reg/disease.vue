@@ -1,8 +1,10 @@
 <template>
-	<mt-header fixed isgrey title="选择病种"></mt-header>
+	<mt-header fixed isgrey title="选择病种">
+		<mt-button v-link="'/user/info'" icon="arr-left" slot="left" v-if="is_info"></mt-button>
+	</mt-header>
 
 	<div class="leh-float-box">
-		<mt-button type="green" class-name="leh-bg-grey-btn" v-el:conf>确定</mt-button>
+		<mt-button type="green" :class="{'leh-bg-grey-btn': !is_conf}" @click="confirm">确定</mt-button>
 	</div>
 
 	<mt-content>
@@ -26,13 +28,17 @@
 
 	export default{
 		route: {
-			data() {
+			data (transition) {
+				this.is_info = transition.to.query.from
 			}
 		},
+
 	  data () {
 	    return{
 		    is_conf: false,
+		    is_info: false,
 		    activeName: '',
+		    disease: '',
 		    lists: [
 		    		{
 			        name: '乙肝123'
@@ -55,35 +61,23 @@
 		},
 
 		events: {
-			'footer-button-event' () {
-				if(this.is_conf){
-					this.$route.router.go('/home')
-				}
-			}
 		},
 
 		methods: {
 			// 切换病种选项
-			/*doList (e) {
-				if($(e.target).hasClass('mint-cell')) {
-					$(e.target).siblings(".leh-active").removeClass('leh-active')
-					$(e.target).addClass('leh-active')
-				}else {
-					$(e.target).parents('.mint-cell').siblings(".leh-active").removeClass('leh-active')
-					$(e.target).parents('.mint-cell').addClass('leh-active')
+			selected: function(listName) {
+				this.activeName = listName
+				this.disease = listName.name
+				// 激活按钮
+				this.is_conf = true
+			},
+
+			confirm () {
+				if(this.is_conf && this.is_info){
+					this.$route.router.go({path: '/user/info', query: {'disease': this.disease}})
+				}if(this.is_conf && !this.is_info){
+					this.$route.router.go('/home')
 				}
-
-				// 激活按钮
-				this.is_conf = true
-				$(this.$els.conf).find('.leh-float-btn').removeClass('leh-bg-grey-btn')
-			},*/
-			selected: function(gameName) {
-
-				this.activeName = gameName
-				// 激活按钮
-				this.is_conf = true
-				$(this.$els.conf).removeClass('leh-bg-grey-btn')
-
 			}
 		},
 

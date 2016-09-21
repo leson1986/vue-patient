@@ -13,28 +13,29 @@
 		</div>
 		<div class="doctor-details-content">
 			<div class="doctor-details-list">
-				<div class="doctor-details-list-title">
+				<div class="doctor-details-list-title" @click="updown1 = !updown1">
 					<span class="leh-c-green">执业地点</span>
-					<span class="fr iconfont icon-wx-arr-down"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown1, 'icon-wx-arr-down': updown1 }"></span>
 				</div>
-				<p>中山大学第三附属医院<span>感染性疾病科</span></p>
-				<p class="leh-double-text-ellipsis">广东省广州市天河区天河路100号</p>
+				<p :class="{ 'height-auto': updown1}">中山大学第三附属医院</p>
+				<!--<p>中山大学第三附属医院<span>感染性疾病科</span></p>
+				<p class="leh-double-text-ellipsis">广东省广州市天河区天河路100号</p>-->
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="doctor-details-list">
-				<div class="doctor-details-list-title">
+				<div class="doctor-details-list-title" @click="updown2 = !updown2">
 					<span class="leh-c-green">医生擅长</span>
-					<span class="fr iconfont icon-wx-arr-up"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown2, 'icon-wx-arr-down': updown2 }"></span>
 				</div>
-				<p class="">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗、肝硬化扥那个中西结合治疗</p>
+				<p :class="{ 'height-auto': updown2}">暂无内容</p>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="doctor-details-list">
-				<div class="doctor-details-list-title">
+				<div class="doctor-details-list-title" @click="updown3 = !updown3">
 					<span class="leh-c-green">医生简介</span>
-					<span class="fr iconfont icon-wx-arr-down"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown3, 'icon-wx-arr-down': updown3 }"></span>
 				</div>
-				<p class="leh-double-text-ellipsis">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗、肝硬化扥那个中西结合治疗</p>
+				<p :class="{ 'height-auto': updown3}">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗、肝硬化扥那个中西结合治疗</p>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="page-cell">
@@ -69,6 +70,9 @@
 	export default{
 	  data () {
 	    return{
+		    updown1: false,
+		    updown2: false,
+		    updown3: false
 	    }
 	  },
 		components: {
@@ -88,7 +92,8 @@
 	.doctor-details-list{padding: 15px 10px;overflow: hidden;color: #363636;}
 	.doctor-details-list-title{overflow: hidden;margin-bottom: 10px;}
 	.doctor-details-list-title span.fr{color: #aaa;}
-	.doctor-details-list p{font-size: 14px;line-height: 20px;}
+	.doctor-details-list p{font-size: 14px;line-height: 20px; height: 20px; overflow: hidden}
+	.doctor-details-list .height-auto{height: auto;}
 	.doctor-details-list p span{margin-left: 10px;}
 	.doctor-details-content .mint-cell:after{border: 0;}
 	.doctor-details-content .mint-cell span{font-size: 14px;}

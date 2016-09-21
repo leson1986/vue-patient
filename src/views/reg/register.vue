@@ -71,7 +71,7 @@
 						return
 					}
 					this.getRegisterInfo()
-					this.$route.router.go('/reg/info')
+					this.$route.router.go('/reg/disease')
 				}
 			}
 		},
