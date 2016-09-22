@@ -79,34 +79,9 @@
 				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
 			</mt-swipe>
 		</div>-->
-		<div class="page-swipe">
-			<h1 class="page-title">Swipe</h1>
-			<p class="page-swipe-desc">基础用法</p>
-			<mt-swipe :auto="4000">
-				<mt-swipe-item class="slide1">1</mt-swipe-item>
-				<mt-swipe-item class="slide2">2</mt-swipe-item>
-				<mt-swipe-item class="slide3">3</mt-swipe-item>
-			</mt-swipe>
+		<!-- 用于展示插件的容器 -->
 
-			<p class="page-swipe-desc">隐藏 indicators</p>
-			<mt-swipe :show-indicators="false">
-				<mt-swipe-item class="slide1">1</mt-swipe-item>
-				<mt-swipe-item class="slide2">2</mt-swipe-item>
-				<mt-swipe-item class="slide3">3</mt-swipe-item>
-			</mt-swipe>
-
-			<p class="page-swipe-desc">取消自动播放</p>
-			<mt-swipe :auto="0">
-				<mt-swipe-item class="slide1">1</mt-swipe-item>
-				<mt-swipe-item class="slide2">2</mt-swipe-item>
-				<mt-swipe-item class="slide3">3</mt-swipe-item>
-			</mt-swipe>
-
-			<p class="page-swipe-desc">单个幻灯片</p>
-			<mt-swipe :show-indicators="false">
-				<mt-swipe-item class="slide1">SINGLE SLIDE</mt-swipe-item>
-			</mt-swipe>
-		</div>
+		<div class="overlay" id="overlay"></div>
 	</mt-content>
 </template>
 <script>
@@ -117,6 +92,7 @@
 	import MtSwipeItem from '../../components/swipeItem.vue'
 	import MessageBox from 'vue-msgbox'
 	import {pageConfig,getOpenID} from 'wxconfig'
+	import $ from 'zepto'
 	import wx from 'wx'
 
 	export default{
@@ -127,8 +103,49 @@
 		},
 
 		ready () {
-			pageConfig()
-			getOpenID()
+			//pageConfig()
+			//getOpenID()
+
+
+			var imgHost = 'http://7jpp73.com1.z0.glb.clouddn.com/',
+					direction = window.location.href.indexOf('left') > -1 ? 'left' : 'top',
+					elem = document.querySelectorAll('ul > li'),
+					wrap = document.querySelector('#overlay');
+
+			for (var i = 0, len = elem.length; i < len; i++) {
+				elem[i].index = i;
+				elem[i].addEventListener('touchstart', function(e) {
+					e.preventDefault();
+
+					var ext = this.index === 0 ? '' : 'M_',
+							title = this.index === 0 ? '风景' : '妹子',
+							data = [];
+
+					for (var i = 1; i <= 10; i++) {
+						data.push(imgHost + ext + i +'.jpg');
+					}
+
+					wrap.className = wrap.className + ' in';
+
+					// 延迟初始化插件是为了让CSS动画走完
+					setTimeout(function() {
+						console.log(MPreview)
+						MPreview({
+							data: data,
+							title: title,
+							direction: 'left',
+							wrap: '#overlay',
+							init: function() {
+								window.console && console.log('MPreview.mobile init');
+							},
+							close: function() {
+								wrap.className = wrap.className.replace(' in', '');
+							}
+						});
+					}, 400);
+
+				}, false);
+			}
 		},
 
 		methods: {
@@ -178,6 +195,9 @@
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
+
 	.photo-img-box{margin: 20px auto;text-align: center;}
 	.photo-text-box{padding: 0 10px 20px;}
 	.photo-text-box p{font-size: 14px;line-height: 20px;color: #363636;}
@@ -204,4 +224,27 @@
 	.leh-guide~.leh-black-shade,
 	.leh-guide.leh-float-box~.leh-wrap .leh-black-shade,
 	.leh-guide .photo-btn-tip-img-box{display: block;}
+
+
+	.img-list { list-style: none; padding: 0; margin: 0; }
+	.img-list:after { display: table; content: " "; }
+	.img-list > li { box-sizing: border-box; padding: 10px; position: relative; float: left; width: 50%; }
+	.img-list > li img { width: 100%; height: 100%; vertical-align: top; }
+	.img-list > li > a { display: block; }
+	.img-list > li > span { font-size: 14px; padding: 0px 10px; position: absolute; bottom: 15px; right: 20px; border-radius: 3px; background: rgba(37,37,37,0.6); color: #fff; }
+	.img-list > li:first-child { padding-right: 5px; }
+	.img-list > li:last-child { padding-left: 5px; }
+	.img-list > li:first-child span { right: 15px; }
+	.overlay { background: #000; width: 100%; height: 100%; overflow: hidden; position: fixed; top: 0; left: 0; z-index: 99;
+		-webkit-transition: all 300ms ease-in 0s;
+		transition: all 300ms ease-in 0s;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		-webkit-transform: translate3d(100%, 0px, 0px);
+		transform: translate3d(100%, 0px, 0px);
+	}
+	.overlay.in {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+		transform: translate3d(0px, 0px, 0px);
+	}
 </style>
