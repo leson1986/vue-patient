@@ -17,15 +17,17 @@ export const loader = {
       return
     }
     let modalContainer = document.body
-    $(modalContainer).append('<div class="loader-inner ball-beat"><div></div><div></div><div></div></div>')
+	  $(modalContainer).append('<div class="ball-beat"><div></div><div></div><div></div></div>')
+	  $(modalContainer).append('<div class="maskbox"></div>')
   },
   hide () {
-    $('.ball-beat').remove()
+	  $('.ball-beat').remove()
+	  $('.maskbox').remove()
   }
 }
 
 // 微信分享配置
-export const wxShareConfig = ({title, desc, link, imgUrl}, success, fail) => {
+/*export const wxShareConfig = ({title, desc, link, imgUrl}, success, fail) => {
   console.log('wxShare Config')
   wx.ready(() => {
     // “分享给朋友”
@@ -74,4 +76,4 @@ export const wxShareConfig = ({title, desc, link, imgUrl}, success, fail) => {
       fail: fail
     })
   })
-}
+}*/

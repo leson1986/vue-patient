@@ -6,12 +6,12 @@
 			<mt-field placeholder="请输入验证码" type="tel" :attr="{ maxlength: 6 }" v-ref:codes>
 				<span class="mint-field-state is-default register-bind-code" @click="getCode">
 					<i class="mintui mintui-field-default"></i>
-					<span class="leh-full-tip-btn leh-bg-green leh-c-white">获取验证码</span>
+					<span class="leh-full-tip-btn leh-c-white" :class="{'leh-bg-grey-btn': setTimes,'leh-bg-green': !setTimes}" v-text="code_txt"></span>
 				</span>
 			</mt-field>
 		</div>
 		<div class="leh-full-btn">
-			<mt-button size="large" type="green">下一步</mt-button>
+			<mt-button size="large" type="green" @click="nextStep">下一步</mt-button>
 		</div>
 		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
 			<p v-text="tips"></p>
@@ -24,63 +24,117 @@
 	import MtButton from '../../components/button.vue'
 	import MtField from '../../components/field.vue'
 	import MtPopup from '../../components/popup.vue'
+	import {getJson,postJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
 	  data () {
 	    return{
-	    	tips: '123',
-		    tel_val:'',
-		    code_val:'',
+	    	tips: '',
+		    tel_val: '',
+		    code_val: '',
+		    code_txt: '获取验证码',
+		    code_request: false,
+		    setTimes: 0,
 		    show_popup: false
 	    }
 	  },
 
-		events: {
-			'footer-button-event' () {
+		methods: {
+			// 获取验证码
+			getCode () {
+				let _self = this
+				let tels = $(_self.$refs.tels)
+				_self.tel_val = tels.val()
+				let params = {
+					'mobileNo': _self.tel_val
+				}
 
-				let tels = $(this.$refs.tels)
-				let codes = $(this.$refs.codes)
+				if(_self.tel_val === ''){
 
-				this.tel_val = tels.val()
-				this.code_val = codes.val()
-
-				if(this.tel_val === ''){
-
-					this.tips = '手机号码不能为空'
-					this.show_popup = true
+					_self.tips = '手机号码不能为空'
+					_self.show_popup = true
 					return
 
-				}else if(new RegExp("^((1[0-9]))[0-9]{9,9}$").test(this.tel_val) == false){
+				}else if(new RegExp("^((1[0-9]))[0-9]{9,9}$").test(_self.tel_val) == false){
 
-					this.tips = '手机号码填写不正确'
-					this.show_popup = true
+					_self.tips = '手机号码填写不正确'
+					_self.show_popup = true
 					return
 
 				}
 
-				if(this.code_val === ''){
+				if(!this.code_request){
 
-					this.tips = '验证码不能为空'
-					this.show_popup = true
+					this.code_request = true
+					this.setTimes = 60
+					this.code_txt = '获取中 ' + this.setTimes + ' 秒'
+
+					let codeInterval = setInterval(() => {
+
+						if(this.setTimes > 1){
+
+							this.setTimes = this.setTimes - 1
+							this.code_txt = '获取中 ' + this.setTimes + ' 秒'
+						}else {
+
+							this.setTimes = 0
+							this.code_txt = '获取验证码'
+							this.code_request = false
+							clearInterval(codeInterval)
+						}
+
+					}, 1000)
+
+					getJson('api/Authenticate/sendcode', params, (rsp)=>{},this)
+				}
+			},
+
+			nextStep () {
+
+				let _self = this
+				let tels = $(_self.$refs.tels)
+				let codes = $(_self.$refs.codes)
+
+				_self.tel_val = tels.val()
+				_self.code_val = codes.val()
+
+				let params = {
+					'mobile': _self.tel_val,
+					'code': _self.code_val,
+					'weiXinToken': '123456'
+				}
+				if(_self.tel_val === ''){
+
+					_self.tips = '手机号码不能为空'
+					_self.show_popup = true
+					return
+
+				}else if(new RegExp("^((1[0-9]))[0-9]{9,9}$").test(_self.tel_val) == false){
+
+					_self.tips = '手机号码填写不正确'
+					_self.show_popup = true
+					return
+
+				}
+
+				if(_self.code_val === ''){
+
+					_self.tips = '验证码不能为空'
+					_self.show_popup = true
 					return
 
 				}/*else if(）{
 
-					this.tips = '验证码不正确'
-					this.show_popup = true
-					return
+				 this.tips = '验证码不正确'
+				 this.show_popup = true
+				 return
 
-				}*/
+				 }*/
+				postJson('api/register/bind', params, (rsp)=>{
+					_self.$route.router.go({path: '/reg/register', query: params, replace: true})
+				},_self)
 
-				this.$route.router.go('/reg/register')
-			}
-		},
-
-		methods: {
-			// 获取验证码
-			getCode () {
-				alert('获取验证码123456')
 			}
 		},
 

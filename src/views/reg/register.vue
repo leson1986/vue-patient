@@ -1,6 +1,6 @@
 <template>
 
-	<mt-content class-name="register-box page-popup">
+	<mt-content class-name="register-box ">
 		<div class="register-title-img">
 			<img src="../../assets/img/register-title-img.png" />
 		</div>
@@ -32,21 +32,31 @@
 				<span class="register-take iconfont" :class="{'icon-wx-take-shrill': is_reg}" @click="is_reg = !is_reg"></span>
 				<span class="fl" v-link="{path: '/user/terms', replace: true}">同意随访家园  <span class="leh-c-yellow-green">注册条款</span></span>
 			</div>
-			<mt-button size="large" plain class-name="register-btn " :class="{'leh-active': is_reg}">注册</mt-button>
+			<mt-button size="large" plain class-name="register-btn " :class="{'leh-active': is_reg}" @click="getRegister">注册</mt-button>
 		</div>
+	</mt-content>
+	<div class="page-popup">
 		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
 			<p v-text="tips"></p>
 		</mt-popup>
-	</mt-content>
+	</div>
+
 </template>
 <script>
 	import MtContent from '../../components/content'
 	import MtButton from '../../components/button.vue'
 	import MtField from '../../components/field.vue'
 	import MtPopup from '../../components/popup.vue'
+	import {getJson,postJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data (transition) {
+				this.toQuery = transition.to.query
+			}
+		},
+
 	  data () {
 	    return{
 	      is_reg: 0,
@@ -54,29 +64,14 @@
 		    show_popup: false,
 		    name_val: '',
 		    tips: '请将姓名填写完整。',
-		    info: []
+		    info: [],
+		    toQuery: [],
+		    showLoading: false
 	    }
 	  },
 
-		events: {
-			'footer-button-event' () {
-				let name = $(this.$refs.name)
-				this.name_val = name.val()
+		ready () {
 
-				this.getRegisterInfo()
-				if(this.is_reg){
-
-					if(this.name_val === ''){
-						this.show_popup = true
-						return
-					}
-					this.getRegisterInfo()
-					this.$route.router.go('/reg/disease')
-				}
-			}
-		},
-
-		created () {
 
 		},
 
@@ -87,12 +82,35 @@
 				let patientTime = $(this.$refs.patient_time)
 				let sexy = this.sex? '女' : '男'
 
-				this.info.$set(0, {
-					name: name.val(),
-					sex: sexy,
-					birthday: birthday.val(),
-					patientTime: patientTime.val()
-				})
+				this.info = {
+					'mobile': this.toQuery.mobile,
+					'weiXinToken': this.toQuery.weiXinToken,
+					'code': this.toQuery.code,
+					'name': name.val(),
+					'sex': sexy,
+					'birthday': birthday.val(),
+					'diseaseHistroy': patientTime.val()
+				}
+			},
+
+			getRegister () {
+
+				let _self = this
+				let name = $(_self.$refs.name)
+				_self.name_val = name.val()
+
+				_self.getRegisterInfo()
+				if(_self.is_reg){
+
+					if(_self.name_val === ''){
+						_self.show_popup = true
+						return
+					}
+
+					postJson('api/register', _self.info, (rsp)=>{
+						_self.$route.router.go({path: '/reg/disease'})
+					},_self)
+				}
 			}
 		},
 
@@ -113,6 +131,7 @@
 			}
 		}
 	}
+
 </script>
 
 <style>

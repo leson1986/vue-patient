@@ -7,28 +7,51 @@
 *
  */
 
-export function getJson(self, url, options, callback) {
+import Vue from 'vue'
+import {loader} from '../util/util'
+const SERVER = 'http://192.168.0.56:81/'
+
+export function getInterceptors () {
+	Vue.http.interceptors.push((request, next) => {
+		loader.show()
+		next((response) => {
+			loader.hide()
+			return response
+		});
+	});
+}
+
+export function getJson(url, options, callback, self) {
+	getInterceptors()
 
 	if(typeof callback != "function" || (callback instanceof RegExp)){
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
-	return self.$http.get(url, options)
+	return self.$http.get(SERVER + url, {
+		params: options
+	})
 		.then(({data: {recode, msg, data}}) => {
-
+			console.log(recode)
+			console.log(msg)
+			console.log(data)
 			callback(data)
 		})
 }
 
-export function postJson(self, url, options, callback) {
+export function postJson(url, options, callback, self) {
+	getInterceptors()
 
 	if(typeof callback != "function" || (callback instanceof RegExp)){
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
-	return self.$http.post(url, options)
+	return self.$http.post(SERVER + url, options)
 		.then(({data: {recode, msg, data}}) => {
-
+			console.log(recode)
+			console.log(msg)
+			console.log(data)
 			callback(data)
 		})
+
 }

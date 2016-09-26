@@ -12,15 +12,21 @@
 </template>
 
 <script>
-export default {
-	route : {
-		data () {
-			setTimeout(() => {
-				this.$route.router.go({path: '/home', replace: true})
-			}, 1500)
+	import {getJson} from 'util'
+	export default {
+		route : {
+			data () {
+				setTimeout(() => {
+					getJson('api/Authenticate', '', (rsp)=>{
+						console.log(rsp)
+						this.$route.router.go({path: '/reg/bind', replace: true})
+					},this)
+
+					//this.$route.router.go({path: '/home', replace: true})
+				}, 1500)
+			}
 		}
 	}
-}
 </script>
 
 <style scoped>

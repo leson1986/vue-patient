@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true"></mt-header>
-	<mt-content class-name="page-tabbar page-popup" :class="[{'leh-bg-grey-body' : selected==='个人中心'},{'doctor-index' : selected==='我的医生'}]">
+	<mt-content class-name="page-tabbar " :class="[{'leh-bg-grey-body' : selected==='个人中心'},{'doctor-index' : selected==='我的医生'}]">
 		<div class="page-wrap consult-padding-bottom">
 			<mt-tab-container :active.sync="selected">
 				<mt-tab-container-item id="在线门诊">
@@ -173,10 +173,13 @@
 		</mt-tabbar>
 
 
+	</mt-content>
+
+	<div class="page-popup">
 		<mt-popup v-show="showpopup" position="top" class="mint-popup-2" :modal="false">
 			<p v-text="tips"></p>
 		</mt-popup>
-	</mt-content>
+	</div>
 </template>
 
 <script type="text/babel">
@@ -196,9 +199,9 @@
 		name: 'page-tabbar',
 		route: {
 			data () {
-				getJson(this, '../../../static/data/twTs.json', '', (rsp)=>{
+				getJson('../../../static/data/twTs.json', '', (rsp)=>{
 					//this.$set('daylist', rsp)
-				})
+				}, this)
 			}
 		},
 
@@ -354,6 +357,6 @@
 	.leh-guide .consult-tip-img-box,.leh-guide~.leh-black-shade{display: block !important;}
 
 
-
+	.mint-popup-top {z-index: 50}
 
 </style>

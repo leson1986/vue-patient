@@ -103,8 +103,6 @@
 		},
 
 		ready () {
-			//pageConfig()
-			//getOpenID()
 
 
 			var imgHost = 'http://7jpp73.com1.z0.glb.clouddn.com/',
@@ -146,6 +144,10 @@
 
 				}, false);
 			}
+
+			// WX 上传图片接口
+			pageConfig(this)
+			getOpenID(this)
 		},
 
 		methods: {
