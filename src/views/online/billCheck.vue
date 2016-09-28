@@ -11,42 +11,32 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="iconfont icon-wx-hospital leh-c-blue"></span>
-					<span class="mint-cell-text">中山大学附属第三医院</span>
-					<p>检验目的：肝肾十五项</span></p>
-					<span class="mint-cell-label">2015年11月20日</span>
+					<span class="mint-cell-text">{{ checkData.hispitalName }}</span>
+					<p>检验目的：{{ checkData.purpose }}</span></p>
+					<span class="mint-cell-label">{{ checkData.reportTime }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
 		<div class="leh-null-box"></div>
-		<div class="page-cell check-list">
-			<a class="mint-cell">
+		<div class="page-cell check-list" :class="{'check-table-height-auto': tableHeight, 'check-table-height': !tableHeight}">
+			<a class="mint-cell" v-for="items in checkData.result">
 				<label class="mint-cell-title">
-					<span class="mint-cell-text leh-text-ellipsis">谷氨转氨酶谷氨转氨酶</span>
-					<span>(ALT)</span>
+					<span class="mint-cell-text leh-text-ellipsis">{{ items.itemName }}</span>
+					<span>({{ items.itemCode }})</span>
 				</label>
 				<div class="mint-cell-value">
-					<span>10</span>
-					<span class="fr">iu/ml</span>
-				</div>
-			</a>
-			<a class="mint-cell">
-				<label class="mint-cell-title">
-					<span class="mint-cell-text">谷氨转氨酶</span>
-					<span>(ALT)</span>
-				</label>
-				<div class="mint-cell-value">
-					<span>10</span>
-					<span class="fr">iu/ml</span>
+					<span>{{ items.value }}</span>
+					<span class="fr">{{ items.unit }}</span>
 				</div>
 			</a>
 		</div>
 		<div class="check-text-box">
 			<span class="leh-c-blue">结论</span>
-			<p>从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况;从结果看，患者已经进入了中后期，在标准化治疗的过程中，已经踹谢娜不可以情况。</p>
+			<p>{{ checkData.conclusion }}</p>
 		</div>
-		<div class="check-arr-btn">
-			<span class="iconfont icon-wx-double-arr-down leh-c-grey-tint"></span>
+		<div class="check-arr-btn" @click="tableHeight = !tableHeight">
+			<span class="iconfont icon-wx-double-arr-down leh-c-grey-tint" :class="{'icon-wx-double-arr-up': tableHeight, 'icon-wx-double-arr-down': !tableHeight}"></span>
 		</div>
 
 		<!-- 查看原图 -->
@@ -63,9 +53,16 @@
 			<div class="leh-modal-transparent" @click="closePopup"></div>
 			<div class="sick-popup-content">
 				<div class="page-title">检查单列表</div>
-				<div class="page-cell">
-					<mt-cell class-name="sick-popup-title" title="2016年" :istitle="true"></mt-cell>
-					<mt-cell v-for="n in 4" title="2016年" value="感染性疾病科" :istitle="true" :reddot="true" :blackfont="true"></mt-cell>
+				<div class="page-cell" v-for="datas in indexList">
+					<!--<mt-cell class-name="sick-popup-title" :title="datas.year.toString()" :istitle="true"></mt-cell>-->
+					<a class="mint-cell sick-popup-title">
+						<span class="mint-cell-mask"></span>
+						<label class="mint-cell-title">
+							<span class="mint-cell-text">{{ datas.year.toString() }}年</span>
+						</label>
+						<div class="mint-cell-value"></div>
+					</a>
+					<mt-cell v-for="items in datas.data" :title="items.reportTime" :istitle="true" :reddot="items.unread" :blackfont="true" @click="getCheckList(items.groupId,chkTypeId)"></mt-cell>
 				</div>
 			</div>
 		</mt-popup>
@@ -81,12 +78,30 @@
 	import MtSwipeItem from '../../components/swipeItem.vue'
 	import MtPopup from '../../components/popup.vue'
 	import MtCell from '../../components/cell.vue'
+	import {getJson, postJson} from 'util'
 
 	export default{
+		route: {
+			data (transition) {
+
+				let _self = this
+				_self.groupId = transition.to.query.gid
+				_self.chkTypeId = transition.to.query.cid
+
+				_self.getCheckList(_self.groupId, _self.chkTypeId)
+
+			}
+		},
+
 		data () {
 			return{
 				viewpic: false,
-				popup_visible: false
+				popup_visible: false,
+				tableHeight: false,
+				checkData: '', // 检查单详情数据
+				chkTypeId: '', // 检查单类型Id
+				groupId: '', // 检查单ID
+				indexList: [], // 检查单索引列表
 			}
 		},
 
@@ -103,6 +118,55 @@
 			},
 			closePopup () {
 				this.popup_visible = false;
+			},
+
+			// 更新数据
+			getCheckList (groupId, chkTypeIds) {
+
+				let _self = this
+				_self.closePopup()
+
+				// 获取检查单详情
+				getJson('api/chk/' + groupId, '', (rsp)=>{
+					_self.checkData = rsp
+
+					// 消除红点
+					postJson('api/chk/hasRead/' + groupId, '', (rsp_read)=>{
+
+						// 获取检查单索引
+						getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
+							_self.indexList = _self.regroupArr(rsp_index)
+							console.log(_self.indexList)
+							console.log(_self.indexList[0].year)
+						},_self)
+					},_self)
+				},_self)
+			},
+
+			// 重组索引数组
+			regroupArr (arr) {
+				var map = {},
+						dest = [];
+				for (var i = 0; i < arr.length; i++) {
+					var ai = arr[i];
+					if (!map[ai.year]) {
+						dest.push({
+							year: ai.year,
+							data: [ai]
+						});
+						map[ai.year] = ai;
+					} else {
+						for (var j = 0; j < dest.length; j++) {
+							var dj = dest[j];
+							if (dj.year == ai.year) {
+								dj.data.push(ai);
+								break;
+							}
+						}
+					}
+				}
+
+				return dest;
 			}
 
 		},
@@ -142,6 +206,9 @@
 	.check-text-box{padding: 20px 10px;overflow: hidden;}
 	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
 	.check-arr-btn{border: 0;text-align: center;height: 40px;}
+
+	.check-table-height {height: 200px; overflow: hidden}
+	.check-table-height-auto {height: auto}
 
 	/*侧滑*/
 	.sick-popup-box{z-index: 10;background-color: rgba(0,0,0,0.5) !important;}

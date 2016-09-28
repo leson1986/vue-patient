@@ -9,9 +9,9 @@
 				<mt-field label="姓名" placeholder="请输入用户名" type="text" :istitle="true" v-ref:name></mt-field>
 				<div class="mint-field">
 					<a class="mint-cell mint-field-cell">
-						<label class="mint-cell-title">
+						<div class="mint-cell-title">
 							<span class="mint-cell-text">性别</span>
-						</label>
+						</div>
 						<div class="mint-cell-value register-mint-cell-value-hight">
 							<div class="register-sex-box" :class="{'leh-active': !sex}" @click="sex = 0">
 								<span class="iconfont icon-wx-male"></span>
@@ -145,7 +145,7 @@
 	.register-ipt-box .mint-cell-text{color: #fff;}
 	.register-mint-cell-value-hight{height: 25px;}
 	.register-ipt-box p{font-size: 12px;color: #fff;margin: 20px 0 40px;line-height: 20px;}
-	.register-take-box{margin-bottom: 15px;color: #fff;font-size: 12px;overflow: hidden;position: relative;left: 50%;margin-left: -25%;line-height: 14px;}
+	.register-take-box{margin-bottom: 15px;color: #fff;font-size: 12px;overflow: hidden;position: relative;left: 50%;margin-left: -75px;line-height: 14px;display: inline-block;width: 150px;}
 	.register-take{width: 12px;height: 12px;line-height: 12px;font-size:8px;border: 1px solid #fff;display: inline-block;float: left;text-align: center;margin-right: 10px;}
 	.register-btn{border-color: #8fd595 !important;}
 	.register-btn.leh-active{background-color: #8fd595;}

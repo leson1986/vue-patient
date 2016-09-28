@@ -416,6 +416,13 @@ body,html {
 	display: inline-block
 }
 
+.mint-button--transparent {
+	font-size: 16px;
+	color: #363636;
+	text-align: left;
+	background-color: transparent;
+}
+
 .mint-button--default {
 	color: #656b79;
 	background-color: #f6f8fa;

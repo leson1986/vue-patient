@@ -244,13 +244,14 @@
 	.info-img-list .mint-cell:before,
 	.info-main-list .mint-cell:after,
 	.info-main-box .info-main-list:nth-last-of-type(1) .mint-cell:before{border: 0;}
+	.info-main-list .mint-field-state{display: none}
 	.info-main-box .mint-cell{padding: 15px 10px;}
-	.info-img{width: 37px;height: 37px;border-radius: 50%;overflow: hidden;float: right;}
+	.info-img{width: 37px;height: 37px;border-radius: 50%;overflow: hidden;position: absolute;right:10px;top:50%;margin-top: -18px}
 	.info-main-list .mint-cell:before{left: 10px;}
 	.info-sex{margin-right: 30px;font-size: 14px;color: #919191;height: 24px;line-height: 24px;}
 	.info-sex.leh-active{color: #363636;}
 	.info-sex .icon-wx-male,
 	.info-sex .icon-wx-female{font-size: 14px;}
 	.info-main-list .mint-cell-value .icon-wx-arr-right,
-	.info-main-list .mint-cell-value .icon-wx-arr-down{color: #aaa;}
+	.info-main-list .mint-cell-value .icon-wx-arr-down{color: #aaa;position: absolute;top:50%;right: 10px;margin-top: -8px}
 </style>

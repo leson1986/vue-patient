@@ -11,18 +11,35 @@ import Vue from 'vue'
 import {loader} from '../util/util'
 const SERVER = 'http://192.168.0.56:81/'
 
-export function getInterceptors () {
+export function loadInterceptors () {
+
 	Vue.http.interceptors.push((request, next) => {
+
 		loader.show()
+
+		let headers = {}
+		let tokens = 'MjM0NTY3Og=='//'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
+		headers.Authorization = 'Basic ' + tokens
+		request.headers = headers
+
 		next((response) => {
+			if(!response.ok){
+				console.log(response.status)
+			}
+
 			loader.hide()
 			return response
 		});
 	});
+
+
 }
 
 export function getJson(url, options, callback, self) {
-	getInterceptors()
+
+	loadInterceptors()
+
+	//Vue.http.headers.common['Authorization'] = 'Basic MTIzNDU2Og==';
 
 	if(typeof callback != "function" || (callback instanceof RegExp)){
 		return alert("错误提示：请传入正确的回调函数");
@@ -32,15 +49,12 @@ export function getJson(url, options, callback, self) {
 		params: options
 	})
 		.then(({data: {recode, msg, data}}) => {
-			console.log(recode)
-			console.log(msg)
-			console.log(data)
 			callback(data)
 		})
 }
 
 export function postJson(url, options, callback, self) {
-	getInterceptors()
+	loadInterceptors()
 
 	if(typeof callback != "function" || (callback instanceof RegExp)){
 		return alert("错误提示：请传入正确的回调函数");
@@ -48,9 +62,6 @@ export function postJson(url, options, callback, self) {
 
 	return self.$http.post(SERVER + url, options)
 		.then(({data: {recode, msg, data}}) => {
-			console.log(recode)
-			console.log(msg)
-			console.log(data)
 			callback(data)
 		})
 

@@ -2,7 +2,7 @@
 	<mt-header fixed isgrey title="拍照上传">
 		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
-	<div class="leh-float-box ">
+	<div class="leh-float-box " :class="{'leh-guide': firstUpload}">
 		<mt-button type="green">上传</mt-button>
 		<div class="photo-btn-tip-img-box">
 			<img src="../../assets/img/photo-updata-btn.png"/>
@@ -22,7 +22,7 @@
 		<div class="leh-null-box"></div>
 		<div class="photo-tap-box">
 			<!--未上传-->
-			<div class="photo-frist-tap leh-guide" @click="msgBox">
+			<div class="photo-frist-tap" :class="{'leh-guide': firstIn}" @click="msgBox">
 				<div class="photo-frist-ico-box">
 					<span class="iconfont icon-wx-camera">
 							<div class="photo-tip-img-box">
@@ -32,7 +32,7 @@
 				</div>
 				<p>点击上传图片</p>
 			</div>
-			<!--<div class="leh-black-shade"></div>-->
+			<div class="leh-black-shade"></div>
 			<!--上传-->
 			<div class="photo-tap">
 				<div class="weui_cells weui_cells_form">
@@ -69,20 +69,10 @@
 			</div>
 		</div>
 
-		<!-- 查看原图 -->
-		<!--<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
-			<span class="check-photo-close">X</span>
-
-			<mt-swipe class="my-swipe" :auto="0">
-				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-			</mt-swipe>
-		</div>-->
-		<!-- 用于展示插件的容器 -->
-
-		<div class="overlay" id="overlay"></div>
 	</mt-content>
+	<!-- 查看原图 -->
+	<!-- 用于展示插件的容器 -->
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -98,7 +88,9 @@
 	export default{
 		data () {
 			return{
-				viewpic: false
+				viewpic: false,
+				firstIn: true, // 是否第一次进入
+				firstUpload: false, // 是否第一次上传
 			}
 		},
 
@@ -175,14 +167,15 @@
 
 			msgBox () {
 
-				/*MessageBox({
-					title: 'I\'m a title',
-					message: 'I\'m a message',
-					showCancelButton: true
-				}).then(action => {
-					console.log('callback:', action);
-				});*/
-				MessageBox('提示', '一次只能添加9张图片');
+				if(this.firstIn){
+
+					this.firstIn = false
+					this.firstUpload = true
+				}else {
+
+					this.firstUpload = false
+					MessageBox('提示', '一次只能添加9张图片');
+				}
 			}
 		},
 

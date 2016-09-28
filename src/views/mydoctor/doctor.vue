@@ -83,17 +83,16 @@
 </script>
 
 <style>
-	.doctor-details-head{position: fixed;top: 0;bottom: 0;width: 100%;height: 130px;background-color: #1faa2b;padding:0 10px; z-index: 10;}
+	.doctor-details-head{position: absolute;top: 0;bottom: 0;width: 100%;height: 130px;background-color: #1faa2b;padding:0 10px;}
 	.doctor-details-head-arr{position: absolute;top: 3px;left: 10px;width: 15%;height: 60px;display: inline-block;padding-top: 10px;color: #fff;}
 	.doctor-details-img{width: 65px;height: 65px;margin: 20px auto 10px;border-radius:50%;overflow: hidden;}
 	.doctor-details-head p{font-size: 14px;color: #fff;text-align: center;}
 	.doctor-details-head p span{font-size: 12px;}
-	.doctor-details-content{padding-top: 130px;}
+	.doctor-details-content{position: absolute;top: 130px;bottom: 40px;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
 	.doctor-details-list{padding: 15px 10px;overflow: hidden;color: #363636;}
 	.doctor-details-list-title{overflow: hidden;margin-bottom: 10px;}
 	.doctor-details-list-title span.fr{color: #aaa;}
-	.doctor-details-list p{font-size: 14px;line-height: 20px; height: 20px; overflow: hidden}
-	.doctor-details-list .height-auto{height: auto;}
+	.doctor-details-list p{font-size: 14px;line-height: 20px;}
 	.doctor-details-list p span{margin-left: 10px;}
 	.doctor-details-content .mint-cell:after{border: 0;}
 	.doctor-details-content .mint-cell span{font-size: 14px;}
@@ -104,4 +103,5 @@
 	.doctor-details-comment-list-bd{margin-top: 10px;overflow: hidden;}
 	.doctor-details-comment-list-bd span{color: #919191;font-size: 12px;}
 	.doctor-details-content .icon-wx-arr-right{font-size:12px;color: #fff;background-color: #e5e5e5;padding: 3px 0;margin-left: 5px;}
+
 </style>

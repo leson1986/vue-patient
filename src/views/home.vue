@@ -6,7 +6,7 @@
 				<mt-tab-container-item id="在线门诊">
 					<div class="mint-tab-container-item">
 						<div class="consult-tap-box">
-							<mt-tab-item class="" v-link="{path: '/online/photo', replace: true}">
+							<mt-tab-item :class="{'leh-guide': firstIn}" v-link="{path: '/online/photo', replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								拍照上传
 
@@ -40,12 +40,12 @@
 								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}">
 									<span class="mint-cell-mask iconfont icon-wx-loading"></span>
 									<label class="mint-cell-title">
-										<span class="mint-cell-text leh-red-dot">待转换</span>
+										<span class="mint-cell-text" :class="{'leh-red-dot': unreadInfo.fileQty !== 0}">待转换</span>
 									</label>
 									<div class="consult-list-text">
-										<span>转换中<span>20</span></span>
+										<span>转换中<span v-text="recordInfo.fileProcessingQty"></span></span>
 										<span class="leh-c-grey-tint">丨</span>
-										<span>需处理<span>3</span></span>
+										<span>需处理<span v-text="recordInfo.fileFailgQty"></span></span>
 									</div>
 									<div class="mint-cell-value">
 										<span class="iconfont icon-wx-arr-right"></span>
@@ -54,10 +54,10 @@
 								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}">
 									<span class="mint-cell-mask iconfont icon-wx-sick"></span>
 									<label class="mint-cell-title">
-										<span class="mint-cell-text leh-red-dot">病历</span>
+										<span class="mint-cell-text" :class="{'leh-red-dot': unreadInfo.medicalQty !== 0}">病历</span>
 									</label>
 									<div class="consult-list-text">
-										<span>昨天转换<span>0</span></span>
+										<span>昨天转换<span v-text="recordInfo.medicalCreatedQty"></span></span>
 									</div>
 									<div class="mint-cell-value">
 										<span class="iconfont icon-wx-arr-right"></span>
@@ -66,10 +66,10 @@
 								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}">
 									<span class="mint-cell-mask iconfont icon-wx-check"></span>
 									<label class="mint-cell-title">
-										<span class="mint-cell-text leh-red-dot">检查单</span>
+										<span class="mint-cell-text" :class="{'leh-red-dot': unreadInfo.chkQty !== 0}">检查单</span>
 									</label>
 									<div class="consult-list-text">
-										<span>昨天转换<span>0</span></span>
+										<span>昨天转换<span v-text="recordInfo.chkCreatedQty"></span></span>
 									</div>
 									<div class="mint-cell-value">
 										<span class="iconfont icon-wx-arr-right"></span>
@@ -100,9 +100,9 @@
 							<!--有日程-->
 							<div class="page-cell consult-list-main">
 								<mt-cell
-										v-for="list in daylist"
-										:title="list.title"
-										:value="list.value"
+										v-for="list in rechecks"
+										:title="list.date.substring(0,10)"
+										:value="list.recheckItem"
 										:istitle="true"
 										v-link="{path: '/online/scheme', query: {actives: 'checked'}, replace: true}"
 										blackfont>
@@ -199,9 +199,13 @@
 		name: 'page-tabbar',
 		route: {
 			data () {
-				getJson('../../../static/data/twTs.json', '', (rsp)=>{
-					//this.$set('daylist', rsp)
-				}, this)
+				getJson('api/records/getindex', '', (rsp)=>{
+					this.unreadInfo = rsp.unreadInfo
+					this.recordInfo = rsp.recordInfo
+					this.rechecks = rsp.rechecks
+				},this)
+
+
 			}
 		},
 
@@ -216,28 +220,10 @@
 				showpopup: false,
 				tips: '用药提醒功能，暂未开放！',
 				tasks: [],
-				daylist: [
-					{
-						"title": "8月12日",
-						"value": "医院复诊1"
-					},
-					{
-						"title": "8月13日",
-						"value": "医院复诊"
-					},
-					{
-						"title": "8月14日",
-						"value": "医院复诊"
-					},
-					{
-						"title": "8月15日",
-						"value": "医院复诊"
-					},
-					{
-						"title": "8月16日",
-						"value": "医院复诊"
-					}
-				]
+				unreadInfo: {}, // 红点
+				recordInfo: {}, // 我的单据处理与未处理数据
+				rechecks: [], // 我的日程
+				firstIn: false // 是否第一次进入
 			};
 		},
 

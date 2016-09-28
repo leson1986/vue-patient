@@ -16,14 +16,18 @@
 	export default {
 		route : {
 			data () {
-				setTimeout(() => {
+				/*setTimeout(() => {
 					getJson('api/Authenticate', '', (rsp)=>{
 						console.log(rsp)
-						this.$route.router.go({path: '/reg/bind', replace: true})
+						this.$route.router.go({path: '/home', replace: true})
 					},this)
 
 					//this.$route.router.go({path: '/home', replace: true})
-				}, 1500)
+				}, 1500)*/
+
+				getJson('api/Authenticate', '', (rsp)=>{
+					this.$route.router.go({path: '/home', replace: true})
+				},this)
 			}
 		}
 	}

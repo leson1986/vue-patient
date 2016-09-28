@@ -1,7 +1,7 @@
 <template>
 	<a class="mint-cell" :class="classed">
 		<span class="mint-cell-mask" v-if="isLink"></span>
-		<label class="mint-cell-title" v-if="istitle">
+		<div class="mint-cell-title" v-if="istitle">
 			<slot name="icon">
 				<i v-if="icon" class="iconfont" :class="'icon-wx-' + icon"></i>
 			</slot>
@@ -9,7 +9,7 @@
 				<span class="mint-cell-text" :class="{'leh-red-dot':reddot}" v-text="title"></span>
 				<span v-if="label" class="mint-cell-label" v-text="label"></span>
 			</slot>
-		</label>
+		</div>
 		<div class="mint-cell-value">
 			<slot>
 				<span :class="{'leh-c-black':blackfont}" v-text="value"></span>

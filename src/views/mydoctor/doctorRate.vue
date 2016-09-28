@@ -98,16 +98,18 @@
 </script>
 
 <style>
-	.evaluation-head{height:125px;width:100%;position:fixed;top:0;left:0;background-color: #1faa2b;overflow: hidden;}
+	.evaluation-head{height:125px;width:100%;position:absolute;top:0;left:0;background-color: #1faa2b;overflow: hidden;}
 	.evaluation-head .mint-cell{background-color: transparent;}
 	.evaluation-head .mint-cell span{color: #fff;}
 	.evaluation-head .mint-cell:after,.evaluation-head .mint-cell:before{border: 0;}
 	.evaluation-head .mint-cell-text span{margin-right: 5px;}
-	.evaluation-head .mint-cell-value .mint-cell-label{margin-top: 5px;}
-	.evaluation-head-arr{position: absolute;top: 0;left: 10px;width: 15%;height: 60px;display: inline-block;padding-top: 10px;color: #fff;}
-	.evaluation-head-title{height: 40px;line-height: 40px;text-align: center;font-size: 16px;color: #fff;}
+	.evaluation-head .mint-cell-value div{padding-top: 10px;text-align: center;}
+	.evaluation-head .mint-cell-value div .mint-cell-text{font-size: 14px;}
+	.evaluation-head .mint-cell-value .mint-cell-label{margin-top: 7px;}
+	.evaluation-head-arr{position: absolute;top: 0;left: 10px;width: 15%;height: 60px;display: inline-block;padding-top: 13px;color: #fff;}
+	.evaluation-head-title{height: 40px;line-height: 50px;text-align: center;font-size: 16px;color: #fff;}
 	.evaluation-head-img{width: 48px;height: 48px;overflow: hidden;border-radius: 50%;margin-right: 10px;}
-	.evaluation-content{padding-top: 125px;}
+	.evaluation-content{position:absolute;top: 125px;bottom: 0;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
 	.doctor-details-comment-list-box{padding-left: 10px;}
 	.doctor-details-comment-list{padding: 10px 10px 10px 0;overflow: hidden;border-bottom: 1px solid #e5e5e5;}
 	.doctor-details-comment-list:nth-last-of-type(1){border-bottom: 0;}

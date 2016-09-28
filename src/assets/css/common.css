@@ -35,6 +35,11 @@ body {
 	padding-bottom: 40px;
 }
 
+.leh-null-data {
+	text-align: center;
+	padding: 20px;
+}
+
 .leh-null-box {
 	height: 8px;
 	background-color: #f0f0f0;
@@ -51,11 +56,19 @@ body {
 	text-align: center;
 	font-size: 16px;
 	color: #fff;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
 }
 
 .leh-float-box button {
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
 	flex: 1;
+	display: block;
 	border-radius: 0;
 	box-shadow: none;
 	padding: 0;
@@ -99,6 +112,11 @@ body {
 	color: #fff;
 	border-radius: 50%;
 	background-color: #ed2533;
+}
+
+.leh-ipt-tap {
+	float: left;
+	position: relative;
 }
 
 
@@ -184,6 +202,10 @@ body {
 
 .leh-c-grey-tint {
 	color: #e5e5e5;
+}
+
+.leh-c-red-tint {
+	color: #ff9992;
 }
 
 .leh-bold {
@@ -476,11 +498,9 @@ body {
 }
 
 .leh-grey-table>tbody>tr:nth-last-of-type(1),
-.leh-grey-table>thead>tr:nth-last-of-type(1){
+.leh-grey-table>thead>tr:nth-last-of-type(1) {
 	border-bottom: 1px solid #e5e5e5;
 }
-
-
 
 .leh-grey-table>thead>tr>th {
 	border-top: 0;
@@ -498,7 +518,6 @@ body {
 	font-size: 14px;
 }
 
-
 .leh-grey-table>tbody>tr>th,
 .leh-grey-table>tfoot>tr>th,
 .leh-grey-table>thead>tr>th {
@@ -515,7 +534,8 @@ body {
 	vertical-align: center;
 	text-align: center;
 }
-.leh-table-responsive>.leh-grey-table>thead>tr>th:first-child{
+
+.leh-table-responsive>.leh-grey-table>thead>tr>th:first-child {
 	width: 90px;
 	line-height: 53px;
 	margin-top: 0;
@@ -534,16 +554,15 @@ body {
 	text-align: left;
 	line-height: 39px;
 	white-space: normal;
-
 }
-.leh-table-responsive>.leh-grey-table>tbody>tr:first-child>td:first-child {
 
+.leh-table-responsive>.leh-grey-table>tbody>tr:first-child>td:first-child {
 	border: 0;
 }
-.leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child span:nth-of-type(1){
+
+.leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child span:nth-of-type(1) {
 	margin-right: 10px;
 }
-
 
 .leh-table-responsive>.leh-grey-table>thead>tr>th:first-child,
 .leh-table-responsive>.leh-grey-table>tbody>tr>td:first-child {
@@ -551,7 +570,7 @@ body {
 }
 
 .leh-table-responsive>.leh-grey-table>tbody>tr>th>p,
-.leh-table-responsive>.leh-grey-table>tbody>tr>td>p{
+.leh-table-responsive>.leh-grey-table>tbody>tr>td>p {
 	margin-top: 5px;
 }
 
@@ -795,7 +814,9 @@ body {
 	color: #aaa;
 }
 
+
 /* 透明遮罩 */
+
 .maskbox {
 	position: fixed;
 	top: 0;
@@ -806,6 +827,7 @@ body {
 	height: 100%;
 	z-index: 99999;
 }
+
 
 /*字体图标*/
 
@@ -831,6 +853,10 @@ body {
 
 .icon-wx-close-thin:before {
 	content: "\e620";
+}
+
+.icon-wx-load:before {
+	content: "\e62d";
 }
 
 .icon-wx-footer-add:before {
