@@ -6,30 +6,23 @@
 		<div class="transform-list-box">
 			<mt-translate>
 				<mt-translate-item
-						v-for="(index,n) in 1"
-						:name="index">
+						v-for="items in turnDatas"
+						:name="items.id"
+						:delbtn="items.isFail">
 					<div class="transform-list-img-box">
-						<img src="../../assets/img/photo-img.png"/>
+						<img :src="items.url"/>
+						<span class="transform-img-ico iconfont icon-wx-close" v-if="items.isFail"></span>
 					</div>
-					<div class="transform-list-text" style="display: none;">
+					<div class="transform-list-text" v-if="items.isFail">
 						<p>图片过于模糊或无法识别</p>
 						<p>点击重新上传</p>
 					</div>
-					<span class="fr">转换中</span>
-				</mt-translate-item>
-				<mt-translate-item
-						v-for="(index,n) in 4"
-						:name="index"
-						delbtn>
-					<div class="transform-list-img-box">
-						<img src="../../assets/img/photo-img.png"/>
-						<span class="transform-img-ico iconfont icon-wx-close"></span>
-					</div>
-					<div class="transform-list-text" >
-						<p>图片过于模糊或无法识别</p>
-						<p>点击重新上传</p>
-					</div>
-					<span class="fr leh-c-red">转换失败</span>
+					<span class="fr" v-if="!items.isFail">
+						转换中
+					</span>
+					<span class="fr leh-c-red" v-else>
+						转换失败
+					</span>
 				</mt-translate-item>
 			</mt-translate>
 		</div>
@@ -42,12 +35,27 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MessageBox from 'vue-msgbox'
+	import {getJson, delJson} from 'util'
 
 	export default{
+		route: {
+			data (transition) {
+
+				let _self = this
+				_self.dates = transition.to.query.date
+
+				_self.getTurnList(_self.dates)
+
+			}
+		},
+
 	  data () {
 	    return{
 	      msg:'hello vue',
-		    ids: ''
+		    ids: '',
+		    dates: '', // 转换中日期
+		    turnDatas: [], // 转换中数组,
+		    turnTitle: '',
 	    }
 	  },
 
@@ -55,13 +63,31 @@
 
 			msgBox (ids) {
 
+				let _self = this
 				MessageBox({
 				 title: '提示',
 				 message: '是否删除此单据?',
 				 showCancelButton: true
 				 }).then(action => {
-				 console.log('callback:', ids);
+
+					if(action === 'confirm'){
+
+						delJson('api/filecheck/'+ ids,'',(rcodes, msgs) => {
+							_self.getTurnList(_self.dates)
+
+						}, _self)
+					}
 				 });
+			},
+
+			// 获取转换中详情
+			getTurnList (dates) {
+
+				let _self = this
+				getJson('api/filecheck/'+ dates,'',(rsp) => {
+					_self.turnDatas = rsp
+
+				}, _self)
 			}
 		},
 

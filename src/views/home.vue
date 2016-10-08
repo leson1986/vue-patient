@@ -93,16 +93,16 @@
 								</a>
 							</div>
 							<!--无日程-->
-							<div class="consult-list-not-task" style="display: none">
+							<div class="consult-list-not-task" v-if="rechecks.length === 0">
 								<div class="breathe-btn">+</div>
 								<p>暂无日程添加</p>
 							</div>
 							<!--有日程-->
 							<div class="page-cell consult-list-main">
 								<mt-cell
-										v-for="list in rechecks"
-										:title="list.date.substring(0,10)"
-										:value="list.recheckItem"
+										v-for="items in rechecks"
+										:title="items.date"
+										:value="items.recheckItem"
 										:istitle="true"
 										v-link="{path: '/online/scheme', query: {actives: 'checked'}, replace: true}"
 										blackfont>
@@ -113,30 +113,23 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="我的医生">
 					<div class="page-cell doctor-index-box">
-						<div class="page-cell disease-list page-infinite-wrapper" v-el:wrapper :style="{ height: wrapperHeight + 'px' }">
-							<div class="page-infinite-list" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
-								<a class="mint-cell" v-for="item in list" v-link="{path: '/mydoctor/doctor', replace: true}">
+						<a class="mint-cell" v-link="{path: '/mydoctor/doctor'}">
 									<span class="mint-cell-mask leh-red-dot">
 										<div class="doctor-img">
 											<img src="../assets/img/private.jpg"/>
 										</div>
 									</span>
-									<label class="mint-cell-title">
+							<div class="mint-cell-title">
 										<span class="mint-cell-text">
 											<span>高志良</span>
 											<span>主任医师</span>
 											<span class="leh-c-green">感染科</span>
 										</span>
-										<span class="mint-cell-label leh-c-black">中山大学附属第三医院</span>
-									</label>
-									<div class="mint-cell-value"></div>
-								</a>
+								<span class="mint-cell-label leh-c-black">中山大学附属第三医院</span>
 							</div>
-							<p v-show="loading" class="page-infinite-loading">
-								<mt-spinner type="fading-circle"></mt-spinner>
-								加载中...
-							</p>
-						</div>
+							<div class="mint-cell-value"></div>
+						</a>
+
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="个人中心" class="consult-container-item-hight">
@@ -192,7 +185,6 @@
 	import MtTabItem from '../components/tab-item.vue'
 	import MtCell from '../components/cell.vue'
 	import MtPopup from '../components/popup.vue'
-	import MtSpinner from '../components/spinner.vue'
 	import {getJson} from 'util'
 
 	export default{
@@ -228,27 +220,8 @@
 		},
 
 		methods: {
-			loadMore() {
-				this.loading = true;
-				setTimeout(() => {
-					let last = this.list[this.list.length - 1];
-					for (let i = 1; i <= 10; i++) {
-						this.list.push(last + i);
-					}
-					this.loading = false;
-				}, 2500);
-			}
 		},
 
-		compiled() {
-			for (let i = 1; i <= 10; i++) {
-				this.list.push(i);
-			}
-		},
-
-		ready() {
-			this.wrapperHeight = document.documentElement.clientHeight - this.$els.wrapper.getBoundingClientRect().top;
-		},
 
 		watch: {
 			showpopup(val) {
@@ -268,8 +241,7 @@
 			MtTabbar,
 			MtTabItem,
 			MtCell,
-			MtPopup,
-			MtSpinner
+			MtPopup
 		}
 	}
 

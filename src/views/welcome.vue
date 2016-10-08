@@ -15,7 +15,7 @@
 	import {getJson} from 'util'
 	export default {
 		route : {
-			data () {
+			data (transition) {
 				/*setTimeout(() => {
 					getJson('api/Authenticate', '', (rsp)=>{
 						console.log(rsp)
@@ -25,9 +25,23 @@
 					//this.$route.router.go({path: '/home', replace: true})
 				}, 1500)*/
 
+				this.querys = transition.to.query.name //不同的路径进口
+
 				getJson('api/Authenticate', '', (rsp)=>{
-					this.$route.router.go({path: '/home', replace: true})
+
+					if(this.querys ==='bill'){
+						this.$route.router.go({path: '/online/'+ this.querys, query: {actives: 'checked'}, replace: true})
+					}else {
+						this.$route.router.go({path: '/home', replace: true})
+					}
+
 				},this)
+			}
+		},
+
+		data () {
+			return {
+				querys: ''
 			}
 		}
 	}

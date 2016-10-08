@@ -163,7 +163,7 @@ export default function (router) {
   router.beforeEach(({to, from, next}) => {
     let toPath = to.path
     let fromPath = from.path
-    console.log(`to: ${toPath} from: ${fromPath}`)
+   // console.log(`to: ${toPath} from: ${fromPath}`)
     if (toPath.replace(/[^/]/g, '').length > 1) {
       router.app.isIndex = false
     }
@@ -175,6 +175,6 @@ export default function (router) {
   })
 
   router.afterEach(function ({to}) {
-    console.log(`成功浏览到: ${to.path}`)
+   // console.log(`成功浏览到: ${to.path}`)
   })
 }

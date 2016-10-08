@@ -19,13 +19,11 @@
 				</div>
 			</a>
 			<a class="mint-cell">
-				<span class="mint-cell-mask iconfont icon-wx-item"></span>
+				<span class="mint-cell-mask iconfont icon-wx-item" @click="show_drag = !show_drag"></span>
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">提醒事项</span>
-					<ul class="leh-select-drag-box" style="display: none">
-						<li>博路定</li>
-						<li>博路定</li>
-						<li>博路定</li>
+					<span class="mint-cell-text" v-text="title_name"></span>
+					<ul class="leh-select-drag-box" v-if="show_drag">
+						<li v-for="items in users" @click="getTitleName(items.name)">{{ items.name }}</li>
 					</ul>
 				</label>
 				<div class="mint-cell-value">
@@ -72,6 +70,7 @@
 	export default{
 		route : {
 			data (transition) {
+				this.value = new Date()
 				this.is_visible = transition.to.query.isEdit;
 				if(transition.to.query.isEdit){
 					this.title = '编辑日程'
@@ -96,7 +95,14 @@
 				visible3: true,
 				drug: '',
 				date: '',
-				time: ''
+				time: '',
+				show_drag: 0,
+				title_name: '提醒事项',
+				users: [
+					{ name: '回院复诊' },
+					{ name: '回院复查' },
+					{ name: '办理出院' }
+				]
 			}
 		},
 
@@ -147,6 +153,11 @@
 				}).then(action => {
 					console.log('callback:', ids);
 				});
+			},
+
+			getTitleName (titles) {
+				this.title_name = titles
+				this.show_drag = 0
 			}
 		},
 

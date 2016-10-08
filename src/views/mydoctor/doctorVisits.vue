@@ -317,7 +317,6 @@
 	.call-info-title .mint-cell:after,
 	.call-info-time-list .mint-cell:after,
 	.call-info-week-list:nth-last-of-type(1),
-	.call-info-time-list.page-cell .mint-cell:nth-last-of-type(1):before,
 	.call-info-time-list .page-cell:nth-last-of-type(1) .mint-cell:before,
 	.call-info-month-left-list:nth-last-of-type(1):after,
 	.call-info-month-right-item:nth-last-of-type(1):after{border: 0;}

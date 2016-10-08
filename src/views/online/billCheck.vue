@@ -136,8 +136,7 @@
 						// 获取检查单索引
 						getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
 							_self.indexList = _self.regroupArr(rsp_index)
-							console.log(_self.indexList)
-							console.log(_self.indexList[0].year)
+
 						},_self)
 					},_self)
 				},_self)

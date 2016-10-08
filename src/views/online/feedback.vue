@@ -7,11 +7,9 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
-					<input type="text" v-model="doctorname"/>
-					<ul class="leh-select-drag-box" style="display: none">
-						<li>博路定</li>
-						<li>博路定</li>
-						<li>博路定</li>
+					<input type="text" v-model="name"/>
+					<ul class="leh-select-drag-box" v-if="name && show_name">
+						<li v-for="items in users | filterBy name in 'name'"  @click="getName(items.name)">{{ items.name }}</li>
 					</ul>
 				</label>
 				<div class="mint-cell-value">
@@ -102,7 +100,21 @@
 				msg_val:'',
 				tips: '请填写留言内容',
 				show_popup: false,
-				from_path: ''
+				from_path: '',
+				show_name: 1,
+				name: '',
+				old_name: '',
+				users: [
+					{ name: 'Aruce' },
+					{ name: 'Bruce' },
+					{ name: 'Cruce' },
+					{ name: 'Druce' },
+					{ name: 'Eruce' },
+					{ name: 'Eruce' },
+					{ name: 'Eruce' },
+					{ name: 'Fhuck' },
+					{ name: 'Gackie' }
+				]
 			}
 		},
 
@@ -125,6 +137,13 @@
 					return
 				}
 				this.$route.router.go('/user/noteDetail')
+			},
+
+			getName (names) {
+				this.name = names
+				this.old_name = names
+				this.show_name = !this.show_name
+				console.log(this.show_name)
 			}
 		},
 
@@ -146,6 +165,14 @@
 						this.show_popup = false;
 					}, 2000);
 				}
+			},
+
+			name (val, oldVal) {
+				if(val == this.old_name) {
+					this.show_name = 0
+				}else {
+					this.show_name = 1
+				}
 			}
 		},
 
@@ -162,7 +189,6 @@
 
 <style>
 
-	.online-msg-ipt-box {overflow: hidden}
 	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
 	.online-msg-ipt-box .mint-cell:after,.online-msg-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.online-msg-ipt-box .mint-cell:before{left: 10px;transform: scaleY(1);}

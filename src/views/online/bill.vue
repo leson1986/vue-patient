@@ -12,13 +12,13 @@
 			<mt-tab-container class="page-tabbar-tab-container" :active.sync="active">
 				<mt-tab-container-item id="case">
 					<div class="page-cell document-index-title">
-						<a class="mint-cell" v-link="{path: '/online/billCase', replace: true}">
+						<a class="mint-cell" v-link="{path: '/online/billCase', query: {dates: summaryItems.updateTime}, replace: true}">
 							<span class="mint-cell-mask"></span>
 							<label class="mint-cell-title">
-								<span class="mint-cell-text leh-c-green leh-red-dot">手写病历</span>
+								<span class="mint-cell-text leh-c-green" :class="{'leh-red-dot': summaryItems.unread}">手写病历</span>
 							</label>
 							<div class="mint-cell-value">
-								<span class="leh-c-black">2016-10-05</span>
+								<span class="leh-c-black">{{ summaryItems.updateTime }}</span>
 							</div>
 						</a>
 					</div>
@@ -65,7 +65,7 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="turn" :active.sync="active">
 					<div class="leh-null-data" v-if="!fileCheckItems.length">暂无数据</div>
-					<a class="mint-cell document-index-check-list" v-for="items in fileCheckItems" v-link="{path: '/online/billTurn', replace: true}">
+					<a class="mint-cell document-index-check-list" v-for="items in fileCheckItems" v-link="{path: '/online/billTurn', query:{date: items.date}, replace: true}">
 						<span class="mint-cell-mask"></span>
 						<label class="mint-cell-title">
 							<span class="mint-cell-text" :class="{'leh-red-dot': items.unread}">{{ items.date }}</span>
@@ -113,6 +113,7 @@
 			return{
 				active: '',
 				selected: '',
+				summaryItems: '', // 手写病历信息
 				medicalItems: [],  // 病历列表
 				chkItems: [],  // 检查单列表
 				fileCheckItems: [],  // 转换中列表
@@ -138,26 +139,32 @@
 
 				let _self = this
 
-				// 加载病历列表
-				getJson('api/Medical?pageIndex=1&pageSize=8', '', (rsp)=>{
+				// 加载手写病历信息
+				getJson('api/handwriting/summary', '', (rsp)=>{
 
-					_self.medicalItems = rsp.items
-					_self.pageMedicalTotal = rsp.totalQty
+					_self.summaryItems = rsp
 
-					// 加载检查单列表
-					getJson('api/Chk?pageIndex=1&pageSize=10', '', (rsp_chk)=>{
+					// 加载病历列表
+					getJson('api/Medical?pageIndex=1&pageSize=8', '', (rsp_medical)=>{
 
-						_self.chkItems = rsp_chk.items
-						_self.pageChkTotal = rsp_chk.totalQty
+						_self.medicalItems = rsp_medical.items
+						_self.pageMedicalTotal = rsp_medical.totalQty
 
 						// 加载检查单列表
-						getJson('api/FileCheck?pageIndex=1&pageSize=10', '', (rsp_file_check)=>{
+						getJson('api/Chk?pageIndex=1&pageSize=10', '', (rsp_chk)=>{
 
-							_self.fileCheckItems = rsp_file_check.items
-							_self.pageFileCheckTotal = rsp_file_check.totalQty
+							_self.chkItems = rsp_chk.items
+							_self.pageChkTotal = rsp_chk.totalQty
 
+							// 加载检查单列表
+							getJson('api/FileCheck?pageIndex=1&pageSize=10', '', (rsp_file_check)=>{
+
+								_self.fileCheckItems = rsp_file_check.items
+								_self.pageFileCheckTotal = rsp_file_check.totalQty
+
+							},_self)
 						},_self)
-					},_self)
+				},_self)
 				},_self)
 			},
 
@@ -187,7 +194,7 @@
 					return
 				}
 				_self.pageChkNum = _self.pageChkNum + 1
-				getJson('api/Chk?pageIndex='+ this.pageChkNum +'&pageSize=10', '', (rsp_chk)=>{
+				getJson('api/Chk?pageIndex='+ _self.pageChkNum +'&pageSize=10', '', (rsp_chk)=>{
 
 					// 合并数组
 					_self.chkItems = _self.chkItems.concat(rsp_chk.items)

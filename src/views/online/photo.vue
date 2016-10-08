@@ -89,7 +89,7 @@
 		data () {
 			return{
 				viewpic: false,
-				firstIn: true, // 是否第一次进入
+				firstIn: false, // 是否第一次进入
 				firstUpload: false, // 是否第一次上传
 			}
 		},
