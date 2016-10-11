@@ -3,7 +3,7 @@
 		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
-		<mt-button type="green" @click="save">保存</mt-button>
+		<mt-button type="green" @click="saveInfo">保存</mt-button>
 	</div>
 	<div class="info-content">
 		<div class="page-field info-box">
@@ -22,7 +22,8 @@
 									<i class="mintui mintui-field-default"></i>
 								</span>
 							<div class="info-img">
-								<img src="../../assets/img/private.jpg" />
+								<img :src="photo" v-if="photo"/>
+								<img src="../../assets/img/private.jpg" v-if="photo"/>
 							</div>
 						</div>
 					</a>
@@ -36,7 +37,7 @@
 							<span class="mint-cell-text">用户名</span>
 						</label>
 						<div class="mint-cell-value">
-							<input readonly class="mint-field-core" placeholder="请输入姓名" type="text" value="ls.c">
+							<input readonly class="mint-field-core" placeholder="请输入姓名" type="text" :value="name">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -52,11 +53,11 @@
 							<span class="mint-cell-text">性别</span>
 						</label>
 						<div class="mint-cell-value">
-							<div class="info-sex" :class="{'leh-active': sex}" @click="sex = 1">
+							<div class="info-sex" :class="{'leh-active': gender === 1 }" @click="gender = 1">
 								<span class="iconfont icon-wx-male"></span>
 								<span>男</span>
 							</div>
-							<div class="info-sex" :class="{'leh-active': !sex}" @click="sex = 0">
+							<div class="info-sex" :class="{'leh-active': gender === 2}" @click="gender = 2">
 								<span class="iconfont icon-wx-female"></span>
 								<span>女</span>
 							</div>
@@ -69,7 +70,7 @@
 							<span class="mint-cell-text">生日</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="请输入生日" type="month" name="month">
+							<input class="mint-field-core" placeholder="请输入生日" type="date" v-model="birthday"  :value="birthday">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -86,7 +87,7 @@
 							<span class="mint-cell-text">省市</span>
 						</label>
 						<div class="mint-cell-value">
-							<input readonly class="mint-field-core" type="text" maxlength="10" @click="showPicker" :value="province + city">
+							<input readonly class="mint-field-core" type="text" maxlength="10" @click="showPicker" :value="nativePlace">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -103,7 +104,7 @@
 							<span class="mint-cell-text">手机号</span>
 						</label>
 						<div class="mint-cell-value">
-							<input readonly class="mint-field-core" placeholder="请输入手机号" type="text" value="15800158000">
+							<input readonly class="mint-field-core" placeholder="请输入手机号" type="text"  :value="mobile">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -113,18 +114,33 @@
 						</div>
 					</a>
 				</div>
-				<mt-field class="info-main-list" label="个人邮箱" placeholder="登录邮箱" istitle type="email" :attr="{ maxlength: 50 }"></mt-field>
+				<div class="mint-field info-main-list">
+					<a class="mint-cell mint-field-cell">
+						<label class="mint-cell-title">
+							<span class="mint-cell-text">个人邮箱</span>
+						</label>
+						<div class="mint-cell-value">
+							<input class="mint-field-core" placeholder="登录邮箱" type="email" v-model="email"  :value="email">
+							<div class="mint-field-clear" style="display: none;">
+								<i class="mintui mintui-field-error"></i>
+							</div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+						</div>
+					</a>
+				</div>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="page-part info-main-box">
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell" v-link="{path: '/reg/disease', query: {'from': true}, replace: true}">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/reg/disease', query: {'info': true}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">所患疾病</span>
 							<span class="leh-c-red">*</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled" v-model="disease">
+							<input class="mint-field-core leh-bg-white" type="text" readonly v-model="disease" :value="disease">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -141,7 +157,7 @@
 							<span class="mint-cell-text">患病起始年限</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="请输入日期" type="month" name="month">
+							<input class="mint-field-core" placeholder="请输入日期" type="month" name="month" v-model="diseaseHis" :value="diseaseHis">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -153,12 +169,12 @@
 					</a>
 				</div>
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability', query: {'irritability': irritability}, replace: true}">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability', query: {'info': alllergicHis}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">过敏史</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core leh-bg-white" type="text" disabled="disabled" v-model="irritability">
+							<input class="mint-field-core leh-bg-white" type="text" readonly v-model="alllergicHis" :value="alllergicHis">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>
@@ -185,20 +201,49 @@
 	import MtAddressPicker from '../../components/address-picker.vue'
 	import MtModal from '../../components/modal.vue'
 	import MtField from '../../components/field.vue'
-	import $ from 'zepto'
+	import {getJson, putJson} from 'util'
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
-				if(transition.to.query.irritability !== undefined){
-					this.irritability = transition.to.query.irritability
-					if(this.irritability.length > 10) {
-						this.irritability = this.irritability.substr(0,10) + '...'
+				let _self = this
+
+
+				if(to.query.alllergicHis !== undefined){
+					_self.alllergicHis = to.query.alllergicHis
+					if(_self.alllergicHis.length > 10) {
+						_self.alllergicHis = _self.alllergicHis.substr(0,10) + '...'
 					}
-				}else{
-					this.disease = transition.to.query.disease
+				}else if(to.query.disease !== undefined){
+					_self.disease = to.query.disease
 				}
+
+
+				_self.formPage = to.query.toinfo || false
+				if(_self.formPage) return // 是否其他页面返回
+
+				// 医院地址
+				getJson('api/patient/myinfo', '', (rsp)=>{
+
+					_self.name = rsp.name
+					_self.mobile = rsp.mobile
+					_self.gender = rsp.gender
+					_self.birthday = rsp.birthday
+					_self.alllergicHis = rsp.alllergicHis
+					_self.photo = rsp.photo
+					_self.email = rsp.email
+					_self.disease = rsp.disease
+					_self.diseaseHis = rsp.diseaseHis
+					_self.nativePlace = rsp.nativePlace
+				},_self)
+
+
+				// 超过10个字加省略号
+				if(_self.alllergicHis.length > 10) {
+					_self.alllergicHis = _self.alllergicHis.substr(0,10) + '...'
+				}
+				next()
 			}
 		},
 
@@ -208,9 +253,20 @@
 		    province: '',
 		    city: '',
 		    sex: 1,
-		    disease: '',
-		    irritability: ''
+		    formPage: '', // 来自其他页面
+		    infoItems: '', // 信息
+		    name: '', // 姓名 ,
+		    mobile: '', // 手机 ,
+		    gender: '', // 性别 ,
+		    birthday: '', // 生日 ,
+		    alllergicHis: '', // 过敏史 ,
+		    photo: '', // 头像 ,
+		    email: '', // 邮箱 ,
+		    disease: '', // 所患疾病 ,
+		    diseaseHis: '', // 患病年限 ,
+		    nativePlace: '', // 省市
 	    }
+
 	  },
 
 		methods: {
@@ -218,8 +274,29 @@
 				this.visible = true
 			},
 			handleChange(value) {
-				this.province = value.province
-				this.city = value.city
+				this.nativePlace = value.province + ' ' + value.city
+				/*this.province = value.province
+				this.city = value.city*/
+			},
+
+			// 保存
+			saveInfo () {
+
+				let _self = this
+				let params = {
+					"gender": _self.gender,
+					"birthday": _self.birthday,
+					"alllergicHis": _self.alllergicHis,
+					"photo": _self.photo,
+					"email": _self.email,
+					"disease": _self.disease,
+					"diseaseHis": _self.diseaseHis,
+					"nativePlace": _self.nativePlace
+				}
+				console.log(params)
+				putJson('api/patient/myinfo', params, (rsp)=>{
+					alert('修改成功！')
+				},_self)
 			}
 		},
 

@@ -45,10 +45,12 @@
 
 	export default{
 		route: {
-			data (transition) {
-				this.irritability = transition.to.query.irritability
+			data ({to, next}) {
+				this.irritability = to.query.info
 				this.btn_color = 'grey'
 				this.isbutton = false
+
+				next()
 			}
 		},
 
@@ -91,7 +93,7 @@
 				this.show_popup = true
 				this.tips = '保存成功'
 				setTimeout(() => {
-					this.$route.router.go({path: '/user/info', query: {'irritability': this.irritability}})
+					this.$route.router.go({path: '/user/info', query: {'toinfo': true, 'alllergicHis': this.irritability}})
 				},2500)
 			},
 
@@ -121,11 +123,11 @@
 						if(action === 'confirm'){
 							this.save()
 						}else {
-							this.$route.router.go({path: '/user/info'})
+							this.$route.router.go({path: '/user/info', query: {'toinfo': true}})
 						}
 					});
 				}else{
-					this.$route.router.go({path: '/user/info'})
+					this.$route.router.go({path: '/user/info', query: {'toinfo': true}})
 				}
 
 			},

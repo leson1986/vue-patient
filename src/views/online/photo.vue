@@ -1,9 +1,10 @@
 <template>
+
 	<mt-header fixed isgrey title="拍照上传">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button  v-link="{path: '/home', query: {name: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box " :class="{'leh-guide': firstUpload}">
-		<mt-button type="green">上传</mt-button>
+		<mt-button type="green" @click="uploadPic">上传</mt-button>
 		<div class="photo-btn-tip-img-box">
 			<img src="../../assets/img/photo-updata-btn.png"/>
 		</div>
@@ -34,7 +35,7 @@
 			</div>
 			<div class="leh-black-shade"></div>
 			<!--上传-->
-			<div class="photo-tap">
+			<!--<div class="photo-tap">
 				<div class="weui_cells weui_cells_form">
 					<div class="weui_cell">
 						<div class="weui_cell_bd weui_cell_primary">
@@ -66,6 +67,16 @@
 						</div>
 					</div>
 				</div>
+			</div>-->
+			<div class="photo-tap">
+				<mt-picture>
+					<mt-pic-list v-for="items in picItems" :reddot="items.unread"  @click="showPic(items.id)">
+						<img :src="items.url"/>
+					</mt-pic-list>
+					<div class="weui_uploader_input_wrp" @click="addPic">
+						<span class="iconfont icon-wx-add"></span>
+					</div>
+				</mt-picture>
 			</div>
 		</div>
 
@@ -80,8 +91,11 @@
 	import MtButton from '../../components/button.vue'
 	import MtSwipe from '../../components/swipe.vue'
 	import MtSwipeItem from '../../components/swipeItem.vue'
+	import MtPicture from '../../components/picture.vue'
+	import MtPicList from '../../components/picList.vue'
 	import MessageBox from 'vue-msgbox'
-	import {pageConfig,getOpenID} from 'wxconfig'
+	import {pageConfig, getOpenID} from 'wxconfig'
+	import {getJson, wrapPic} from 'util'
 	import $ from 'zepto'
 	import wx from 'wx'
 
@@ -91,51 +105,46 @@
 				viewpic: false,
 				firstIn: false, // 是否第一次进入
 				firstUpload: false, // 是否第一次上传
+				picItems: [
+					{
+						'id': '112',
+						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/1.jpg',
+						'unread': false
+					},
+					{
+						'id': '112',
+						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/2.jpg',
+						'unread': false
+					},
+					{
+						'id': '112',
+						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/3.jpg',
+						'unread': true
+					},
+					{
+						'id': '112',
+						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/4.jpg',
+						'unread': true
+					},
+					{
+						'id': '112',
+						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/5.jpg',
+						'unread': false
+					}
+				], // 图片数组
 			}
 		},
 
 		ready () {
 
+			let _self = this
+			/*getJson('api/Handwriting', '', (rsp) => {
 
-			var imgHost = 'http://7jpp73.com1.z0.glb.clouddn.com/',
-					direction = window.location.href.indexOf('left') > -1 ? 'left' : 'top',
-					elem = document.querySelectorAll('ul > li'),
-					wrap = document.querySelector('#overlay');
+				_self.picItems  = rsp
+			}, _self)*/
 
-			for (var i = 0, len = elem.length; i < len; i++) {
-				elem[i].index = i;
-				elem[i].addEventListener('touchstart', function(e) {
-					e.preventDefault();
 
-					var ext = this.index === 0 ? '' : 'M_',
-							title = this.index === 0 ? '风景' : '妹子',
-							data = [];
 
-					for (var i = 1; i <= 10; i++) {
-						data.push(imgHost + ext + i +'.jpg');
-					}
-
-					wrap.className = wrap.className + ' in';
-
-					// 延迟初始化插件是为了让CSS动画走完
-					setTimeout(function() {
-						console.log(MPreview)
-						MPreview({
-							data: data,
-							title: title,
-							direction: 'left',
-							wrap: '#overlay',
-							init: function() {
-								window.console && console.log('MPreview.mobile init');
-							},
-							close: function() {
-								wrap.className = wrap.className.replace(' in', '');
-							}
-						});
-					}, 400);
-
-				}, false);
-			}
 
 			// WX 上传图片接口
 			pageConfig(this)
@@ -165,6 +174,10 @@
 				});
 			},
 
+			showPic () {
+				wrapPic(this.picItems, '拍照上传') // 查看图片
+			},
+
 			msgBox () {
 
 				if(this.firstIn){
@@ -174,8 +187,17 @@
 				}else {
 
 					this.firstUpload = false
-					MessageBox('提示', '一次只能添加9张图片');
+					this.addPic()
+					//MessageBox('提示', '一次只能添加9张图片');
 				}
+			},
+
+			// 上传
+			uploadPic () {
+
+				let _self = this
+				getJson('api/filecheck/upload', '', (rsp) => {
+				}, _self)
 			}
 		},
 
@@ -184,7 +206,9 @@
 			MtHeader,
 			MtButton,
 			MtSwipe,
-			MtSwipeItem
+			MtSwipeItem,
+			MtPicture,
+			MtPicList
 		}
 	}
 </script>

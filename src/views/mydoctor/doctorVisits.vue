@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="出诊信息">
-		<mt-button v-link="'/mydoctor/doctor'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/mydoctor/doctor', query: {id: ids}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="page-cell call-info-advertisement">
@@ -23,11 +23,11 @@
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-		<div class="page-cell call-info-time-list" v-for="(index, n) in 4">
+		<div class="page-cell call-info-time-list" v-for="(index, items) in schedulesItems">
 
 			<a class="mint-cell" @click="index = !index">
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">天河院区</span>
+					<span class="mint-cell-text">{{ items.location }}</span>
 				</label>
 				<div class="mint-cell-value">
 					<span class="iconfont" :class="{'icon-wx-arr-up': !index,'icon-wx-arr-down': index}"></span>
@@ -36,26 +36,21 @@
 			<!--隐藏的内容-->
 			<div class="call-info-time-box">
 				<!--按周-->
-				<div class="call-info-week-box" v-if="index">
+				<div class="call-info-week-box" v-if="type === 1 && !index">
 					<ul>
-						<li class="call-info-week-list">
-							<span class="fl">周二</span>
-							<span class="fl iconfont icon-wx-morning leh-c-grey"></span>
-							<span class="fl leh-fs-twelve">上午</span>
-							<span class="leh-min-tip-btn leh-c-orange">特需</span>
-							<span class="fr">30<span>元/次</span></span>
-						</li>
-						<li class="call-info-week-list">
-							<span class="fl">周二</span>
-							<span class="fl iconfont icon-wx-aftermoon leh-c-grey"></span>
-							<span class="fl leh-fs-twelve">下午</span>
-							<span class="leh-min-tip-btn leh-c-blue">普通</span>
-							<span class="fr">30<span>元/次</span></span>
+						<li class="call-info-week-list" v-for="weeks in items.data">
+							<span class="fl">{{ weeks.weekDay }}</span>
+							<span class="fl iconfont leh-c-grey" :class="{'icon-wx-morning': weeks.time == '上午','icon-wx-aftermoon': weeks.time == '下午'}"></span>
+							<span class="fl leh-fs-twelve">{{ weeks.time }}</span>
+							<span class="leh-min-tip-btn" :class="{'leh-c-orange': weeks.clinicType == '特需','leh-c-blue': weeks.clinicType != '特需'}">{{ weeks.clinicType }}</span>
+							<span class="fr">{{ weeks.fee }}<span>元/次</span></span>
 						</li>
 					</ul>
 				</div>
+
+
 				<!--按月-->
-				<div class="call-info-month-box" v-if="index">
+				<div class="call-info-month-box" v-if="type === 2 && !index">
 					<!--固定左边-->
 					<div class="call-info-month-left">
 						<ul>
@@ -79,117 +74,29 @@
 					<!--右边滚动-->
 					<div class="call-info-month-right">
 						<ul style="width: 720px;">
-							<li class="call-info-month-right-list">
+							<li class="call-info-month-right-list" v-for="monthItems in items.months">
 								<div class="call-info-month-right-item">
-									<span>04-12</span>
-									<p>周日</p>
+									<span>{{ monthItems.date }}</span>
+									<p>{{ monthItems.weekDay }}</p>
+								</div>
+								<div class="call-info-month-right-item" v-for="months in monthItems.month">
+									<span>{{ months.clinicType }}</span>
+									<p>{{ months.fee }}元/次</p>
+								</div>
+								<!--<div class="call-info-month-right-item">
+									<span v-if="months.time=='下午'">{{ months.clinicType }}</span>
+									<p v-if="months.time=='下午'">{{ months.fee }}</p>
 								</div>
 								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
+									<span v-if="months.time=='晚上'">{{ months.clinicType }}</span>
+									<p v-if="months.time=='晚上'">{{ months.fee }}</p>
+								</div>-->
 							</li>
-							<li class="call-info-month-right-list">
-								<div class="call-info-month-right-item">
-									<span>04-22</span>
-									<p>周三</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-							</li>
-							<li class="call-info-month-right-list">
-								<div class="call-info-month-right-item">
-									<span>05-02</span>
-									<p>周四</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-							</li>
-							<li class="call-info-month-right-list">
-								<div class="call-info-month-right-item">
-									<span>05-12</span>
-									<p>周五</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-							</li>
-							<li class="call-info-month-right-list">
-								<div class="call-info-month-right-item">
-									<span>05-12</span>
-									<p>周五</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-							</li>
-							<li class="call-info-month-right-list">
-								<div class="call-info-month-right-item">
-									<span>05-12</span>
-									<p>周五</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span>专家</span>
-									<p>50元/次</p>
-								</div>
-								<div class="call-info-month-right-item">
-									<span></span>
-									<p></p>
-								</div>
-							</li>
+
 						</ul>
 					</div>
 				</div>
+
 			</div>
 		</div>
 
@@ -204,19 +111,11 @@
 			</a>
 		</div>
 		<div class="page-cell call-info-time-list">
-			<a class="mint-cell">
+			<a class="mint-cell" v-for="items in workplacesItems">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">中山大学附属第三医院</span>
-					<span class="mint-cell-label">广东省广州市天河区天河路600号</span>
-				</label>
-				<div class="mint-cell-value"></div>
-			</a>
-			<a class="mint-cell">
-				<span class="mint-cell-mask"></span>
-				<label class="mint-cell-title">
-					<span class="mint-cell-text">中山大学附属第三医院</span>
-					<span class="mint-cell-label">广东省广州市天河区天河路600号</span>
+					<span class="mint-cell-text">{{ items.hosipitalName }}</span>
+					<span class="mint-cell-label">{{ items.hosipitalAddress }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
@@ -242,59 +141,124 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
+	import {getJson, postJson} from 'util'
+
 	export default{
+		route: {
+			data ({to, next}) {
+
+				let _self = this
+				_self.ids = to.query.id
+
+				// 出诊信息
+				getJson('api/schedules/'+ _self.ids, '', (rsp)=>{
+
+					_self.monthItems = _self.reGroupArr(rsp.items)
+				  _self.schedulesItems = _self.reGroupMonth(_self.monthItems)
+					_self.type = rsp.type
+					console.log(JSON.stringify(_self.monthItems))
+					console.log(_self.schedulesItems)
+
+					// 医院地址
+					getJson('api/workplaces/'+ _self.ids, '', (rsp)=>{
+
+						_self.workplacesItems = rsp
+
+						// 取消红点
+						postJson('api/schedules/hasRead/'+ _self.ids, '', (rsp)=>{},_self)
+					},_self)
+				},_self)
+
+				next()
+
+			}
+		},
+
 	  data () {
 	    return{
 	      openmsg: false,
-		    arr2: [
-			    {"date":"04-12","week":"周日","day":"上午","pos":"专家","times":"50"},
-			    {"date":"04-12","week":"周日","day":"下午","pos":"专家","times":"40"},
-			    {"date":"04-12","week":"周日","day":"晚上","pos":"专家","times":"30"},
-			    {"date":"04-13","week":"周一","day":"上午","pos":"专家","times":"500"},
-			    {"date":"04-13","week":"周一","day":"下午","pos":"专家","times":"510"},
-			    {"date":"04-13","week":"周一","day":"晚上","pos":"专家","times":"520"},
-			    {"date":"04-14","week":"周二","day":"下午","pos":"专家","times":"550"},
-			    {"date":"04-14","week":"周二","day":"晚上","pos":"专家","times":"560"},
-			    {"date":"04-15","week":"周三","day":"下午","pos":"专家","times":"550"},
-			    {"date":"04-15","week":"周三","day":"晚上","pos":"专家","times":"560"},
-			    {"date":"04-16","week":"周四","day":"下午","pos":"专家","times":"550"},
-			    {"date":"04-16","week":"周四","day":"晚上","pos":"专家","times":"560"},
-			    {"date":"04-17","week":"周五","day":"下午","pos":"专家","times":"550"},
-			    {"date":"04-17","week":"周五","day":"晚上","pos":"专家","times":"560"},
-			    {"date":"04-18","week":"周六","day":"下午","pos":"专家","times":"550"},
-			    {"date":"04-18","week":"周六","day":"晚上","pos":"专家","times":"560"}
-		    ]
+		    ids: '', // 医生ID
+		    workplacesItems: [], // 医院地址
+		    schedulesItems: [], // 出诊信息
+		    monthItems: [], // 月信息按日期分类
+		    type: '', // 周/月
 	    }
 	  },
 
-		ready () {
-	  	let _self = this
-			function getArr(arr){
+		methods: {
+			// 重组周数组
+			reGroupArr (arr) {
 				var map = {},
 						dest = [];
-				for(var i = 0; i < arr.length; i++){
+				for (var i = 0; i < arr.length; i++) {
 					var ai = arr[i];
-					if(!map[ai.date]){
+					if (!map[ai.location]) {
 						dest.push({
-							date: ai.date,
-							week: ai.week,
-							data: [ai]
+							location: ai.location,
+							data: [ai],
+							months: []
 						});
-						map[ai.date] = ai;
-					}else{
-						for(var j = 0; j < dest.length; j++){
+						map[ai.location] = ai;
+					} else {
+						for (var j = 0; j < dest.length; j++) {
 							var dj = dest[j];
-							if(dj.date == ai.date){
+							if (dj.location == ai.location) {
 								dj.data.push(ai);
 								break;
 							}
 						}
 					}
 				}
-				_self.arr2 = dest
-				console.log(_self.arr2);
+
+				return dest;
+			},
+
+			// 重组月份数组
+			reGroupMonthArr (arr) {
+				var map = {},
+						dest = [];
+				for (var i = 0; i < arr.length; i++) {
+					var ai = arr[i];
+					if (!map[ai.date]) {
+						dest.push({
+							date: ai.date,
+							weekDay: ai.weekDay,
+							location: ai.location,
+							month: [ai]
+						});
+						map[ai.date] = ai;
+					} else {
+						for (var j = 0; j < dest.length; j++) {
+							var dj = dest[j];
+							if (dj.date == ai.date) {
+								dj.month.push(ai);
+								break;
+							}
+						}
+					}
+				}
+
+				return dest;
+			},
+
+			// 重组同一天的数据
+			reGroupMonth (arr) {
+				let mData = arr
+				for(let i = 0; i < mData.length; i++){
+					let mi = mData[i]
+					let mArr = this.reGroupMonthArr(mi.data)
+
+					for(let k = 0; k < mArr.length; k++){
+					  let mk = mArr[k]
+						if(mi.location == mk.location) {
+					  	mi.months.push(mk)
+						}
+					}
+				}
+
+				return mData;
 			}
-			getArr(this.arr2)
+
 		},
 
 		components: {

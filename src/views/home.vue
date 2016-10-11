@@ -104,7 +104,7 @@
 										:title="items.date"
 										:value="items.recheckItem"
 										:istitle="true"
-										v-link="{path: '/online/scheme', query: {actives: 'checked'}, replace: true}"
+										v-link="{path: '/online/schemeAdd', query: {id: items.id, isEdit: true}, replace: true}"
 										blackfont>
 								</mt-cell>
 							</div>
@@ -113,23 +113,28 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="我的医生">
 					<div class="page-cell doctor-index-box">
-						<a class="mint-cell" v-link="{path: '/mydoctor/doctor'}">
-									<span class="mint-cell-mask leh-red-dot">
+						<div class="leh-null-data" v-if="!doctorItems.length">暂无数据</div>
+						<a class="mint-cell" v-for="items in doctorItems" v-link="{path: '/mydoctor/doctor', query:{id: items.id}, replace: true}">
+									<span class="mint-cell-mask" :class="{'leh-red-dot': items.unread}">
 										<div class="doctor-img">
-											<img src="../assets/img/private.jpg"/>
+											<img :src="items.photo" v-if="items.photo !== null"/>
+											<img src="../assets/img/private.jpg" v-if="items.photo === null"/>
 										</div>
 									</span>
 							<div class="mint-cell-title">
 										<span class="mint-cell-text">
-											<span>高志良</span>
-											<span>主任医师</span>
-											<span class="leh-c-green">感染科</span>
+											<span>{{ items.name }}</span>
+											<span>{{ items.title }}</span>
+											<span class="leh-c-green">{{ items.custName }}</span>
 										</span>
-								<span class="mint-cell-label leh-c-black">中山大学附属第三医院</span>
+								<span class="mint-cell-label leh-c-black">{{ items.hosipitalName }}</span>
 							</div>
 							<div class="mint-cell-value"></div>
 						</a>
 
+						<div class="page-infinite-loading document-index-load-tap" v-if="pageDoctorNum*10 <= pageDoctorTotal">
+							<mt-button size="large" type="transparent" icon="load" @click="moreDoctor" >点击加载更多</mt-button>
+						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="个人中心" class="consult-container-item-hight">
@@ -179,6 +184,7 @@
 
 	import MtContent from '../components/content'
 	import MtHeader from '../components/header.vue'
+	import MtButton from '../components/button.vue'
 	import MtTabContainer from '../components/tab-container.vue'
 	import MtTabContainerItem from '../components/tab-container-item.vue'
 	import MtTabbar from '../components/tabbar.vue'
@@ -190,12 +196,23 @@
 	export default{
 		name: 'page-tabbar',
 		route: {
-			data () {
+			data (transition) {
+
+				let _self = this
+
+				_self.isDoctorPage = transition.to.query.name || false
+				if(_self.isDoctorPage) return // 是否从列表页返回
+
+				// 在线门诊
 				getJson('api/records/getindex', '', (rsp)=>{
-					this.unreadInfo = rsp.unreadInfo
-					this.recordInfo = rsp.recordInfo
-					this.rechecks = rsp.rechecks
-				},this)
+					_self.unreadInfo = rsp.unreadInfo
+					_self.recordInfo = rsp.recordInfo
+					_self.rechecks = rsp.rechecks
+
+					// 我的医生
+					_self.pageDoctorNum = 1
+					_self.getDoctors()
+				},_self)
 
 
 			}
@@ -215,11 +232,40 @@
 				unreadInfo: {}, // 红点
 				recordInfo: {}, // 我的单据处理与未处理数据
 				rechecks: [], // 我的日程
+				doctorItems: [], // 我的医生
+				pageDoctorTotal: 0,   // 我的医生列表总数
+				pageDoctorNum: 1,  // 我的医生列表页码
+				isDoctorPage: false, // 是否由我的医生返回
 				firstIn: false // 是否第一次进入
 			};
 		},
 
 		methods: {
+			// 我的医生列表
+			getDoctors () {
+
+				let _self = this
+				getJson('api/doctors/index?pageIndex=1&pageSize=10', '', (rsp)=>{
+
+					_self.doctorItems = rsp.items
+					_self.pageDoctorTotal = rsp.totalQty
+				},_self)
+			},
+
+			// 获取更多医生列表信息
+			moreDoctor () {
+				let _self = this
+
+				if(_self.pageDoctorNum*10 >= _self.pageDoctorTotal) {
+					return
+				}
+				_self.pageDoctorNum = _self.pageDoctorNum + 1
+				getJson('api/doctors/index?pageIndex='+ this.pageDoctorNum +'&pageSize=10', '', (rsp)=>{
+
+					// 合并数组
+					_self.doctorItems = _self.doctorItems.concat(rsp.items)
+				},_self)
+			}
 		},
 
 
@@ -236,6 +282,7 @@
 		components: {
 			MtContent,
 			MtHeader,
+			MtButton,
 			MtTabContainer,
 			MtTabContainerItem,
 			MtTabbar,
@@ -289,6 +336,7 @@
 	.doctor-index-box .mint-cell-text span:nth-of-type(3){font-size: 13px;}
 	.doctor-index-box .mint-cell-label{font-size: 14px;}
 	.doctor-index {bottom: 100px}
+	.document-index-load-tap .mint-button--transparent{text-align: center;}
 	/*个人中心*/
 	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;}
 	.center-head-img{width: 55px;height: 55px;border: 1px solid #fff;border-radius: 50%;margin: 50px auto 15px;overflow: hidden;text-align: center;}

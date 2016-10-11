@@ -201,12 +201,12 @@
 	.check-list .mint-cell:after{border: 0;}
 	.check-list .mint-cell:before{left: 10px;}
 	.check-list .mint-cell-title span.mint-cell-text{max-width: 120px;float: left;}
-	.check-list .mint-cell-value span.fr{width: 50px;margin-left: 10px;}
+	.check-list .mint-cell-value span.fr{width: 60px;margin-left: 10px;}
 	.check-text-box{padding: 20px 10px;overflow: hidden;}
 	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
 	.check-arr-btn{border: 0;text-align: center;height: 40px;}
 
-	.check-table-height {height: 200px; overflow: hidden}
+	.check-table-height {max-height: 200px; overflow: hidden}
 	.check-table-height-auto {height: auto}
 
 	/*侧滑*/

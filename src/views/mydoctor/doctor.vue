@@ -1,15 +1,16 @@
 <template>
 	<div class="leh-float-box">
-		<mt-button type="green" v-link="'/mydoctor/doctorVisits'" reddot>门诊信息</mt-button>
+		<mt-button type="green" v-link="{path: '/mydoctor/doctorVisits', query: {id: ids}, replace: true}" :reddot="doctorItems.unread">门诊信息</mt-button>
 		<mt-button type="blue" v-link="'/online/feedback'">在线留言</mt-button>
 	</div>
 	<div class="leh-wrap">
 		<div class="doctor-details-head">
-			<span class="iconfont icon-wx-arr-left doctor-details-head-arr" v-link="'/home'"></span>
+			<span class="iconfont icon-wx-arr-left doctor-details-head-arr" v-link="{path: '/home', query: {name: true}, replace: true}"></span>
 			<div class="doctor-details-img">
-				<img src="../../assets/img/private.jpg" />
+				<img :src="doctorItems.photo" v-if="doctorItems.photo !== null"/>
+				<img src="../../assets/img/private.jpg" v-if="doctorItems.photo === null"/>
 			</div>
-			<p>张医生<span> 主任医师</span></p>
+			<p>{{ doctorItems.name }}<span> {{ doctorItems.title }}</span></p>
 		</div>
 		<div class="doctor-details-content">
 			<div class="doctor-details-list">
@@ -17,9 +18,10 @@
 					<span class="leh-c-green">执业地点</span>
 					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown1, 'icon-wx-arr-down': updown1 }"></span>
 				</div>
-				<p :class="{ 'height-auto': updown1}">中山大学第三附属医院</p>
-				<!--<p>中山大学第三附属医院<span>感染性疾病科</span></p>
-				<p class="leh-double-text-ellipsis">广东省广州市天河区天河路100号</p>-->
+				<div class="height-normal" :class="{ 'height-auto': updown1}">
+					<div>{{ doctorItems.hosipitalName }} &nbsp;&nbsp; {{ doctorItems.custName }}</span></div>
+					<div class="leh-double-text-ellipsis">{{ doctorItems.hosipitalAddress }}</div>
+				</div>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="doctor-details-list">
@@ -27,7 +29,7 @@
 					<span class="leh-c-green">医生擅长</span>
 					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown2, 'icon-wx-arr-down': updown2 }"></span>
 				</div>
-				<p :class="{ 'height-auto': updown2}">暂无内容</p>
+				<div class="height-normal" :class="{ 'height-auto': updown2}">{{ doctorItems.remark || '暂无信息'  }}</div>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="doctor-details-list">
@@ -35,11 +37,11 @@
 					<span class="leh-c-green">医生简介</span>
 					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown3, 'icon-wx-arr-down': updown3 }"></span>
 				</div>
-				<p :class="{ 'height-auto': updown3}">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗、肝硬化扥那个中西结合治疗</p>
+				<p :class="{ 'height-auto': updown3}">{{ doctorItems.introduction || '暂无信息' }}</p>
 			</div>
 			<div class="leh-null-box"></div>
 			<div class="page-cell">
-				<a class="mint-cell" v-link="'/mydoctor/doctorRate'">
+				<a class="mint-cell" v-link="{path: '/mydoctor/doctorRate', query:{id: ids}, replace: true}">
 					<span class="mint-cell-mask"></span>
 					<label class="mint-cell-title">
 						<span class="mint-cell-text leh-c-green">患者评价</span>
@@ -51,12 +53,13 @@
 				</a>
 			</div>
 			<div class="doctor-details-comment-list-box">
+				<div class="leh-null-data" v-if="!doctorRateItems.length">暂无评价</div>
 				<ul>
-					<li class="doctor-details-comment-list" v-for="n in 4">
-						<p class="leh-double-text-ellipsis">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗</p>
+					<li class="doctor-details-comment-list" v-for="items in doctorRateItems">
+						<p class="leh-double-text-ellipsis">{{ items.content || '暂无评价' }}</p>
 						<div class="doctor-details-comment-list-bd">
-							<span class="fl">陈**</span>
-							<span class="fr">2016-02-30</span>
+							<span class="fl">{{ items.markName }}</span>
+							<span class="fr">{{ items.createTime }}</span>
 						</div>
 					</li>
 				</ul>
@@ -67,12 +70,37 @@
 <script>
 	import MtContent from '../../components/content'
 	import MtButton from '../../components/button.vue'
+	import {getJson} from 'util'
+
 	export default{
+		route: {
+			data (transition) {
+
+				let _self = this
+				_self.ids = transition.to.query.id
+				// 医生详情
+				getJson('api/doctors/detail/'+ _self.ids, '', (rsp)=>{
+					_self.doctorItems = rsp
+
+					// 患者评价
+					getJson('api/assess/'+ _self.ids +'?pageIndex=1&pageSize=5', '', (rsp)=>{
+						_self.doctorRateItems = rsp.items
+					},_self)
+				},_self)
+
+
+			}
+		},
+
 	  data () {
 	    return{
 		    updown1: false,
 		    updown2: false,
-		    updown3: false
+		    updown3: false,
+		    ids: '', // ID
+		    doctorItems: '', // 医生详情
+		    doctorRateItems: '', // 患者评价
+		    isRatePage: false, // 是否从列表页返回
 	    }
 	  },
 		components: {
@@ -92,7 +120,7 @@
 	.doctor-details-list{padding: 15px 10px;overflow: hidden;color: #363636;}
 	.doctor-details-list-title{overflow: hidden;margin-bottom: 10px;}
 	.doctor-details-list-title span.fr{color: #aaa;}
-	.doctor-details-list p{font-size: 14px;line-height: 20px;}
+	.doctor-details-list .height-normal {font-size: 14px;line-height: 20px; height: 20px; overflow: hidden}
 	.doctor-details-list p span{margin-left: 10px;}
 	.doctor-details-content .mint-cell:after{border: 0;}
 	.doctor-details-content .mint-cell span{font-size: 14px;}
@@ -103,5 +131,7 @@
 	.doctor-details-comment-list-bd{margin-top: 10px;overflow: hidden;}
 	.doctor-details-comment-list-bd span{color: #919191;font-size: 12px;}
 	.doctor-details-content .icon-wx-arr-right{font-size:12px;color: #fff;background-color: #e5e5e5;padding: 3px 0;margin-left: 5px;}
+
+	.doctor-details-list .height-auto {height: auto; overflow: auto}
 
 </style>

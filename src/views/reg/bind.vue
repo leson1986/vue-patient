@@ -131,8 +131,15 @@
 				 return
 
 				 }*/
-				postJson('api/register/bind', params, (rsp)=>{
-					_self.$route.router.go({path: '/reg/register', query: params, replace: true})
+				postJson('api/register/bind', params, (rsp, recode, msg)=>{
+
+					if(recode === 1) {
+						this.tips = msg
+						this.show_popup = true
+						return
+					}else {
+						_self.$route.router.go({path: '/reg/register', query: params, replace: true})
+					}
 				},_self)
 
 			}

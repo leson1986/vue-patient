@@ -1,11 +1,11 @@
 <template>
 	<mt-header fixed isgrey :title="title">
-		<mt-button v-link="'/online/scheme'" icon="arr-left" slot="left"></mt-button>
-		<mt-button slot="right" v-show="is_visible">保存</mt-button>
+		<mt-button v-link="{path: from_path}" icon="arr-left" slot="left"></mt-button>
+		<mt-button slot="right" v-show="is_visible" @click="putDaily">保存</mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
-		<mt-button :type="bgcolor" @click="save">{{active_name}}</mt-button>
+		<mt-button :type="bgcolor" @click="saveAndDel">{{active_name}}</mt-button>
 	</div>
 	<mt-content class="page-popup">
 		<div class="page-cell schedule-add-list">
@@ -23,7 +23,7 @@
 				<label class="mint-cell-title">
 					<span class="mint-cell-text" v-text="title_name"></span>
 					<ul class="leh-select-drag-box" v-if="show_drag">
-						<li v-for="items in users" @click="getTitleName(items.name)">{{ items.name }}</li>
+						<li v-for="items in dailyList" @click="getTitleName(items.name)">{{ items.name }}</li>
 					</ul>
 				</label>
 				<div class="mint-cell-value">
@@ -35,21 +35,21 @@
 					<span class="mint-cell-text iconfont icon-wx-writte"></span>
 					<span class="mint-cell-text">备注</span>
 					<p>
-						<textarea placeholder="把容易忘记的事情做个备注呗！"></textarea>
+						<textarea placeholder="把容易忘记的事情做个备注呗！" v-model="remark">{{ dailys.remark }}</textarea>
 					</p>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-		<mt-datetime-picker
-				:visible.sync="visible"
-				:value.sync="value"
-				:start-y=0
-				@confirm="handleChange"
-				:modal="true">
-		</mt-datetime-picker>
 	</mt-content>
 	<mt-modal v-if="visible"></mt-modal>
+	<mt-datetime-picker
+			:visible.sync="visible"
+			:value.sync="value"
+			:start-y=0
+			@confirm="handleChange"
+			:modal="true">
+	</mt-datetime-picker>
 </template>
 <script>
 	import MtContent from '../../components/content.vue'
@@ -65,21 +65,47 @@
 	import MtLiItem from '../../components/liItem.vue'
 	import MtModal from '../../components/modal.vue'
 	import MessageBox from 'vue-msgbox'
+	import {getJson, postJson, delJson, putJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
 		route : {
 			data (transition) {
-				this.value = new Date()
-				this.is_visible = transition.to.query.isEdit;
-				if(transition.to.query.isEdit){
-					this.title = '编辑日程'
-					this.bgcolor = 'danger'
-					this.active_name = '删除日程'
+
+				let _self = this
+				_self.from_path = transition.from.path
+				_self.ids = transition.to.query.id
+				_self.is_visible = transition.to.query.isEdit;
+
+				if(_self.is_visible){
+
+					_self.title = '编辑日程'
+					_self.bgcolor = 'danger'
+					_self.active_name = '删除日程'
+
+					// 获取已有信息
+					getJson('api/recheck/'+ _self.ids, '', (rsp)=>{
+
+						_self.dailys = rsp
+						_self.date = rsp.date
+						_self.time = rsp.dayTime
+						_self.title_name = rsp.recheckItem
+
+						// 取消红点
+						postJson('api/recheck/hasRead/'+ _self.ids, '', (rsp)=>{
+						},_self)
+
+					},_self)
+
 				}else {
-					this.title = '新增提醒'
-					this.bgcolor = 'green'
-					this.active_name = '保存'
+
+					_self.title = '新增提醒'
+					_self.bgcolor = 'green'
+					_self.active_name = '保存'
+					_self.title_name = '提醒事项'
+					_self.remark = ''
+					_self.value = new Date()
+
 				}
 			}
 		},
@@ -94,14 +120,18 @@
 				active_name: '',
 				visible3: true,
 				drug: '',
-				date: '',
-				time: '',
+				from_path: '', // 来源路径
+				date: '', // 日期
+				time: '', // 时间
+				remark: '', // 备注
 				show_drag: 0,
-				title_name: '提醒事项',
-				users: [
-					{ name: '回院复诊' },
+				ids: '',
+				dailys: '', // 日程数据
+				title_name: '提醒事项', // 提醒事项
+				dailyList: [
 					{ name: '回院复查' },
-					{ name: '办理出院' }
+					{ name: '回院复诊' },
+					{ name: '其他' }
 				]
 			}
 		},
@@ -114,11 +144,22 @@
 
 		methods: {
 
-			save () {
+			saveAndDel () {
 				if(this.is_visible){
-					this.msgBox('编辑')
+					this.msgBox()
 				}else{
-					alert('保存')
+					// 修改
+					let _self = this
+					let params = {
+						"date": _self.date,
+						"dayTime": _self.time,
+						"recheckItem": _self.title_name,
+						"remark": _self.remark
+					}
+
+					postJson('api/Recheck', params, (rsp, recode, msg)=>{
+						_self.$route.router.go('/online/scheme')
+					},_self)
 				}
 			},
 
@@ -144,20 +185,44 @@
 				return h+':'+minute;
 			},
 
-			msgBox (ids) {
+			msgBox () {
 
+				let _self = this
 				MessageBox({
 					title: '提示',
 					message: '是否确认删除本日程?',
 					showCancelButton: true
 				}).then(action => {
-					console.log('callback:', ids);
+
+					if(action === 'confirm'){
+
+						// 删除
+						delJson('api/recheck/'+ _self.ids, '', (rsp)=>{
+							_self.$route.router.go('/online/scheme')
+						},_self)
+					}
 				});
 			},
 
 			getTitleName (titles) {
 				this.title_name = titles
 				this.show_drag = 0
+			},
+
+			putDaily () {
+
+				// 修改
+				let _self = this
+				let params = {
+					"date": _self.date,
+					"dayTime": _self.time,
+					"recheckItem": _self.title_name,
+					"remark": _self.remark
+				}
+
+				putJson('api/recheck/'+ _self.ids, params, (rsp, recode, msg)=>{
+						alert('修改成功')
+				},_self)
 			}
 		},
 

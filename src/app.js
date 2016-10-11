@@ -30,8 +30,8 @@ Vue.use(infiniteScroll)
 // VueValidator
 Vue.use(VueValidator)
 
-Vue.http.options.root = process.env.NODE_ENV === 'development' ? 'src/assets/data' : '/vue-sui-demo/static/data'
-Vue.http.options.emulateJSON = true
+//Vue.http.options.root = process.env.NODE_ENV === 'development' ? 'src/assets/data' : '/vue-sui-demo/static/data'
+//Vue.http.options.emulateJSON = true
 
 // Directive
 //Vue.directive('util', util)

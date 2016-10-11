@@ -63,8 +63,9 @@
 .ui-MPreview-back {
     height: 40px;
     line-height: 40px;
-    left: 0;
+    right: 0;
     position: absolute;
+		z-index: 5;
     top: 0;
     width: 40px;
 }
@@ -103,7 +104,7 @@
     font-size: 13px;
     height: 40px;
     position: absolute;
-    right: 0;
+    left: 10px;
     text-align: center;
     top: 0;
     color: #ddd;

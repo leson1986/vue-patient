@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="选择病种">
-		<mt-button v-link="'/user/info'" icon="arr-left" slot="left" v-if="is_info"></mt-button>
+		<mt-button v-link="{path: '/user/info', query: {'toinfo': true}}" icon="arr-left" slot="left" v-if="is_info"></mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
@@ -29,7 +29,7 @@
 	export default{
 		route: {
 			data (transition) {
-				this.is_info = transition.to.query.from
+				this.is_info = transition.to.query.info
 			}
 		},
 
@@ -74,7 +74,7 @@
 
 			confirm () {
 				if(this.is_conf && this.is_info){
-					this.$route.router.go({path: '/user/info', query: {'disease': this.disease}})
+					this.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': this.disease}})
 				}if(this.is_conf && !this.is_info){
 					this.$route.router.go('/home')
 				}

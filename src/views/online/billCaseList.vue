@@ -24,7 +24,7 @@
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">临床症状</span>
-					<span class="mint-cell-label">{{ medicalData.remark }}</span>
+					<span class="mint-cell-label">{{ medicalData.remark || '暂无内容' }}</span>
 				</label>
 				<div class="mint-cell-value">
 					<span></span>
@@ -34,7 +34,7 @@
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">特征</span>
-					<span class="mint-cell-label">{{ medicalData.physicalSign }}</span>
+					<span class="mint-cell-label">{{ medicalData.physicalSign || '暂无内容' }}</span>
 				</label>
 				<div class="mint-cell-value">
 					<span></span>
@@ -44,7 +44,7 @@
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">诊断结果</span>
-					<span class="mint-cell-label">{{ medicalData.rcdResult }}</span>
+					<span class="mint-cell-label">{{ medicalData.rcdResult || '暂无内容' }}</span>
 				</label>
 				<div class="mint-cell-value">
 					<span></span>
@@ -54,7 +54,7 @@
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">处理意见</span>
-					<span class="mint-cell-label">{{ medicalData.suggestion }}</span>
+					<span class="mint-cell-label">{{ medicalData.suggestion || '暂无内容' }}</span>
 				</label>
 				<div class="mint-cell-value">
 					<span></span>
@@ -179,7 +179,7 @@
 
 						// 获取病历索引
 						getJson('api/medical/index/', '', (rsp_index)=>{
-							_self.indexList = _self.regroupArr(rsp_index)
+							_self.indexList = _self.reGroupArr(rsp_index)
 
 						},_self)
 					},_self)
@@ -187,7 +187,7 @@
 			},
 
 			// 重组索引数组
-			regroupArr (arr) {
+			reGroupArr (arr) {
 				var map = {},
 						dest = [];
 				for (var i = 0; i < arr.length; i++) {

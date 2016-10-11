@@ -28,10 +28,6 @@ export function loadInterceptors () {
 				console.log(response.status)
 			}
 
-			if(response.status === 401) {
-
-			}
-
 			loader.hide()
 			return response
 		});
@@ -57,7 +53,12 @@ export function getJson(url, options, callback, self) {
 		.then(({data: {recode, msg, data}}) => {
 			callback(data, recode, msg)
 		}, (response) => {
-			alert(response.status + '  ' +response.data.message)
+
+			if(response.status === 401) {
+				self.$route.router.go({path: '/reg/bind', replace: true})
+			}else {
+				alert(response.status + '  ' +response.data.message)
+			}
 	});
 }
 
@@ -73,8 +74,30 @@ export function postJson(url, options, callback, self) {
 		.then(({data: {recode, msg, data}}) => {
 			callback(data, recode, msg)
 		}, (response) => {
-			alert(response.status + '  ' +response.data.message)
-	});
+
+			if(response.status === 401) {
+				self.$route.router.go({path: '/reg/bind', replace: true})
+			}else {
+				alert(response.status + '  ' +response.data.message)
+			}
+		});
+
+}
+
+// put请求
+export function putJson(url, options, callback, self) {
+	loadInterceptors()
+
+	if(typeof callback != "function" || (callback instanceof RegExp)){
+		return alert("错误提示：请传入正确的回调函数");
+	}
+
+	return self.$http.put(SERVER + url, options)
+		.then(({data: {recode, msg, data}}) => {
+			callback(data, recode, msg)
+		}, (response) => {
+				alert(response.status + '  ' +response.data.message)
+		});
 
 }
 

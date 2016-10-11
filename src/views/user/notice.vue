@@ -3,15 +3,16 @@
 		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class="page-infinite">
-		<div class="page-cell disease-list page-infinite-wrapper" v-el:wrapper :style="{ height: wrapperHeight + 'px' }">
-			<div class="page-infinite-list" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
+		<div class="page-cell disease-list page-infinite-wrapper">
+			<div class="page-infinite-list">
 
-				<mt-cell v-for="item in list" title="林医生公告更新" value="2013-10-25" istitle v-link="{path: '/user/noticeDetail', replace: true}"></mt-cell>
+				<div class="leh-null-data" v-if="!noticeItems.length">暂无公告</div>
+				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.id}, replace: true}"></mt-cell>
 			</div>
-			<p v-show="loading" class="page-infinite-loading">
-				<mt-spinner type="fading-circle"></mt-spinner>
-				加载中...
-			</p>
+
+			<div class="page-infinite-loading document-index-load-tap" v-if="pageNoticeNum*10 <= pageNoticeTotal">
+				<mt-button size="large" type="transparent" icon="load" @click="moreNotice" >点击加载更多</mt-button>
+			</div>
 		</div>
 	</mt-content>
 </template>
@@ -21,38 +22,58 @@
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
 	import MtSpinner from '../../components/spinner.vue'
+	import {getJson} from 'util'
 
 	export default{
+		route: {
+			data ({to, next}) {
+
+				let _self = this
+				_self.formPage = to.query.tonotice || false
+				if(_self.formPage) return // 是否其他页面返回
+
+				// 医生公告列表
+				_self.pageNoticeNum = 1
+				getJson('api/notices/index?pageIndex=1&pageSize=10', '', (rsp)=>{
+
+					_self.noticeItems = rsp.items
+					_self.pageNoticeTotal = rsp.totalQty
+				},_self)
+
+				next()
+			}
+		},
+
 		data () {
 			return{
 				list: [],
 				loading: false,
 				allLoaded: false,
-				wrapperHeight: 0
+				wrapperHeight: 0,
+				formPage: '', // 返回的页面
+				noticeItems: [], // 公告列表
+				pageNoticeNum: 1, //
+				pageNoticeTotal: 0, //
+
 			}
 		},
 
 		methods: {
-			loadMore() {
-				this.loading = true;
-				setTimeout(() => {
-					let last = this.list[this.list.length - 1];
-					for (let i = 1; i <= 10; i++) {
-						this.list.push(last + i);
-					}
-					this.loading = false;
-				}, 2500);
-			}
-		},
 
-		compiled() {
-			for (let i = 1; i <= 20; i++) {
-				this.list.push(i);
-			}
-		},
+			// 获取更多医生列表信息
+			moreNotice () {
+				let _self = this
 
-		ready() {
-			this.wrapperHeight = document.documentElement.clientHeight - this.$els.wrapper.getBoundingClientRect().top;
+				if(_self.pageNoticeNum*3 >= _self.pageNoticeTotal) {
+					return
+				}
+				_self.pageNoticeNum = _self.pageNoticeNum + 1
+				getJson('api/notices/index?pageIndex='+ this.pageNoticeNum +'&pageSize=3', '', (rsp)=>{
+
+					// 合并数组
+					_self.noticeItems = _self.noticeItems.concat(rsp.items)
+				},_self)
+			}
 		},
 
 		components: {
@@ -68,4 +89,5 @@
 <style>
 	.notice-list .mint-cell:after{border: 0;}
 	.notice-list .mint-cell:before{left: 0;}
+	.document-index-load-tap .mint-button--transparent{text-align: center;}
 </style>

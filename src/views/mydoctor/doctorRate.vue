@@ -1,22 +1,23 @@
 <template>
 	<mt-content class="page-infinite">
 		<div class="evaluation-head">
-			<span class="iconfont icon-wx-arr-left evaluation-head-arr" v-link="'/mydoctor/doctor'"></span>
+			<span class="iconfont icon-wx-arr-left evaluation-head-arr" v-link="{path: '/mydoctor/doctor', query: {name: true}, replace: true}"></span>
 			<div class="evaluation-head-title">患者评价</div>
 			<div class="page-cell">
 				<a class="mint-cell">
 						<span class="mint-cell-mask">
 							<div class="evaluation-head-img">
-								<img src="../../assets/img/private.jpg"/>
+								<img :src="doctorCommon.photo" v-if="doctorCommon.photo !== null"/>
+								<img src="../../assets/img/private.jpg" v-if="doctorCommon.photo === null"/>
 							</div>
 						</span>
 					<label class="mint-cell-title">
 							<span class="mint-cell-text">
-								<span v-text="name"></span>
-								<span class="leh-fs-fourteen" v-text="title"></span>
-								<span class="leh-fs-fourteen" v-text="department"></span>
+								<span>{{ doctorCommon.name }}</span>
+								<span class="leh-fs-fourteen">{{ doctorCommon.title }}</span>
+								<span class="leh-fs-fourteen">{{ doctorCommon.custName }}</span>
 							</span>
-						<span class="mint-cell-label" v-text="hospital"></span>
+						<span class="mint-cell-label">{{ doctorCommon.hosipitalName }}</span>
 					</label>
 					<div class="mint-cell-value">
 						<div>
@@ -28,71 +29,88 @@
 			</div>
 		</div>
 		<div class="evaluation-content">
-			<div class="doctor-details-comment-list-box page-infinite-wrapper" v-el:wrapper :style="{ height: wrapperHeight + 'px' }">
-				<div class="page-infinite-list" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
+			<div class="doctor-details-comment-list-box page-infinite-wrapper">
+				<div class="page-infinite-list">
+					<div class="leh-null-data" v-if="!doctorRateItems.length">暂无评价</div>
 					<ul>
-						<li class="doctor-details-comment-list" v-for="item in list">
-							<p class="leh-double-text-ellipsis">功能性消化不良，肠易激综合症、炎症性肠病及非酒精性脂肪肝、肝硬化扥那个中西结合治疗</p>
+						<li class="doctor-details-comment-list" v-for="items in doctorRateItems">
+							<p class="leh-double-text-ellipsis">{{ items.content || '暂无评价'}}</p>
 							<div class="doctor-details-comment-list-bd">
-								<span class="fl">陈**</span>
-								<span class="fr">2016-02-30</span>
+								<span class="fl">{{ items.markName }}</span>
+								<span class="fr">{{ items.createTime }}</span>
 							</div>
 						</li>
 					</ul>
 				</div>
-				<p v-show="loading" class="page-infinite-loading">
-					<mt-spinner type="fading-circle"></mt-spinner>
-					加载中...
-				</p>
+
+				<div class="page-infinite-loading document-index-load-tap" v-if="pageDoctorRateNum*10 <= pageDoctorRateTotal">
+					<mt-button size="large" type="transparent" icon="load" @click="moreDoctorRate" >点击加载更多</mt-button>
+				</div>
 			</div>
 		</div>
 	</mt-content>
 </template>
 <script>
 	import MtContent from '../../components/content.vue'
-	import MtSpinner from '../../components/spinner.vue'
+	import MtButton from '../../components/button.vue'
+	import {getJson} from 'util'
 
 	export default{
+		route: {
+			data (transition) {
+
+				let _self = this
+
+				_self.ids = transition.to.query.id
+
+				// 公共信息
+				getJson('api/doctors/common/'+ _self.ids, '', (rsp)=>{
+					_self.doctorCommon = rsp
+
+					// 患者评价
+					getJson('api/assess/'+ _self.ids +'?pageIndex=1&pageSize=10', '', (rsp_rate)=>{
+						_self.doctorRateItems = rsp_rate.items
+						_self.assess = rsp_rate.totalQty
+						_self.pageDoctorRateTotal = rsp_rate.totalQty
+					},_self)
+				},_self)
+
+
+			}
+		},
+
 	  data () {
 	    return{
-	      name:'张医生',
-		    title: '副主任医师',
-		    department: '消化内科',
-		    hospital: '中山大学附属第三医院',
-		    assess: '1002',
-		    list: [],
-		    loading: false,
-		    allLoaded: false,
-		    wrapperHeight: 0
+		    assess: '', // 评价总数
+		    ids: '', // 医生ID
+		    doctorRateItems: '', // 患者评价
+		    pageDoctorRateTotal: 0, // 患者评价列表总数
+		    pageDoctorRateNum: 1,  // 患者评价列表页码
+		    doctorCommon: '', // 公共信息
 	    }
 	  },
 
 		methods: {
-			loadMore() {
-				this.loading = true;
-				setTimeout(() => {
-					let last = this.list[this.list.length - 1];
-					for (let i = 1; i <= 10; i++) {
-						this.list.push(last + i);
-					}
-					this.loading = false;
-				}, 2500);
-			}
-		},
 
-		compiled() {
-			for (let i = 1; i <= 10; i++) {
-				this.list.push(i);
-			}
-		},
+			// 获取更多患者评价信息
+			moreDoctorRate () {
+				let _self = this
 
-		ready() {
-			this.wrapperHeight = document.documentElement.clientHeight - this.$els.wrapper.getBoundingClientRect().top;
+				if(_self.pageDoctorRateNum*10 >= _self.pageDoctorRateTotal) {
+					return
+				}
+				_self.pageDoctorRateNum = _self.pageDoctorRateNum + 1
+				getJson('api/assess/'+ _self.ids +'?pageIndex='+ _self.pageDoctorRateNum +'&pageSize=10', '', (rsp)=>{
+
+					// 合并数组
+					_self.doctorRateItems = _self.doctorRateItems.concat(rsp.items)
+				},_self)
+			}
 		},
 
 		components: {
 			MtContent,
-			MtSpinner
+			MtButton
 		}
 	}
 </script>
@@ -116,4 +134,7 @@
 	.doctor-details-comment-list p{font-size: 14px;line-height: 20px;color: #363636;}
 	.doctor-details-comment-list-bd{margin-top: 10px;overflow: hidden;}
 	.doctor-details-comment-list-bd span{color: #919191;font-size: 12px;}
+
+
+	.document-index-load-tap .mint-button--transparent{text-align: center;}
 </style>
