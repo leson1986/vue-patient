@@ -66,12 +66,11 @@
 
 				let _self = this
 
-				// 取消红点
-				postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {
 
-					this.getHandwriting() // 刷新列表
-					wrapPic(_self.handwritingItems, '手写病历') // 查看图片
-				}, _self)
+				this.getHandwriting() // 刷新列表
+				wrapPic(_self.handwritingItems, '手写病历') // 查看图片
+				// 取消红点
+			//	postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {}, _self)
 			},
 
 			closePic () {

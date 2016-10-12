@@ -92,8 +92,7 @@
 						_self.title_name = rsp.recheckItem
 
 						// 取消红点
-						postJson('api/recheck/hasRead/'+ _self.ids, '', (rsp)=>{
-						},_self)
+						//postJson('api/recheck/hasRead/'+ _self.ids, '', (rsp)=>{},_self)
 
 					},_self)
 

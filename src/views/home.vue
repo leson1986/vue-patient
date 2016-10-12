@@ -196,11 +196,11 @@
 	export default{
 		name: 'page-tabbar',
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
 
-				_self.isDoctorPage = transition.to.query.name || false
+				_self.isDoctorPage = to.query.tohome || false
 				if(_self.isDoctorPage) return // 是否从列表页返回
 
 				// 在线门诊
@@ -214,6 +214,7 @@
 					_self.getDoctors()
 				},_self)
 
+				next()
 
 			}
 		},

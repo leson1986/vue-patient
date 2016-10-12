@@ -1,7 +1,7 @@
 <template>
 	<mt-header fixed isgrey title="留言详情">
 		<mt-button v-link="{path: form_path}" icon="arr-left" slot="left"></mt-button>
-		<mt-button slot="right" v-if="!ismsg" @click="closeMsg">关闭</mt-button>
+		<!--<mt-button slot="right" v-if="!ismsg" @click="closeMsg">关闭</mt-button>-->
 	</mt-header>
 	<div class="leh-float-box" v-if="ismsg">
 		<mt-button type="green">给医生留言</mt-button>
@@ -23,45 +23,49 @@
 			</a>
 		</div>
 	</div>
-		<mt-content class-name="leh-bg-grey-body" v-el:bodybox>
+	<mt-content class-name="leh-bg-grey-body" v-el:bodybox>
 		<div class="page-cell msg-details-head">
 			<a class="mint-cell">
-				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">我的药品已经快要吃完了，但是最近却有点副作用，是因为药品而产生的吗？需要先停药吗？</span>
-					<div class="msg-details-photo">
+					<span class="mint-cell-text">{{ noteDetails.contents }}</span>
+					<div class="msg-details-photo" v-if="noteDetails.urls">
 						<ul>
-							<li class="msg-details-img leh-more">
-								<img src="../../assets/img/login_quick.png"/>
-							</li>
-							<li class="msg-details-img leh-more">
-								<img src="../../assets/img/login_quick.png"/>
+							<li class="msg-details-img leh-more" v-for="urls in noteDetails.urls">
+								<img :src="urls"/>
 							</li>
 						</ul>
 					</div>
-					<span class="mint-cell-label">2015-12-11 10:11</span>
+					<span class="mint-cell-label">{{ noteDetails.createtime }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-		<div class="page-cell msg-details-content">
-			<a class="mint-cell">
+		<div class="page-cell msg-details-content" v-if="noteDetails.replyList">
+			<a class="mint-cell" v-for="items in noteDetails.replyList">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<div class="msg-details-content-title">
 						<div class="msg-details-content-title-img">
-							<img src="../../assets/img/private.jpg"/>
+							<img :src="items.userPhoto" v-if="items.userPhoto !== null"/>
+							<img src="../../assets/img/private.jpg" v-if="items.userPhoto === null"/>
 						</div>
-						<span>张医生</span>
+						<span>{{ items.userName }}</span>
 					</div>
 					<span class="mint-cell-text">
-							<p>爱上的开奖号安徽省开打机氨甲环酸的卡和思考打开按户口是的哈较好的卡萨何思达卡号</p>
-						</span>
-					<span class="mint-cell-label">2015-12-11 10:11</span>
+							<p v-if="!items.url">{{ items.content }}</p>
+							<div class="msg-details-head-photo" v-if="items.url">
+								<ul>
+									<li class="msg-details-img">
+										<img src="../../assets/img/login_quick.png"/>
+									</li>
+								</ul>
+							</div>
+					</span>
+					<span class="mint-cell-label">{{ items.createTime }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
-			<a class="mint-cell">
+			<!--<a class="mint-cell">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<div class="msg-details-content-title">
@@ -82,10 +86,11 @@
 					<span class="mint-cell-label">2015-12-11 10:11</span>
 				</label>
 				<div class="mint-cell-value"></div>
-			</a>
+			</a>-->
 		</div>
 
-		<div class="page-cell msg-details-head">
+		<!-- 暂时不删除 -->
+		<!--<div class="page-cell msg-details-head">
 			<a class="mint-cell" v-for="msg in message">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
@@ -101,7 +106,7 @@
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
-		</div>
+		</div>-->
 
 		<!-- 弹出窗 -->
 		<mt-popup-box v-if="ispopup">
@@ -120,25 +125,38 @@
 	import MtCell from '../../components/cell.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson} from 'util'
+	import {getJson, postJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
 		route: {
-			data ({from, next}) {
-				this.form_path = from.path
+			data ({to, from, next}) {
+
+				let _self =this
+				_self.form_path = from.path
+				_self.ids = to.query.id
+
+
+				getJson('api/patientMessages/'+ _self.ids, '', (rsp)=>{
+
+					_self.noteDetails = rsp
+				},_self)
+
 				next()
 			}
 		},
 
 		data () {
 			return{
-				msg: '',
+				msg: '', // 上传的内容
+				url: '', // 上传的图片
 				ispopup: false,
 				ismsg: false,
 				addpic: false,
 				showpic: false,
 				form_path: '',
+				ids: '', // 医生ID
+				noteDetails: '', // 留言详情
 				message: [
 					{
 						"id": "0",
@@ -163,6 +181,14 @@
 		},
 
 		methods: {
+			getNoteDetail () {
+			/*	let _self = this
+				getJson('api/patientMessages/'+ _self.ids, '', (rsp)=>{
+
+					_self.noteDetails = rsp
+				},_self)	*/
+			},
+
 			addPic () {
 
 				let bdbox = $(this.$els.bodybox)
@@ -178,20 +204,27 @@
 			// 回复
 			reback () {
 
-				this.addpic = !this.addpic
-				let msgBox = $(this.$els.msgbox)
-				let bdbox = $(this.$els.bodybox)
+				let _self = this
+				_self.addpic = !_self.addpic
+				let msgBox = $(_self.$els.msgbox)
+				let bdbox = $(_self.$els.bodybox)
 				msgBox.val('')
 				msgBox.height(30)
 
-				getJson(this, '../../../../static/data/msg.json', '', (rsp)=>{
-					this.$set('message', rsp)
-					bdbox.css('paddingBottom', '58px')
-					// 主体内容跟着输入框的改变向上滚动
-					setTimeout(() => {
-						bdbox[0].scrollTop = 100000
-					},100)
-				})
+				let params = {
+					"messageId": 0,
+					"content": _self.msg,
+					"url": _self.url
+				}
+				console.log(params)
+				postJson('api/patientMessages/reply', params, (rsp)=>{
+
+					// 刷新页面
+					getJson('api/patientMessages/'+ _self.ids, '', (rsp_note)=>{
+
+						_self.noteDetails = rsp_note
+					},_self)
+				},_self)
 
 			},
 

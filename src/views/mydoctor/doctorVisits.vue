@@ -1,13 +1,13 @@
 <template>
 	<mt-header fixed isgrey title="出诊信息">
-		<mt-button v-link="{path: '/mydoctor/doctor', query: {id: ids}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/mydoctor/doctor', query: {todoctor: true,id: ids}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content>
 		<div class="page-cell call-info-advertisement">
 			<a class="mint-cell">
 				<span class="leh-c-orange iconfont icon-wx-notice"></span>
 				<label class="mint-cell-title">
-					<p :class="{'leh-text-ellipsis': !openmsg}">标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字</p>
+					<p :class="{'leh-text-ellipsis': !openmsg}">{{ lastNotice }}</p>
 				</label>
 				<div class="mint-cell-value" @click="openmsg = !openmsg">
 					<span class="mint-cell-text">展开</span>
@@ -153,19 +153,27 @@
 				// 出诊信息
 				getJson('api/schedules/'+ _self.ids, '', (rsp)=>{
 
-					_self.monthItems = _self.reGroupArr(rsp.items)
-				  _self.schedulesItems = _self.reGroupMonth(_self.monthItems)
-					_self.type = rsp.type
-					console.log(JSON.stringify(_self.monthItems))
-					console.log(_self.schedulesItems)
+					if(rsp){
+						_self.monthItems = _self.reGroupArr(rsp.items)
+						_self.schedulesItems = _self.reGroupMonth(_self.monthItems)
+						_self.type = rsp.type
+					}
+					/*console.log(JSON.stringify(_self.monthItems))
+					console.log(_self.schedulesItems)*/
 
-					// 医院地址
-					getJson('api/workplaces/'+ _self.ids, '', (rsp)=>{
 
-						_self.workplacesItems = rsp
+					// 获取最新公告
+					getJson('api/notices/latest/'+ _self.ids, '', (rsp_last)=>{
 
-						// 取消红点
-						postJson('api/schedules/hasRead/'+ _self.ids, '', (rsp)=>{},_self)
+						_self.lastNotice = rsp_last.content
+						// 医院地址
+						getJson('api/workplaces/'+ _self.ids, '', (rsp_address)=>{
+
+							_self.workplacesItems = rsp_address
+
+							// 取消红点
+							//postJson('api/schedules/hasRead/'+ _self.ids, '', (rsp_hasRead)=>{},_self)
+						},_self)
 					},_self)
 				},_self)
 
@@ -182,6 +190,7 @@
 		    schedulesItems: [], // 出诊信息
 		    monthItems: [], // 月信息按日期分类
 		    type: '', // 周/月
+		    lastNotice: '', // 最新公告
 	    }
 	  },
 

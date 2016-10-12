@@ -1,13 +1,13 @@
 <template>
 	<mt-header fixed isgrey title="医生公告">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/home', query: {tohome: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class="page-infinite">
 		<div class="page-cell disease-list page-infinite-wrapper">
 			<div class="page-infinite-list">
 
 				<div class="leh-null-data" v-if="!noticeItems.length">暂无公告</div>
-				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.id}, replace: true}"></mt-cell>
+				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :reddot="items.unread" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.drId}, replace: true}"></mt-cell>
 			</div>
 
 			<div class="page-infinite-loading document-index-load-tap" v-if="pageNoticeNum*10 <= pageNoticeTotal">
@@ -31,7 +31,6 @@
 				let _self = this
 				_self.formPage = to.query.tonotice || false
 				if(_self.formPage) return // 是否其他页面返回
-
 				// 医生公告列表
 				_self.pageNoticeNum = 1
 				getJson('api/notices/index?pageIndex=1&pageSize=10', '', (rsp)=>{
@@ -64,11 +63,11 @@
 			moreNotice () {
 				let _self = this
 
-				if(_self.pageNoticeNum*3 >= _self.pageNoticeTotal) {
+				if(_self.pageNoticeNum*10 >= _self.pageNoticeTotal) {
 					return
 				}
 				_self.pageNoticeNum = _self.pageNoticeNum + 1
-				getJson('api/notices/index?pageIndex='+ this.pageNoticeNum +'&pageSize=3', '', (rsp)=>{
+				getJson('api/notices/index?pageIndex='+ this.pageNoticeNum +'&pageSize=10', '', (rsp)=>{
 
 					// 合并数组
 					_self.noticeItems = _self.noticeItems.concat(rsp.items)
@@ -89,5 +88,4 @@
 <style>
 	.notice-list .mint-cell:after{border: 0;}
 	.notice-list .mint-cell:before{left: 0;}
-	.document-index-load-tap .mint-button--transparent{text-align: center;}
 </style>

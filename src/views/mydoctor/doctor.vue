@@ -5,7 +5,7 @@
 	</div>
 	<div class="leh-wrap">
 		<div class="doctor-details-head">
-			<span class="iconfont icon-wx-arr-left doctor-details-head-arr" v-link="{path: '/home', query: {name: true}, replace: true}"></span>
+			<span class="iconfont icon-wx-arr-left doctor-details-head-arr" v-link="{path: '/home', query: {tohome: true}, replace: true}"></span>
 			<div class="doctor-details-img">
 				<img :src="doctorItems.photo" v-if="doctorItems.photo !== null"/>
 				<img src="../../assets/img/private.jpg" v-if="doctorItems.photo === null"/>
@@ -74,10 +74,14 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
-				_self.ids = transition.to.query.id
+				_self.ids = to.query.id
+				_self.isRatePage = to.query.todoctor || false
+				if(_self.isRatePage) return // 是否其他页面返回
+
+
 				// 医生详情
 				getJson('api/doctors/detail/'+ _self.ids, '', (rsp)=>{
 					_self.doctorItems = rsp
@@ -88,6 +92,7 @@
 					},_self)
 				},_self)
 
+				next()
 
 			}
 		},

@@ -1,14 +1,14 @@
 <template>
 	<mt-header fixed isgrey title="林医生公告">
-		<mt-button v-link="{path: '/user/notice', query: {'tonotice': true}}"  icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/user/notice', query: {tonotice: true}}"  icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class-name="leh-bg-grey-body">
 		<div class="page-cell notice-content-list">
 			<div class="leh-null-data" v-if="!noticesList.length">暂无公告信息</div>
-			<mt-cell v-for="items in noticesList" :title="items.content" label="items.createTime" istitle></mt-cell>
+			<mt-cell v-for="items in noticesList" :title="items.content || '暂无公告信息'" :label="items.createTime" istitle></mt-cell>
 		</div>
 
-		<div class="page-infinite-loading document-index-load-tap" v-if="pageNoticeListNum*3 <= pageNoticeListTotal">
+		<div class="page-infinite-loading document-index-load-tap" v-if="pageNoticeListNum*10 <= pageNoticeListTotal">
 			<mt-button size="large" type="transparent" icon="load" @click="moreNoticeList" >点击加载更多</mt-button>
 		</div>
 	</mt-content>
@@ -18,7 +18,7 @@
 	import MtContent from '../../components/content.vue'
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
-	import {getJson} from 'util'
+	import {getJson, postJson} from 'util'
 
 	export default{
 		route: {
@@ -29,10 +29,13 @@
 
 				// 医生公告详情列表
 				_self.pageNoticeListNum = 1
-				getJson('api/notices/'+ _self.ids +'?pageIndex=1&pageSize=3', '', (rsp)=>{
+				getJson('api/notices/'+ _self.ids +'?pageIndex=1&pageSize=10', '', (rsp)=>{
 
 					_self.noticesList = rsp.items
 					_self.pageNoticeListTotal = rsp.totalQty
+
+					// 取消红点
+					//postJson('api/notices/hasRead/'+ _self.ids, '', (rsp_hasRead)=>{},_self)
 				},_self)
 
 				next()
@@ -54,11 +57,11 @@
 			moreNoticeList () {
 				let _self = this
 
-				if(_self.pageNoticeListNum*3 >= _self.pageNoticeListTotal) {
+				if(_self.pageNoticeListNum*10 >= _self.pageNoticeListTotal) {
 					return
 				}
 				_self.pageNoticeListNum = _self.pageNoticeListNum + 1
-				getJson('api/notices/index?pageIndex='+ this.pageNoticeListNum +'&pageSize=3', '', (rsp)=>{
+				getJson('api/notices/'+ _self.ids +'?pageIndex='+ this.pageNoticeListNum +'&pageSize=10', '', (rsp)=>{
 
 					// 合并数组
 					_self.noticesList = _self.noticesList.concat(rsp.items)

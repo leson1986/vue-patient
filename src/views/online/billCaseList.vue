@@ -174,15 +174,13 @@
 				getJson('api/medical/' + ids, '', (rsp)=>{
 					_self.medicalData = rsp
 
-					// 消除红点
-					postJson('api/medical/hasRead/' + ids, '', (rsp_read)=>{
+					// 获取病历索引
+					getJson('api/medical/index/', '', (rsp_index)=>{
+						_self.indexList = _self.reGroupArr(rsp_index)
 
-						// 获取病历索引
-						getJson('api/medical/index/', '', (rsp_index)=>{
-							_self.indexList = _self.reGroupArr(rsp_index)
-
-						},_self)
 					},_self)
+					// 消除红点
+					// postJson('api/medical/hasRead/' + ids, '', (rsp_read)=>{},_self)
 				},_self)
 			},
 

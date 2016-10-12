@@ -5,24 +5,26 @@
 	<mt-content class-name="leh-bg-grey-body">
 		<div class="note-box">
 			<ul>
-				<li class="note-list" v-link="{path: '/user/noteDetail', replace: true}">
-					<p class="note-list-title leh-red-dot">
-						<span class="iconfont icon-wx-ask-round"></span> 阿斯顿看见哈克斯都好看教案和开始的骄傲 啥课都会卡死好快的哈萨克觉得好快啊啊黄金时代哈 好多爱上的还看啥看的
+				<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id}, replace: true}">
+					<p class="note-list-title" :class="{'leh-red-dot': items.unread}">
+						<span class="iconfont" :class="{'icon-wx-ask-round': !items.isClose, 'icon-wx-take-round': items.isClose}"></span>
+						{{ items.contents }}
 					</p>
 					<div class="page-cell note-content">
 						<a class="mint-cell">
 								<span class="mint-cell-mask">
 									<div class="note-img">
-										<img src="../../assets/img/private.jpg"/>
+										<img :src="items.drPhoto" v-if="items.drPhoto !== null"/>
+										<img src="../../assets/img/private.jpg" v-if="items.drPhoto === null"/>
 									</div>
 								</span>
 							<label class="mint-cell-title">
 									<span class="mint-cell-text">
-										<span>赵医生</span>丨
-										<span class="leh-fs-fourteen">消化内科</span>
-										<span class="fr leh-fs-fourteen leh-c-grey">11:20</span>
+										<span>{{ items.drName }}</span>丨
+										<span class="leh-fs-fourteen">{{ items.drCustName }}</span>
+										<span class="fr leh-fs-fourteen leh-c-grey">{{ items.lastActiveTime }}</span>
 									</span>
-								<span class="mint-cell-label">暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复</span>
+								<span class="mint-cell-label">{{ items.lastReplyContent }}</span>
 							</label>
 							<div class="mint-cell-value">
 								<span></span>
@@ -30,32 +32,12 @@
 						</a>
 					</div>
 				</li>
-				<li class="note-list" v-link="{path: '/user/noteDetail', replace: true}">
-					<p class="note-list-title">
-						<span class="iconfont icon-wx-take-round"></span> 阿斯顿看见哈克斯都好看教案和开始的骄傲 啥课都会卡死好快的哈萨克觉得好快啊啊黄金时代哈 好多爱上的还看啥看的
-					</p>
-					<div class="page-cell note-content">
-						<a class="mint-cell">
-								<span class="mint-cell-mask">
-									<div class="note-img">
-										<img src="../../assets/img/private.jpg"/>
-									</div>
-								</span>
-							<label class="mint-cell-title">
-									<span class="mint-cell-text">
-										<span>赵医生</span>丨
-										<span class="leh-fs-fourteen">消化内科</span>
-										<span class="fr leh-fs-fourteen leh-c-grey">前天</span>
-									</span>
-								<span class="mint-cell-label">暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复暂无回复</span>
-							</label>
-							<div class="mint-cell-value">
-								<span></span>
-							</div>
-						</a>
-					</div>
-				</li>
+
 			</ul>
+		</div>
+
+		<div class="page-infinite-loading document-index-load-tap" v-if="pageNoteNum*10 <= pageNoteTotal">
+			<mt-button size="large" type="transparent" icon="load" @click="moreNote" >点击加载更多</mt-button>
 		</div>
 	</mt-content>
 </template>
@@ -63,12 +45,50 @@
 	import MtContent from '../../components/content'
 	import MtHeader from '../../components/header.vue'
 	import MtButton from '../../components/button.vue'
+	import {getJson} from 'util'
 
 	export default{
-		data () {
-			return{
+		route: {
+			data () {
+
+				let _self = this
+				// 记录中心列表
+				_self.pageNoteNum = 1
+				getJson('api/patientMessages/index?pageIndex=1&pageSize=10', '', (rsp)=>{
+
+					_self.noteItems = rsp.items
+					_self.pageNoteTotal = rsp.totalQty
+				},_self)
+
 			}
 		},
+
+		data () {
+			return{
+				noteItems: [], // 公告列表
+				pageNoteNum: 1, // 记录中心页数
+				pageNoteTotal: 0, // 记录中心总页数
+			}
+		},
+
+		methods: {
+
+			// 获取更多医生列表信息
+			moreNote () {
+				let _self = this
+
+				if(_self.pageNoteNum*10 >= _self.pageNoteTotal) {
+					return
+				}
+				_self.pageNoteNum = _self.pageNoteNum + 1
+				getJson('api/patientMessages/index?pageIndex='+ this.pageNoteNum +'&pageSize=10', '', (rsp)=>{
+
+					// 合并数组
+					_self.noteItems = _self.noteItems.concat(rsp.items)
+				},_self)
+			}
+		},
+
 		components: {
 			MtContent,
 			MtHeader,
@@ -87,7 +107,7 @@
 	.note-list-title:after{right: 12px;top: 14px;}
 	.note-content .mint-cell:before{border: 0;}
 	.note-content .mint-cell-text{display: block;}
-	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
 	.note-img{width: 49px;height: 49px;border-radius: 50%;overflow: hidden;margin-right: 10px;}
-	.note-img img{width: auto;height: auto;max-height: 100%;max-width: 100%;}
+
 </style>

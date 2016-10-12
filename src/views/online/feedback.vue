@@ -7,7 +7,7 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
-					<input type="text" v-model="name"/>
+					<input type="text" v-model="name" :value="doctor_name"/>
 					<ul class="leh-select-drag-box" v-if="name && show_name">
 						<li v-for="items in users | filterBy name in 'name'"  @click="getName(items.name)">{{ items.name }}</li>
 					</ul>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="leh-full-btn">
-			<mt-button size="large" type="green" @click="nestStep">下一步</mt-button>
+			<mt-button size="large" type="green" @click="saveMsg">发布</mt-button>
 		</div>
 
 		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
@@ -86,11 +86,20 @@
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopup from '../../components/popup.vue'
 	import MessageBox from 'vue-msgbox'
+	import {getJson} from 'util'
 
 	export default{
 		route: {
 			data ({from,next}) {
-				this.from_path = from.path
+
+				let _self = this
+				_self.from_path = from.path
+
+				// 患者评价
+				getJson('api/doctors/simple', '', (rsp)=>{
+					_self.users = rsp
+					_self.doctor_name =rsp[0].name
+				},_self)
 				next()
 			}
 		},
@@ -104,17 +113,8 @@
 				show_name: 1,
 				name: '',
 				old_name: '',
-				users: [
-					{ name: 'Aruce' },
-					{ name: 'Bruce' },
-					{ name: 'Cruce' },
-					{ name: 'Druce' },
-					{ name: 'Eruce' },
-					{ name: 'Eruce' },
-					{ name: 'Eruce' },
-					{ name: 'Fhuck' },
-					{ name: 'Gackie' }
-				]
+				users: [], // 医生列表
+				doctor_name:''
 			}
 		},
 
@@ -131,11 +131,13 @@
 				MessageBox('提示', '一次只能添加5张图片');
 			},
 
-			nestStep () {
+			saveMsg () {
 				if(this.msg_val === '') {
 					this.show_popup = true
 					return
 				}
+
+
 				this.$route.router.go('/user/noteDetail')
 			},
 
@@ -168,6 +170,7 @@
 			},
 
 			name (val, oldVal) {
+
 				if(val == this.old_name) {
 					this.show_name = 0
 				}else {

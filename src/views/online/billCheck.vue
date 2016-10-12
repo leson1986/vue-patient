@@ -130,15 +130,14 @@
 				getJson('api/chk/' + groupId, '', (rsp)=>{
 					_self.checkData = rsp
 
-					// 消除红点
-					postJson('api/chk/hasRead/' + groupId, '', (rsp_read)=>{
-
-						// 获取检查单索引
-						getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
+					// 获取检查单索引
+					getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
 							_self.indexList = _self.regroupArr(rsp_index)
 
-						},_self)
 					},_self)
+
+					// 消除红点
+					//postJson('api/chk/hasRead/' + groupId, '', (rsp_read)=>{},_self)
 				},_self)
 			},
 

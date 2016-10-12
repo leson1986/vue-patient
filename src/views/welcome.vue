@@ -16,7 +16,6 @@
 	export default {
 		route : {
 			data ({to, next}) {
-
 				let _self = this
 				_self.paths = to.query.paths || 'home' //不同的路径进口,默认进入首页
 
@@ -25,6 +24,7 @@
 					_self.$route.router.go({path: _self.paths, query: {actives: 'checked'}, replace: true})
 				}, _self)
 
+				next()
 
 			}
 		},

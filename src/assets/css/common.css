@@ -13,7 +13,9 @@ html,
 body {
 	height: 100%;
 }
-
+label.mint-cell-title{
+	display: block;
+}
 
 /*样式*/
 
@@ -340,7 +342,7 @@ body {
 	z-index: 1000;
 	float: left;
 	min-width: 96%;
-	max-height: 110px;
+	max-height: 115px;
 	padding: 5px 0;
 	margin: 0 2%;
 	font-size: 14px;
@@ -367,7 +369,7 @@ body {
 	white-space: nowrap;
 }
 .leh-select-drag-box li:nth-of-type(even){
-	background-color:#f9f9f9
+	background-color:#f9f9f9;
 }
 
 /*leh-popup弹框*/
@@ -818,6 +820,8 @@ body {
 	color: #aaa;
 }
 
+/* 加载更多--剧中 */
+.document-index-load-tap .mint-button--transparent{text-align: center;}
 
 /* 透明遮罩 */
 

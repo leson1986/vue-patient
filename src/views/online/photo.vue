@@ -1,7 +1,7 @@
 <template>
 
 	<mt-header fixed isgrey title="拍照上传">
-		<mt-button  v-link="{path: '/home', query: {name: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button  v-link="{path: '/home', query: {tohome: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box " :class="{'leh-guide': firstUpload}">
 		<mt-button type="green" @click="uploadPic">上传</mt-button>
