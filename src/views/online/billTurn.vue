@@ -2,14 +2,14 @@
 	<mt-header fixed isgrey title="转换中单据">
 		<mt-button v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
-	<mt-content>
+	<mt-content class="page-popup">
 		<div class="transform-list-box">
 			<mt-translate>
 				<mt-translate-item
 						v-for="items in turnDatas"
 						:name="items.id"
 						:delbtn="items.isFail">
-					<div class="transform-list-img-box">
+					<div class="transform-list-img-box" @click="showPic(items.url)">
 						<img :src="items.url"/>
 						<span class="transform-img-ico iconfont icon-wx-close" v-if="items.isFail"></span>
 					</div>
@@ -27,6 +27,8 @@
 			</mt-translate>
 		</div>
 	</mt-content>
+	<!-- 用于展示插件的容器 -->
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -35,7 +37,7 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson, delJson} from 'util'
+	import {getJson, delJson, wrapPic} from 'util'
 
 	export default{
 		route: {
@@ -88,7 +90,16 @@
 					_self.turnDatas = rsp
 
 				}, _self)
-			}
+			},
+
+			// 查看图片
+			showPic (url){
+
+				let _self = this
+				let picUrls = []
+				picUrls.push(url)
+				wrapPic(picUrls, '转换中单据') // 查看图片
+			},
 		},
 
 		events: {
@@ -109,6 +120,8 @@
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
 	.transform-list-img-box{width: 40px;height: 50px;background-color:#e5e5e5;float: left;text-align: center;position: relative;}
 	.transform-list-img-box img{height: auto;width: auto;max-height: 100%;max-width: 100%;}
 	.transform-list-text{float: left;padding-top: 10px;padding-left: 20px;}

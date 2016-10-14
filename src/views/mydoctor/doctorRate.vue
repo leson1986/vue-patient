@@ -1,7 +1,7 @@
 <template>
 	<mt-content class="page-infinite">
 		<div class="evaluation-head">
-			<span class="iconfont icon-wx-arr-left evaluation-head-arr" v-link="{path: '/mydoctor/doctor', query: {name: true}, replace: true}"></span>
+			<span class="iconfont icon-wx-arr-left evaluation-head-arr" v-link="{path: '/mydoctor/doctor', query: {todoctor: true, id: ids}, replace: true}"></span>
 			<div class="evaluation-head-title">患者评价</div>
 			<div class="page-cell">
 				<a class="mint-cell">

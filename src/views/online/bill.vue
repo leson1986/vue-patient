@@ -94,18 +94,24 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				this.selected = ''
 				this.active = ''
-				this.selected = transition.to.query.actives
-				this.active = transition.to.query.actives
+				this.selected = to.query.actives
+				this.active = to.query.actives
+
+
+				this.isBillPage = to.query.tobill || false
+				if(this.isBillPage) return // 是否从列表页返回
 
 				// 初始化数据
 				this.pageMedicalNum = 1
 				this.pageChkNum = 1
 				this.pageFileCheckNum = 1
 				this.getBillList()
+
+				next()
 			}
 		},
 
@@ -113,6 +119,7 @@
 			return{
 				active: '',
 				selected: '',
+				isBillPage: false,
 				summaryItems: '', // 手写病历信息
 				medicalItems: [],  // 病历列表
 				chkItems: [],  // 检查单列表
@@ -130,7 +137,7 @@
 		methods: {
 			lehBack () {
 				$(".leh-active").removeClass('leh-active')
-				this.$route.router.go('/home')
+				this.$route.router.go({path: '/home'})
 			},
 
 			// 更新数据

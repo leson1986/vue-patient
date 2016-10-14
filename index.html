@@ -26,22 +26,133 @@
     <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>-->
 
 		<!--正式引用-->
-    <!--
-    <script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+    <!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
     <script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-    <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-    -->
+    <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>-->
 
 
     <script type="text/javascript">
 
+	    // 全局变量：htmlSrc => 带有wx参数的路径
+	    htmlSrc = window.location.href
+	    //import {pageConfig, getOpenID} from 'wxconfig'
+
+	   /* htmlSrc = window.location
+	    alert(htmlSrc)*/
     // 微信配置参数
-   /* $.sign = {
-      appId: '{sign.appId}',
-      timestamp: '{sign.timestamp}',
-      nonceStr: '{sign.nonceStr}',
-      signature: '{sign.signature}',
-    }*/
+
+	   /* function wxconfig(data) {
+		    wx.config({
+			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			    appId: data.appId, // 必填，公众号的唯一标识
+			    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+			    timestamp: data.timestamp, // 必填，生成签名的时间戳
+			    signature: data.signature, // 必填，签名，见附录1
+			    jsApiList: [
+				    'checkJsApi',
+				    'onMenuShareTimeline',
+				    'onMenuShareAppMessage',
+				    'onMenuShareQQ',
+				    'onMenuShareWeibo',
+				    'hideMenuItems',
+				    'showMenuItems',
+				    'hideAllNonBaseMenuItem',
+				    'showAllNonBaseMenuItem',
+				    'translateVoice',
+				    'startRecord',
+				    'stopRecord',
+				    'onRecordEnd',
+				    'playVoice',
+				    'pauseVoice',
+				    'stopVoice',
+				    'uploadVoice',
+				    'downloadVoice',
+				    'chooseImage',
+				    'previewImage',
+				    'uploadImage',
+				    'downloadImage',
+				    'getNetworkType',
+				    'openLocation',
+				    'getLocation',
+				    'hideOptionMenu',
+				    'showOptionMenu',
+				    'closeWindow',
+				    'scanQRCode',
+				    'chooseWXPay',
+				    'openProductSpecificView',
+				    'addCard',
+				    'chooseCard',
+				    'openCard'
+			    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		    });
+	    }
+
+	    wx.ready(function() {
+		    wx.hideMenuItems({
+			    menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+		    });
+	    })*/
+
+
+
+	    /*function pageConfig() {
+	    	htmlSrc = window.location.href
+
+		    var promise = $.ajax({
+			    url: 'http://wx.jk7.com/api/valid',
+			    type: 'GET',
+			    dataType: "json",
+			    contentType: 'application/x-www-form-urlencoded',
+			    data: {
+				    pageurl: window.location.href
+			    },
+			    success: function(data){
+				    wxconfig(data);
+			    }
+		    });
+
+
+		    /!*promise.done(function(result) {
+		    	alert(1)
+			    wxconfig(result);
+
+		    });*!/
+	    }
+	    /!*网页注入，需要使用JSAPI功能必须添加此部分代码*!/
+
+	    /!*获取当前连接code，用code获取用户openid，进而获取patient_info信息*!/
+	    function getOpenID() {
+		    var src = window.location.search;
+		    var a = src.indexOf('code');
+		    var b = src.indexOf('&state');
+		    var code = src.substr(a + 5, b - (a + 5));
+
+		    //获取openid
+		    var getopenid = $.ajax({
+			    url: 'http://wx.jk7.com/api/UserInfo',
+			    type: 'GET',
+			    dataType: "text",
+			    contentType: 'application/x-www-form-urlencoded',
+			    data: {
+				    code: code,
+				    state: "STATE"
+			    },
+			    success: function(data){
+				    tokensId = data
+			    }
+		    });
+
+		    /!*getopenid.done(function(result) {
+		    	tokensId = result || 'MjM0NTY3Og=='
+			    alert(tokensId)
+			    //openid 放入session,用openid获取用户信息
+		    });*!/
+	    }
+	    /!*获取当前连接code，用code获取用户openid，进而获取patient_info信息*!/
+
+	    pageConfig()
+	    getOpenID()*/
+
     </script>
 
   </body>

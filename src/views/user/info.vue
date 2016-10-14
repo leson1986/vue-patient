@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="个人信息">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/home'}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
 		<mt-button type="green" @click="saveInfo">保存</mt-button>
@@ -9,7 +9,7 @@
 		<div class="page-field info-box">
 			<div class="page-part info-img-box">
 				<div class="mint-field info-img-list">
-					<a class="mint-cell mint-field-cell">
+					<a class="mint-cell mint-field-cell" @click="editPic">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">头像</span>
 						</label>
@@ -22,8 +22,8 @@
 									<i class="mintui mintui-field-default"></i>
 								</span>
 							<div class="info-img">
-								<img :src="photo" v-if="photo"/>
-								<img src="../../assets/img/private.jpg" v-if="photo"/>
+								<img :src="photo" v-if="photo !== null"/>
+								<img src="../../assets/img/private.jpg" v-if="photo === null"/>
 							</div>
 						</div>
 					</a>
@@ -134,7 +134,7 @@
 			<div class="leh-null-box"></div>
 			<div class="page-part info-main-box">
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell" v-link="{path: '/reg/disease', query: {'info': true}, replace: true}">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/reg/disease', query: {info: true, diseaseinfo: disease}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">所患疾病</span>
 							<span class="leh-c-red">*</span>
@@ -169,7 +169,7 @@
 					</a>
 				</div>
 				<div class="mint-field info-main-list">
-					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability', query: {'info': alllergicHis}, replace: true}">
+					<a class="mint-cell mint-field-cell" v-link="{path: '/user/irritability', query: {info: notAlllergicHis}, replace: true}">
 						<label class="mint-cell-title">
 							<span class="mint-cell-text">过敏史</span>
 						</label>
@@ -202,6 +202,8 @@
 	import MtModal from '../../components/modal.vue'
 	import MtField from '../../components/field.vue'
 	import {getJson, putJson} from 'util'
+	import {pageConfig} from 'wxconfig'
+	import wx from 'wx'
 
 	export default{
 		route: {
@@ -212,6 +214,7 @@
 
 				if(to.query.alllergicHis !== undefined){
 					_self.alllergicHis = to.query.alllergicHis
+					_self.notAlllergicHis = to.query.alllergicHis
 					if(_self.alllergicHis.length > 10) {
 						_self.alllergicHis = _self.alllergicHis.substr(0,10) + '...'
 					}
@@ -230,19 +233,20 @@
 					_self.mobile = rsp.mobile
 					_self.gender = rsp.gender
 					_self.birthday = rsp.birthday
-					_self.alllergicHis = rsp.alllergicHis
+					_self.notAlllergicHis = rsp.alllergicHis
 					_self.photo = rsp.photo
 					_self.email = rsp.email
 					_self.disease = rsp.disease
 					_self.diseaseHis = rsp.diseaseHis
 					_self.nativePlace = rsp.nativePlace
+
+					// 超过10个字加省略号
+					if(_self.notAlllergicHis.length > 10) {
+						_self.alllergicHis = _self.notAlllergicHis.substr(0,10) + '...'
+					}
 				},_self)
 
 
-				// 超过10个字加省略号
-				if(_self.alllergicHis.length > 10) {
-					_self.alllergicHis = _self.alllergicHis.substr(0,10) + '...'
-				}
 				next()
 			}
 		},
@@ -260,6 +264,7 @@
 		    gender: '', // 性别 ,
 		    birthday: '', // 生日 ,
 		    alllergicHis: '', // 过敏史 ,
+		    notAlllergicHis: '', // 未省略过的过敏史 ,
 		    photo: '', // 头像 ,
 		    email: '', // 邮箱 ,
 		    disease: '', // 所患疾病 ,
@@ -268,6 +273,10 @@
 	    }
 
 	  },
+
+		ready () {
+			pageConfig()
+		},
 
 		methods: {
 			showPicker () {
@@ -286,18 +295,33 @@
 				let params = {
 					"gender": _self.gender,
 					"birthday": _self.birthday,
-					"alllergicHis": _self.alllergicHis,
+					"alllergicHis": _self.notAlllergicHis,
 					"photo": _self.photo,
 					"email": _self.email,
 					"disease": _self.disease,
 					"diseaseHis": _self.diseaseHis,
 					"nativePlace": _self.nativePlace
 				}
-				console.log(params)
+
 				putJson('api/patient/myinfo', params, (rsp)=>{
 					alert('修改成功！')
 				},_self)
-			}
+			},
+
+			// 修改头像
+			editPic () {
+				let _self = this
+				wx.chooseImage({
+					count: 2, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+						console.log(res)
+						_self.photo = localIds
+					}
+				});
+			},
 		},
 
 		components: {
@@ -324,6 +348,7 @@
 	.info-main-list .mint-field-state{display: none}
 	.info-main-box .mint-cell{padding: 15px 10px;}
 	.info-img{width: 37px;height: 37px;border-radius: 50%;overflow: hidden;position: absolute;right:10px;top:50%;margin-top: -18px}
+	.info-img-list .mint-cell-text{line-height: 37px}
 	.info-main-list .mint-cell:before{left: 10px;}
 	.info-sex{margin-right: 30px;font-size: 14px;color: #919191;height: 24px;line-height: 24px;}
 	.info-sex.leh-active{color: #363636;}

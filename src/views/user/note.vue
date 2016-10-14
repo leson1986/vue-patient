@@ -1,11 +1,11 @@
 <template>
 	<mt-header fixed isgrey title="记录中心">
-		<mt-button v-link="'/home'" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/home'}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class-name="leh-bg-grey-body">
 		<div class="note-box">
 			<ul>
-				<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id}, replace: true}">
+				<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id, isclose: items.isClose}, replace: true}">
 					<p class="note-list-title" :class="{'leh-red-dot': items.unread}">
 						<span class="iconfont" :class="{'icon-wx-ask-round': !items.isClose, 'icon-wx-take-round': items.isClose}"></span>
 						{{ items.contents }}
@@ -49,9 +49,12 @@
 
 	export default{
 		route: {
-			data () {
+			data ({to, next}) {
 
 				let _self = this
+				_self.isNotePage = to.query.tonote || false
+				if(_self.isNotePage) return // 是否其他页面返回
+
 				// 记录中心列表
 				_self.pageNoteNum = 1
 				getJson('api/patientMessages/index?pageIndex=1&pageSize=10', '', (rsp)=>{
@@ -60,11 +63,13 @@
 					_self.pageNoteTotal = rsp.totalQty
 				},_self)
 
+				next()
 			}
 		},
 
 		data () {
 			return{
+				isNotePage: '', // 来自noteDetail.vue
 				noteItems: [], // 公告列表
 				pageNoteNum: 1, // 记录中心页数
 				pageNoteTotal: 0, // 记录中心总页数

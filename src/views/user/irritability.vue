@@ -9,7 +9,11 @@
 	<mt-content class="page-popup">
 		<div class="allergic-list-box">
 			<ul>
-				<li class="allergic-list" v-for="(ind,n) in m" v-if="{false: ind != 0}">
+				<li class="allergic-list" v-for="items in irritability" v-if="items">
+					<span class="iconfont icon-wx-reduce-round" @click="delIrritability($event)"></span>
+					<input type="text" placeholder="请输入过敏原" :value="items" maxlength="10"/>
+				</li>
+				<li class="allergic-list" v-for="(ind, n) in m" v-if="{false: ind != 0}">
 					<span class="iconfont icon-wx-reduce-round" @click="delIrritability($event)"></span>
 					<input type="text" placeholder="请输入过敏原" maxlength="10" @input="doThat"/>
 				</li>
@@ -47,6 +51,11 @@
 		route: {
 			data ({to, next}) {
 				this.irritability = to.query.info
+				if(this.irritability !== ''){
+					this.irritability = this.irritability.split('、')
+				}
+				this.m = 0; //初始化为0
+
 				this.btn_color = 'grey'
 				this.isbutton = false
 
@@ -60,7 +69,6 @@
 				province: '',
 				city: '',
 				m: 0,
-				sex: 1,
 				tips: '',
 				show_popup: false,
 				irritability: '',
@@ -74,7 +82,8 @@
 		methods: {
 			save () {
 
-				this.irritability = ''
+				//this.irritability = ''
+				let alllergiVal = ''
 				let inputs = $('.allergic-list-box').find('li input')
 
 				if(!this.isbutton) return
@@ -87,14 +96,14 @@
 						return
 					}
 
-					this.irritability += i>0 ? '、' + $(item).val() : $(item).val()
+					alllergiVal += i>0 ? '、' + $(item).val() : $(item).val()
 				}
 
 				this.show_popup = true
 				this.tips = '保存成功'
 				setTimeout(() => {
-					this.$route.router.go({path: '/user/info', query: {'toinfo': true, 'alllergicHis': this.irritability}})
-				},2500)
+					this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: alllergiVal}})
+				},2000)
 			},
 
 			showPicker () {

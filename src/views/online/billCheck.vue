@@ -39,15 +39,6 @@
 			<span class="iconfont icon-wx-double-arr-down leh-c-grey-tint" :class="{'icon-wx-double-arr-up': tableHeight, 'icon-wx-double-arr-down': !tableHeight}"></span>
 		</div>
 
-		<!-- 查看原图 -->
-		<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
-			<mt-swipe class="my-swipe" :auto="0" :close-btn="true">
-				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-			</mt-swipe>
-		</div>
-
 		<!--侧滑内容-->
 		<mt-popup v-show="popup_visible" position="right" class="mint-popup-3 sick-popup-box" :modal="false">
 			<div class="leh-modal-transparent" @click="closePopup"></div>
@@ -67,6 +58,9 @@
 			</div>
 		</mt-popup>
 	</mt-content>
+	<!-- 用于展示插件的容器 -->
+	<div class="maskbox" v-if="maskbox"></div>
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -78,7 +72,7 @@
 	import MtSwipeItem from '../../components/swipeItem.vue'
 	import MtPopup from '../../components/popup.vue'
 	import MtCell from '../../components/cell.vue'
-	import {getJson, postJson} from 'util'
+	import {getJson, postJson, wrapPic} from 'util'
 
 	export default{
 		route: {
@@ -102,17 +96,12 @@
 				chkTypeId: '', // 检查单类型Id
 				groupId: '', // 检查单ID
 				indexList: [], // 检查单索引列表
+				picUrls: [], // 图片
+				maskbox: false // 是否有查看大图遮罩
 			}
 		},
 
 		methods: {
-			showPic (){
-				this.viewpic =true;
-			},
-
-			closePic () {
-				this.viewpic =false;
-			},
 			showPopup () {
 				this.popup_visible = true;
 			},
@@ -129,6 +118,7 @@
 				// 获取检查单详情
 				getJson('api/chk/' + groupId, '', (rsp)=>{
 					_self.checkData = rsp
+					_self.picUrls = rsp.pictureList || []
 
 					// 获取检查单索引
 					getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
@@ -165,7 +155,17 @@
 				}
 
 				return dest;
-			}
+			},
+
+			// 查看原图
+			showPic (ids){
+
+				let _self = this
+				_self.maskbox =true
+				wrapPic(_self.picUrls, '我的检查单', _self, true) // 查看图片
+				// 取消红点
+				//	postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {}, _self)
+			},
 
 		},
 
@@ -185,6 +185,9 @@
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
+
 	.sick-title .mint-cell:after,.sick-title .mint-cell:before{border: 0;}
 	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:5px;border: 1px solid;border-radius: 50%;}
 	.sick-title .mint-cell-text{line-height: 25px;}

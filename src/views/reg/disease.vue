@@ -12,7 +12,7 @@
 			<mt-cell
 					:istitle="true"
 					v-for="list in lists"
-					:title="list.name"
+					:title="list"
 					@click="selected(list)"
 					:class="{'leh-active': activeName == list}"
 			></mt-cell>
@@ -24,12 +24,20 @@
 	import MtHeader from '../../components/header.vue'
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
+	import {optionData} from 'util'
 	import $ from 'zepto'
 
 	export default{
 		route: {
-			data (transition) {
-				this.is_info = transition.to.query.info
+			data ({to, next}) {
+				this.is_info = to.query.info
+				this.diseaseInfo = to.query.diseaseinfo
+
+				if(this.diseaseInfo !== '') {
+					this.selected(this.diseaseInfo)
+				}
+
+				next()
 			}
 		},
 
@@ -39,21 +47,9 @@
 		    is_info: false,
 		    activeName: '',
 		    disease: '',
-		    lists: [
-		    		{
-			        name: '乙肝123'
-				    },
-				    {
-					    name: '丙肝'
-				    },
-				    {
-					    name: '乙肝'
-				    },
-				    {
-					    name: '免疫性疾病'
-				    }
-			    ],
-		    item: []
+		    lists: optionData().patientDisease,
+		    item: [],
+		    diseaseInfo: '', // 病种
 	    }
 	  },
 
@@ -67,7 +63,7 @@
 			// 切换病种选项
 			selected: function(listName) {
 				this.activeName = listName
-				this.disease = listName.name
+				this.disease = listName
 				// 激活按钮
 				this.is_conf = true
 			},

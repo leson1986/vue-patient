@@ -140,14 +140,15 @@
 				<mt-tab-container-item id="个人中心" class="consult-container-item-hight">
 					<div class="center-head" v-link="'/user/info'">
 						<div class="center-head-img">
-							<img src="../assets/img/private.jpg" />
+							<img :src="personeInfo.patientPhoto" v-if="personeInfo.patientPhoto !== null"/>
+							<img src="../assets/img/private.jpg" v-if="personeInfo.patientPhoto === null"/>
 						</div>
-						<p class="center-name">张某某</p>
+						<p class="center-name">{{ personeInfo.patientName }}</p>
 					</div>
 					<div class="center-content">
 						<div class="page-cell">
-							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon reddot v-link="{path: '/user/notice', replace: true}"></mt-cell>
-							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon v-link="{path: '/user/note', replace: true}"></mt-cell>
+							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
+							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
 							<!--<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>-->
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
@@ -201,6 +202,7 @@
 				let _self = this
 
 				_self.isDoctorPage = to.query.tohome || false
+				_self.isMydoctor = to.query.mydoctor
 				if(_self.isDoctorPage) return // 是否从列表页返回
 
 				// 在线门诊
@@ -209,9 +211,15 @@
 					_self.recordInfo = rsp.recordInfo
 					_self.rechecks = rsp.rechecks
 
-					// 我的医生
-					_self.pageDoctorNum = 1
-					_self.getDoctors()
+					// 个人信息
+					getJson('api/records/patientIndex', '', (rsp_info)=>{
+
+						_self.personeInfo = rsp_info
+
+						// 我的医生
+						_self.pageDoctorNum = 1
+						_self.getDoctors()
+					}, _self)
 				},_self)
 
 				next()
@@ -228,8 +236,10 @@
 				selected: '在线门诊',
 				istitle: true,
 				showpopup: false,
+				isMydoctor: false, // 访问我的医生
 				tips: '用药提醒功能，暂未开放！',
 				tasks: [],
+				personeInfo: '', // 个人信息
 				unreadInfo: {}, // 红点
 				recordInfo: {}, // 我的单据处理与未处理数据
 				rechecks: [], // 我的日程
@@ -239,6 +249,13 @@
 				isDoctorPage: false, // 是否由我的医生返回
 				firstIn: false // 是否第一次进入
 			};
+		},
+
+		ready() {
+
+			if(this.isMydoctor) {
+				this.selected = '我的医生'
+			}
 		},
 
 		methods: {

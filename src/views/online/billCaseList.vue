@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="我的病历">
-		<mt-button v-link="{path: '/online/bill', query: {actives: 'case'}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/bill', query: {tobill: true, actives: 'case'}, replace: true}" icon="arr-left" slot="left"></mt-button>
 		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
 	<div class="leh-float-box">
@@ -83,16 +83,6 @@
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-		<!-- 查看原图 -->
-		<!--<div class="check-photo-box page-swipe" v-show="viewpic" @click="closePic">
-			<span class="check-photo-close">XX</span>
-
-			<mt-swipe class="my-swipe" :auto="0">
-				<mt-swipe-item class="slide1"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide2"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-				<mt-swipe-item class="slide3"><img src="http://upload.qianlong.com/2016/0906/1473129553587.jpg"/></mt-swipe-item>
-			</mt-swipe>
-		</div>-->
 
 		<mt-popup v-show="popup_visible" position="right" class="mint-popup-3 sick-popup-box" :modal="false">
 			<div class="leh-modal-transparent" @click="closePopup"></div>
@@ -113,6 +103,9 @@
 			</div>
 		</mt-popup>
 	</mt-content>
+	<!-- 用于展示插件的容器 -->
+	<div class="maskbox" v-if="maskbox"></div>
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -124,7 +117,7 @@
 	import MtSwipeItem from '../../components/swipeItem.vue'
 	import MtPopup from '../../components/popup.vue'
 	import MtCell from '../../components/cell.vue'
-	import {getJson, postJson} from 'util'
+	import {getJson, postJson, wrapPic} from 'util'
 
 	export default{
 		route: {
@@ -145,18 +138,13 @@
 		    popup_visible: false,
 		    medicalId: '', // 病历ID
 		    medicalData: '',  // 病历详情数据
-		    indexList: [] // 病历索引列表
+		    indexList: [], // 病历索引列表
+		    picUrls: [], // 图片
+		    maskbox: false // 是否有查看大图遮罩
 	    }
 	  },
 
 		methods: {
-			showPic (){
-				this.viewpic =true;
-			},
-
-			closePic () {
-				this.viewpic =false;
-			},
 			showPopup () {
 				this.popup_visible = true;
 			},
@@ -173,6 +161,7 @@
 				// 获取病历详情
 				getJson('api/medical/' + ids, '', (rsp)=>{
 					_self.medicalData = rsp
+					_self.picUrls = rsp.pictureList || []
 
 					// 获取病历索引
 					getJson('api/medical/index/', '', (rsp_index)=>{
@@ -208,7 +197,17 @@
 				}
 
 				return dest;
-			}
+			},
+
+			// 查看原图
+			showPic (){
+
+				let _self = this
+				_self.maskbox =true
+				wrapPic(_self.picUrls, '我的病历', _self, true) // 查看图片
+				// 取消红点
+				//	postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {}, _self)
+			},
 
 		},
 
@@ -241,6 +240,9 @@
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
+
 	.sick-title .mint-cell:after,.sick-title .mint-cell:before{border: 0;}
 	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:5px;border: 1px solid;border-radius: 50%;}
 	.sick-title .mint-cell-text{line-height: 25px;}

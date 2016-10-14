@@ -1,12 +1,12 @@
 <template>
 	<mt-header fixed isgrey title="留言详情">
-		<mt-button v-link="{path: form_path}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: form_path, query: {tonote: true}}" icon="arr-left" slot="left"></mt-button>
 		<!--<mt-button slot="right" v-if="!ismsg" @click="closeMsg">关闭</mt-button>-->
 	</mt-header>
-	<div class="leh-float-box" v-if="ismsg">
+	<div class="leh-float-box" v-if="isClose">
 		<mt-button type="green">给医生留言</mt-button>
 	</div>
-	<div class="msg-details-ft" v-if="!ismsg">
+	<div class="msg-details-ft" v-if="!isClose">
 		<div class="msg-details-ft-type">
 			<div class="msg-details-ft-left">
 				<textarea v-model="msg" v-el:msgbox></textarea>
@@ -30,7 +30,7 @@
 					<span class="mint-cell-text">{{ noteDetails.contents }}</span>
 					<div class="msg-details-photo" v-if="noteDetails.urls">
 						<ul>
-							<li class="msg-details-img leh-more" v-for="urls in noteDetails.urls">
+							<li class="msg-details-img leh-more" v-for="urls in noteDetails.urls" @click="showPic(noteDetails.urls)">
 								<img :src="urls"/>
 							</li>
 						</ul>
@@ -42,7 +42,6 @@
 		</div>
 		<div class="page-cell msg-details-content" v-if="noteDetails.replyList">
 			<a class="mint-cell" v-for="items in noteDetails.replyList">
-				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
 					<div class="msg-details-content-title">
 						<div class="msg-details-content-title-img">
@@ -53,10 +52,10 @@
 					</div>
 					<span class="mint-cell-text">
 							<p v-if="!items.url">{{ items.content }}</p>
-							<div class="msg-details-head-photo" v-if="items.url">
+							<div class="msg-details-head-photo" v-if="items.url" @click="showPic(items.url)">
 								<ul>
 									<li class="msg-details-img">
-										<img src="../../assets/img/login_quick.png"/>
+										<img :src="items.url"/>
 									</li>
 								</ul>
 							</div>
@@ -117,6 +116,8 @@
 			</div>
 		</mt-popup-box>
 	</mt-content>
+	<!-- 用于展示插件的容器 -->
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -125,7 +126,7 @@
 	import MtCell from '../../components/cell.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson, postJson} from 'util'
+	import {getJson, postJson, wrapPic} from 'util'
 	import $ from 'zepto'
 
 	export default{
@@ -135,8 +136,14 @@
 				let _self =this
 				_self.form_path = from.path
 				_self.ids = to.query.id
+				if(to.query.isclose === 'false'){
+					_self.isClose = false
+				}else {
+					_self.isClose = true
+				}
 
-
+				// 初始化数据
+				_self.noteDetails = '';
 				getJson('api/patientMessages/'+ _self.ids, '', (rsp)=>{
 
 					_self.noteDetails = rsp
@@ -154,6 +161,7 @@
 				ismsg: false,
 				addpic: false,
 				showpic: false,
+				isClose: false, // 是否关闭留言
 				form_path: '',
 				ids: '', // 医生ID
 				noteDetails: '', // 留言详情
@@ -207,16 +215,18 @@
 				let _self = this
 				_self.addpic = !_self.addpic
 				let msgBox = $(_self.$els.msgbox)
+				let scrollH = msgBox[0].scrollHeight
 				let bdbox = $(_self.$els.bodybox)
 				msgBox.val('')
 				msgBox.height(30)
 
 				let params = {
-					"messageId": 0,
+					"messageId": _self.ids,
 					"content": _self.msg,
 					"url": _self.url
 				}
-				console.log(params)
+
+				// 回复留言
 				postJson('api/patientMessages/reply', params, (rsp)=>{
 
 					// 刷新页面
@@ -241,7 +251,19 @@
 						//this.$route.router.go({path: '/user/info'})
 					}
 				});
-			}
+			},
+
+			// 查看原图
+			showPic (url){
+
+				let urlArr = []
+				if(typeof(url) != 'object'){
+					urlArr.push(url)
+				}else {
+					urlArr = url
+				}
+				wrapPic(urlArr, '留言详情') // 查看图片
+			},
 		},
 
 		watch: {
@@ -287,6 +309,9 @@
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
+
 	.msg-details-head .mint-cell:after,.msg-details-content .mint-cell:after{border: 0;}
 	.msg-details-head .mint-cell-text{line-height: 22px;}
 	.msg-details-head .mint-cell-label,.msg-details-content .mint-cell-label{text-align: right;color: #aaa;}
@@ -310,5 +335,6 @@
 	.msg-details-ft-content .mint-tab-item{padding: 0;float: left;}
 	.msg-details-ft-content .icon-wx-image{font-size: 20px;color: #aaa;padding: 3px;border: 1px solid #aaa; border-radius: 5px;}
 	.msg-details-ft-content .mint-tab-item-label{margin-top: 5px;color: #aaa;text-align: center;}
+	.msg-details-img img,.msg-details-content-title-img img{height: 100%;}
 
 </style>

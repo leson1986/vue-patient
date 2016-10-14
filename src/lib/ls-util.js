@@ -6,10 +6,9 @@
 * callback 回调，回传结果到前端页面
 *
  */
-
 import Vue from 'vue'
 import {loader} from '../util/util'
-const SERVER = 'http://192.168.0.56:81/'
+const SERVER = 'http://192.168.0.56:81/' // 'http://wx.jk7.com/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {
@@ -17,9 +16,8 @@ export function loadInterceptors () {
 	Vue.http.interceptors.push((request, next) => {
 
 		loader.show()
-
 		let headers = {}
-		let tokens = 'MjM0NTY3Og=='//'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
+		let tokens = 'MjM0NTY3Og==' //'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
 		headers.Authorization = 'Basic ' + tokens
 		request.headers = headers
 
@@ -38,7 +36,6 @@ export function loadInterceptors () {
 
 // get请求
 export function getJson(url, options, callback, self) {
-
 	loadInterceptors()
 
 	//Vue.http.headers.common['Authorization'] = 'Basic MTIzNDU2Og==';
@@ -120,7 +117,15 @@ export function delJson(url, options, callback, self) {
 
 
 // 查看大图
-export function wrapPic(picArr, titName) {
+/*
+ * 查看大图
+ * picArr => 数组， 格式：picArr[{url:'url_path'}...]
+ * titName => 查看图片的标题, 默认值：查看图片
+ * obj => 调用页对象，与固定变量“maskbox”一起用，主要用于隐藏遮罩层
+ * isMask 是否有遮罩层
+ *
+ */
+export function wrapPic(picArr, titName, obj, isMask) {
 
 	let elem = document.querySelectorAll('ul > li'),
 	    wrap = document.querySelector('#overlay')
@@ -131,14 +136,16 @@ export function wrapPic(picArr, titName) {
 		//		 e.preventDefault();
 
 				 var //ext = this.index === 0 ? '' : 'M_',
-				 title = titName,
+				 title = titName || '查看图片',
 				 data = [];
 
-				 for (var i = 0; i < picArr.length; i++) {
+				 /*for (var i = 0; i < picArr.length; i++) {
 
-				 data.push(picArr[i].url);
-				 }
-
+				 	console.log(picArr)
+					 data.push(picArr[i].url);
+					 console.log(data)
+				 }*/
+				data = picArr
 				 wrap.className = wrap.className + ' in';
 
 				 // 延迟初始化插件是为了让CSS动画走完
@@ -151,7 +158,15 @@ export function wrapPic(picArr, titName) {
 						 init: function() {
 						 },
 						 close: function() {
-						  wrap.className = wrap.className.replace(' in', '');
+
+							 if(isMask){
+								  setTimeout(()=> {
+									  obj.maskbox = false
+
+								  },401)
+							 }
+							 wrap.className = wrap.className.replace(' in', '');
+
 						 }
 					 });
 				 }, 400);
@@ -160,3 +175,22 @@ export function wrapPic(picArr, titName) {
 		// }
 
 }
+
+// 公共配置信息
+export function optionData() {
+	let optionData = {
+		"familyReltions": ["丈夫", "妻子", "父亲", "母亲", "儿子", "女儿", "姐妹", "兄弟", "奶奶", "爷爷", "外公", "外婆", "姑姐", "叔叔", "阿姨", "舅舅", "其他"],
+		"familyDisease": ["甲肝", "乙肝", "慢性乙肝", "慢性丙肝", "肝癌（乙肝）", "肝癌（丙肝）", "肝硬化（乙肝）", "肝硬化（丙肝）", "原发性胆汁性肝硬化", "酒精肝", "脂肪肝", "急性肝炎", "重肝（乙型）", "黄疸性肝炎", "乙肝携带者", "自身免疫性肝炎", "其他"],
+		"patientDisease": ["乙肝", "丙肝", "免疫性肝病", "代谢性肝病", "药物肝", "肝豆状核变性", "乙肝合并丙肝", "酒精肝", "脂肪肝", "肝炎"],
+		"fishTypes": ["浅海鱼", "深海鱼"],
+		"drinkTypes": ["白酒", "红酒", "啤酒", "洋酒", "自酿米酒"],
+		"bloodProductTypes": ["全血", "白蛋白", "血浆", "血小板", "白细胞", "红细胞", "血清", "丙种球蛋白", "凝血因子", "纤维蛋白原", "凝血酶原复合物", "HBIg"],
+		"inflammationTypes": ["G0", "G1", "G2", "G3", "G4"],
+		"fibrosisTypes": ["S0", "S1", "S2", "S3", "S4"],
+		"drugTypes": ["静脉注射", "其他方式"],
+		"riskFactors": ["不洁性行为", "私人诊所打针", "输血", "美容手术", "牙科手术", "手术", "扎耳环孔", "纹身", "修足", "母婴传播", "共用卫生用具", "其他"]
+	}
+
+	return optionData
+}
+

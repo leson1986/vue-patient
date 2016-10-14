@@ -73,7 +73,7 @@
 					</div>
 					<!--右边滚动-->
 					<div class="call-info-month-right">
-						<ul style="width: 720px;">
+						<ul :style="{width: items.months.length*80 + 'px'}">
 							<li class="call-info-month-right-list" v-for="monthItems in items.months">
 								<div class="call-info-month-right-item">
 									<span>{{ monthItems.date }}</span>
@@ -81,7 +81,7 @@
 								</div>
 								<div class="call-info-month-right-item" v-for="months in monthItems.month">
 									<span>{{ months.clinicType }}</span>
-									<p>{{ months.fee }}元/次</p>
+									<p v-if="months.fee !== ''">{{ months.fee }}元/次</p>
 								</div>
 								<!--<div class="call-info-month-right-item">
 									<span v-if="months.time=='下午'">{{ months.clinicType }}</span>
@@ -158,9 +158,6 @@
 						_self.schedulesItems = _self.reGroupMonth(_self.monthItems)
 						_self.type = rsp.type
 					}
-					/*console.log(JSON.stringify(_self.monthItems))
-					console.log(_self.schedulesItems)*/
-
 
 					// 获取最新公告
 					getJson('api/notices/latest/'+ _self.ids, '', (rsp_last)=>{
@@ -260,7 +257,109 @@
 					for(let k = 0; k < mArr.length; k++){
 					  let mk = mArr[k]
 						if(mi.location == mk.location) {
-					  	mi.months.push(mk)
+
+					  	// 只有两条数据时，插入另一条
+							if(mk.month.length == 2){
+								for(let l = 0; l < mk.month.length; l++){
+									let ml = mk.month[l]
+									if(mk.month.length === 3) break;
+									if(ml.time != '上午'){
+										if(mk.month[0] == '上午') break;
+										mk.month.splice(0,0,{
+											"date": ml.date,
+											"time": "上午",
+											"location": "",
+											"clinicType": "",
+											"fee": '',
+											"weekDay": ""
+										})
+									//	break;
+									}else if(ml.time != '下午'){
+										if(mk.month[1] == '下午') break;
+										mk.month.splice(1,0,{
+											"date": ml.date,
+											"time": "下午",
+											"location": "",
+											"clinicType": "",
+											"fee": '',
+											"weekDay": ""
+										})
+									//	break;
+									}else if(ml.time != '晚上'){
+										mk.month.splice(2,0,{
+											"date": ml.date,
+											"time": "晚上",
+											"location": "",
+											"clinicType": "",
+											"fee": '',
+											"weekDay": ""
+										})
+									//	break;
+									}
+								}
+							}
+
+							// 只有一条数据时，插入另两条
+							if(mk.month.length == 1){
+								if(mk.month[0].time == '上午'){
+									mk.month.push({
+										"date": mk.month[0].date,
+										"time": "下午",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									},
+									{
+										"date": mk.month[0].date,
+										"time": "晚上",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									})
+								//	break;
+								}else if(mk.month[0].time == '下午'){
+									mk.month.splice(0,0,{
+										"date": mk.month[0].date,
+										"time": "上午",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									})
+									mk.month.splice(2,0,{
+										"date": mk.month[0].date,
+										"time": "晚上",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									})
+								//	break;
+								}else if(mk.month[0].time == '晚上'){
+									mk.month.splice(0,0,{
+										"date": mk.month[0].date,
+										"time": "上午",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									})
+									mk.month.splice(1,0,{
+										"date": mk.month[0].date,
+										"time": "下午",
+										"location": "",
+										"clinicType": "",
+										"fee": '',
+										"weekDay": ""
+									})
+								//	break;
+								}
+							}
+
+							mi.months.push(mk)
+
 						}
 					}
 				}

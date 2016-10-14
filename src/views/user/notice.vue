@@ -3,7 +3,7 @@
 		<mt-button v-link="{path: '/home', query: {tohome: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class="page-infinite">
-		<div class="page-cell disease-list page-infinite-wrapper">
+		<div class="page-cell disease-list">
 			<div class="page-infinite-list">
 
 				<div class="leh-null-data" v-if="!noticeItems.length">暂无公告</div>

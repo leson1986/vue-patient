@@ -1,13 +1,13 @@
 <template>
 	<mt-header fixed isgrey title="在线留言">
-		<mt-button v-link="{path: from_path}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/home', query: {tohome: true}}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class="page-popup">
 		<div class="page-cell online-msg-ipt-box">
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
-					<input type="text" v-model="name" :value="doctor_name"/>
+					<input type="text" v-model="name" :value="name" :id="doctor_id"/>
 					<ul class="leh-select-drag-box" v-if="name && show_name">
 						<li v-for="items in users | filterBy name in 'name'"  @click="getName(items.name)">{{ items.name }}</li>
 					</ul>
@@ -32,7 +32,7 @@
 		</div>
 		<div class="online-msg-tap-box">
 			<div class="online-msg-tap">
-				<div class="weui_cells weui_cells_form">
+				<!--<div class="weui_cells weui_cells_form">
 					<div class="weui_cell">
 						<div class="weui_cell_bd weui_cell_primary">
 							<div class="weui_uploader">
@@ -52,12 +52,12 @@
 											<div class="weui_uploader_status_content">50%</div>
 										</li>
 									</ul>
-									<!--未上传图片时-->
+									&lt;!&ndash;未上传图片时&ndash;&gt;
 									<div class="weui_uploader_input_wrp" style="display: none;">
 										<span class="iconfont icon-wx-camera"></span>
 										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
 									</div>
-									<!--已上传一张或一张以上图片时-->
+									&lt;!&ndash;已上传一张或一张以上图片时&ndash;&gt;
 									<div class="weui_uploader_input_wrp">
 										<span class="iconfont icon-wx-add"></span>
 										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
@@ -66,6 +66,20 @@
 							</div>
 						</div>
 					</div>
+				</div>-->
+				<div class="photo-tap">
+					<mt-picture>
+						<mt-pic-list v-for="items in picItems" :reddot="items.unread"  @click="showPic(items)">
+							<img :src="items"/>
+						</mt-pic-list>
+						<div class="weui_uploader_input_wrp" style="">
+							<span class="iconfont icon-wx-camera"></span>
+							<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
+						</div>
+						<div class="weui_uploader_input_wrp" @click="addPic">
+							<span class="iconfont icon-wx-add"></span>
+						</div>
+					</mt-picture>
 				</div>
 			</div>
 		</div>
@@ -77,6 +91,8 @@
 			<p v-text="tips"></p>
 		</mt-popup>
 	</mt-content>
+	<!-- 用于展示插件的容器 -->
+	<div class="overlay" id="overlay"></div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -85,8 +101,10 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopup from '../../components/popup.vue'
+	import MtPicture from '../../components/picture.vue'
+	import MtPicList from '../../components/picList.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson} from 'util'
+	import {getJson, postJson, wrapPic} from 'util'
 
 	export default{
 		route: {
@@ -94,12 +112,6 @@
 
 				let _self = this
 				_self.from_path = from.path
-
-				// 患者评价
-				getJson('api/doctors/simple', '', (rsp)=>{
-					_self.users = rsp
-					_self.doctor_name =rsp[0].name
-				},_self)
 				next()
 			}
 		},
@@ -111,34 +123,62 @@
 				show_popup: false,
 				from_path: '',
 				show_name: 1,
-				name: '',
+				name: '', // 医生名称
+				doctor_id: '', // 医生ID
 				old_name: '',
 				users: [], // 医生列表
-				doctor_name:''
+				picItems: [
+						'http://7jpp73.com1.z0.glb.clouddn.com/1.jpg',
+
+						'http://7jpp73.com1.z0.glb.clouddn.com/2.jpg',
+
+						'http://7jpp73.com1.z0.glb.clouddn.com/3.jpg',
+
+						'http://7jpp73.com1.z0.glb.clouddn.com/4.jpg',
+
+						'http://7jpp73.com1.z0.glb.clouddn.com/5.jpg'
+
+				], // 图片数组
 			}
+		},
+
+		created () {
+
+			let _self = this
+			// 患者评价
+			getJson('api/doctors/simple', '', (rsp)=>{
+				_self.users = rsp
+				_self.name = rsp[0].name
+				_self.getName(_self.name)
+			},_self)
 		},
 
 		methods: {
 			msgBox () {
-
-				/*MessageBox({
-				 title: 'I\'m a title',
-				 message: 'I\'m a message',
-				 showCancelButton: true
-				 }).then(action => {
-				 console.log('callback:', action);
-				 });*/
 				MessageBox('提示', '一次只能添加5张图片');
 			},
 
+			// 在线留言
 			saveMsg () {
-				if(this.msg_val === '') {
-					this.show_popup = true
+
+				let _self = this
+				if(_self.msg_val === '') {
+					_self.show_popup = true
 					return
 				}
+				let params = {
+					"drId": 0,
+					"content": _self.msg_val,
+					"urls": [
+						"string"
+					]
+				}
 
+				postJson('api/PatientMessages', '', (rsp)=>{
 
-				this.$route.router.go('/user/noteDetail')
+					_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp}})
+				},_self)
+
 			},
 
 			getName (names) {
@@ -146,7 +186,11 @@
 				this.old_name = names
 				this.show_name = !this.show_name
 				console.log(this.show_name)
-			}
+			},
+
+			showPic () {
+				wrapPic(this.picItems, '在线留言') // 查看图片
+			},
 		},
 
 		events: {
@@ -185,12 +229,17 @@
 			MtButton,
 			MtTranslate,
 			MtTranslateItem,
-			MtPopup
+			MtPopup,
+			MtPicture,
+			MtPicList
 		}
 	}
 </script>
 
 <style>
+	@import '../../assets/css/normalize.css';
+	@import '../../assets/css/MPreview.mobile.css';
+
 
 	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
 	.online-msg-ipt-box .mint-cell:after,.online-msg-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}

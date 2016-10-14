@@ -1,7 +1,7 @@
 <template>
 
 	<mt-header fixed isgrey title="拍照上传">
-		<mt-button  v-link="{path: '/home', query: {tohome: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button  v-link="{path: '/home', replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<div class="leh-float-box " :class="{'leh-guide': firstUpload}">
 		<mt-button type="green" @click="uploadPic">上传</mt-button>
@@ -70,8 +70,8 @@
 			</div>-->
 			<div class="photo-tap">
 				<mt-picture>
-					<mt-pic-list v-for="items in picItems" :reddot="items.unread"  @click="showPic(items.id)">
-						<img :src="items.url"/>
+					<mt-pic-list v-for="items in picItems" :reddot="items.unread"  @click="showPic()">
+						<img :src="items"/>
 					</mt-pic-list>
 					<div class="weui_uploader_input_wrp" @click="addPic">
 						<span class="iconfont icon-wx-add"></span>
@@ -94,10 +94,10 @@
 	import MtPicture from '../../components/picture.vue'
 	import MtPicList from '../../components/picList.vue'
 	import MessageBox from 'vue-msgbox'
-	import {pageConfig, getOpenID} from 'wxconfig'
 	import {getJson, wrapPic} from 'util'
 	import $ from 'zepto'
 	import wx from 'wx'
+	import {pageConfig, getOpenID} from 'wxconfig'
 
 	export default{
 		data () {
@@ -106,45 +106,21 @@
 				firstIn: false, // 是否第一次进入
 				firstUpload: false, // 是否第一次上传
 				picItems: [
-					{
-						'id': '112',
-						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/1.jpg',
-						'unread': false
-					},
-					{
-						'id': '112',
-						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/2.jpg',
-						'unread': false
-					},
-					{
-						'id': '112',
-						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/3.jpg',
-						'unread': true
-					},
-					{
-						'id': '112',
-						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/4.jpg',
-						'unread': true
-					},
-					{
-						'id': '112',
-						'url': 'http://7jpp73.com1.z0.glb.clouddn.com/5.jpg',
-						'unread': false
-					}
+					'http://7jpp73.com1.z0.glb.clouddn.com/1.jpg',
+
+					'http://7jpp73.com1.z0.glb.clouddn.com/2.jpg',
+
+					'http://7jpp73.com1.z0.glb.clouddn.com/3.jpg',
+
+					'http://7jpp73.com1.z0.glb.clouddn.com/4.jpg',
+
+					'http://7jpp73.com1.z0.glb.clouddn.com/5.jpg'
+
 				], // 图片数组
 			}
 		},
 
 		ready () {
-
-			let _self = this
-			/*getJson('api/Handwriting', '', (rsp) => {
-
-				_self.picItems  = rsp
-			}, _self)*/
-
-
-
 
 			// WX 上传图片接口
 			pageConfig(this)
