@@ -24,7 +24,7 @@
 	import MtHeader from '../../components/header.vue'
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
-	import {optionData} from 'util'
+	import {putJson, optionData} from 'util'
 	import $ from 'zepto'
 
 	export default{
@@ -46,8 +46,8 @@
 		    is_conf: false,
 		    is_info: false,
 		    activeName: '',
-		    disease: '',
-		    lists: optionData().patientDisease,
+		    disease: '', // 选取的值
+		    lists: optionData().patientDisease, // 病种列表
 		    item: [],
 		    diseaseInfo: '', // 病种
 	    }
@@ -69,10 +69,17 @@
 			},
 
 			confirm () {
-				if(this.is_conf && this.is_info){
-					this.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': this.disease}})
-				}if(this.is_conf && !this.is_info){
-					this.$route.router.go('/home')
+
+				let _self = this
+				if(_self.is_conf && _self.is_info){
+
+					_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+				}
+				if(_self.is_conf && !_self.is_info){
+
+					putJson('api/patient/disease/'+ _self.disease, '', (rsp)=>{
+						_self.$route.router.go('/home')
+					},_self)
 				}
 			}
 		},

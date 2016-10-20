@@ -121,12 +121,14 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
-				_self.medicalId = transition.to.query.id
+				_self.medicalId = to.query.id
 
 				_self.getList(_self.medicalId)
+
+				next()
 
 			}
 		},
@@ -168,8 +170,6 @@
 						_self.indexList = _self.reGroupArr(rsp_index)
 
 					},_self)
-					// 消除红点
-					// postJson('api/medical/hasRead/' + ids, '', (rsp_read)=>{},_self)
 				},_self)
 			},
 
@@ -202,11 +202,8 @@
 			// 查看原图
 			showPic (){
 
-				let _self = this
-				_self.maskbox =true
-				wrapPic(_self.picUrls, '我的病历', _self, true) // 查看图片
-				// 取消红点
-				//	postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {}, _self)
+				this.maskbox =true
+				wrapPic(this.picUrls, '我的病历', _self, true)
 			},
 
 		},
@@ -219,10 +216,6 @@
 					}, 2000);
 				}
 			}
-		},
-
-		ready() {
-			//this.buttonBottom = this.$els.button.getBoundingClientRect().bottom;
 		},
 
 		components: {

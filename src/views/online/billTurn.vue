@@ -13,7 +13,7 @@
 						<img :src="items.url"/>
 						<span class="transform-img-ico iconfont icon-wx-close" v-if="items.isFail"></span>
 					</div>
-					<div class="transform-list-text" v-if="items.isFail">
+					<div class="transform-list-text" v-if="items.isFail" @click="addPic(items.id)">
 						<p>图片过于模糊或无法识别</p>
 						<p>点击重新上传</p>
 					</div>
@@ -37,16 +37,19 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson, delJson, wrapPic} from 'util'
+	import {getJson, putJson, delJson, wrapPic} from 'util'
+	import {pageConfig} from 'wxconfig'
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
-				_self.dates = transition.to.query.date
-
+				pageConfig()
+				_self.dates = to.query.date
 				_self.getTurnList(_self.dates)
+
+				next()
 
 			}
 		},
@@ -58,6 +61,8 @@
 		    dates: '', // 转换中日期
 		    turnDatas: [], // 转换中数组,
 		    turnTitle: '',
+		    serverId: '', // 上传图片返回的serverId
+		    photo: '' // 重新上传的图片
 	    }
 	  },
 
@@ -95,10 +100,51 @@
 			// 查看图片
 			showPic (url){
 
+				wrapPic(url, '转换中单据') // 查看图片
+			},
+
+			// 添加图片
+			addPic (ids) {
+
 				let _self = this
-				let picUrls = []
-				picUrls.push(url)
-				wrapPic(picUrls, '转换中单据') // 查看图片
+				wx.chooseImage({
+					count: 1, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+
+						let localIds = res.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+						_self.photo = localIds
+						_self.uploadImage(localIds, ids)
+
+					},
+					fail: function (res) {
+						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+					}
+				});
+			},
+
+			// 上传图片
+			uploadImage (localIds, id) {
+
+				let _self = this
+				wx.uploadImage({
+					localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+					isShowProgressTips: 1, // 默认为1，显示进度提示
+					success: function (res) {
+
+						_self.serverId = res.serverId; // 返回图片的服务器端ID
+						putJson('api/filecheck/reupload/'+ id + '/'+ res.serverId,'',(rsp) => {
+
+							_self.getTurnList(_self.dates)
+						}, _self)
+
+					},
+					fail: function(res) {
+						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+					}
+				});
+
 			},
 		},
 
@@ -122,10 +168,12 @@
 <style>
 	@import '../../assets/css/normalize.css';
 	@import '../../assets/css/MPreview.mobile.css';
+
 	.transform-list-img-box{width: 40px;height: 50px;background-color:#e5e5e5;float: left;text-align: center;position: relative;}
 	.transform-list-img-box img{height: auto;width: auto;max-height: 100%;max-width: 100%;}
-	.transform-list-text{float: left;padding-top: 10px;padding-left: 20px;}
-	.transform-list-text p{font-size: 12px;color: #919191;}
+	.transform-list-text{float: left;padding-left: 20px;padding-top:5px;width: 65%;height: 50px;display: inline-block;overflow: hidden;}
+	.transform-list-text p{font-size: 12px;color: #919191;line-height: 20px;}
 	.transform-list-box span.fr{line-height: 50px;font-size: 14px;}
 	.transform-img-ico{position: absolute;bottom: -7px;right: -7px;font-size: 14px;font-weight:bold;color: #ff6060;}
+
 </style>

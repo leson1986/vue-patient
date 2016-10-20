@@ -76,13 +76,15 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
-				_self.groupId = transition.to.query.gid
-				_self.chkTypeId = transition.to.query.cid
+				_self.groupId = to.query.gid
+				_self.chkTypeId = to.query.cid
 
 				_self.getCheckList(_self.groupId, _self.chkTypeId)
+
+				next()
 
 			}
 		},
@@ -158,13 +160,10 @@
 			},
 
 			// 查看原图
-			showPic (ids){
+			showPic (){
 
-				let _self = this
-				_self.maskbox =true
-				wrapPic(_self.picUrls, '我的检查单', _self, true) // 查看图片
-				// 取消红点
-				//	postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {}, _self)
+				this.maskbox = true
+				wrapPic(this.picUrls, '我的检查单', _self, true)
 			},
 
 		},

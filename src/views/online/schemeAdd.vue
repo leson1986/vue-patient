@@ -50,6 +50,12 @@
 			@confirm="handleChange"
 			:modal="true">
 	</mt-datetime-picker>
+
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content.vue'
@@ -64,18 +70,19 @@
 	import MtSelectDrag from '../../components/selectDrag.vue'
 	import MtLiItem from '../../components/liItem.vue'
 	import MtModal from '../../components/modal.vue'
+	import MtPopup from '../../components/popup.vue'
 	import MessageBox from 'vue-msgbox'
 	import {getJson, postJson, delJson, putJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
 		route : {
-			data (transition) {
+			data ({from, to, next}) {
 
 				let _self = this
-				_self.from_path = transition.from.path
-				_self.ids = transition.to.query.id
-				_self.is_visible = transition.to.query.isEdit;
+				_self.from_path = from.path
+				_self.ids = to.query.id
+				_self.is_visible = to.query.isEdit;
 
 				if(_self.is_visible){
 
@@ -94,7 +101,7 @@
 						// 取消红点
 						//postJson('api/recheck/hasRead/'+ _self.ids, '', (rsp)=>{},_self)
 
-					},_self)
+					}, _self)
 
 				}else {
 
@@ -103,9 +110,12 @@
 					_self.active_name = '保存'
 					_self.title_name = '提醒事项'
 					_self.remark = ''
-					_self.value = new Date()
+					_self.date = _self.formatDate(new Date())
+					_self.time = _self.formatTime(new Date())
 
 				}
+
+				next()
 			}
 		},
 
@@ -125,6 +135,8 @@
 				remark: '', // 备注
 				show_drag: 0,
 				ids: '',
+				tips: '', // 提示内容
+				show_popup: false, // 提示框
 				dailys: '', // 日程数据
 				title_name: '提醒事项', // 提醒事项
 				dailyList: [
@@ -136,9 +148,11 @@
 		},
 
 		created () {
+
 			let date = new Date()
 			this.date = this.formatDate(date)
 			this.time = this.formatTime(date)
+
 		},
 
 		methods: {
@@ -149,6 +163,12 @@
 				}else{
 					// 修改
 					let _self = this
+
+					if(_self.title_name === '提醒事项'){
+						_self.tips = '提醒事项不能为空'
+						_self.show_popup = true
+						return
+					}
 					let params = {
 						"date": _self.date,
 						"dayTime": _self.time,
@@ -187,6 +207,7 @@
 			msgBox () {
 
 				let _self = this
+
 				MessageBox({
 					title: '提示',
 					message: '是否确认删除本日程?',
@@ -240,7 +261,15 @@
 		watch: {
 			drug (newVal) {
 				console.log(newVal)
+			},
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+					}, 2000);
+				}
 			}
+
 		},
 
 		components: {
@@ -255,7 +284,8 @@
 			MtPopupWork,
 			MtSelectDrag,
 			MtLiItem,
-			MtModal
+			MtModal,
+			MtPopup
 		}
 	}
 </script>

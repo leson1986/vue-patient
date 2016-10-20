@@ -52,8 +52,8 @@
 			data ({to, next}) {
 
 				let _self = this
-				_self.isNotePage = to.query.tonote || false
-				if(_self.isNotePage) return // 是否其他页面返回
+				//_self.isNotePage = to.query.tonote || false
+				//if(_self.isNotePage) return // 是否其他页面返回
 
 				// 记录中心列表
 				_self.pageNoteNum = 1
@@ -112,7 +112,8 @@
 	.note-list-title:after{right: 12px;top: 14px;}
 	.note-content .mint-cell:before{border: 0;}
 	.note-content .mint-cell-text{display: block;}
-	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
-	.note-img{width: 49px;height: 49px;border-radius: 50%;overflow: hidden;margin-right: 10px;}
+	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.note-img{width: 49px;height: 49px;border-radius: 50%;overflow: hidden;margin-right: 10px;text-align: center;}
+	.note-img img{width: 100%;min-height: 100%;height: auto}
 
 </style>

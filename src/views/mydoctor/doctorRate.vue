@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="evaluation-content">
-			<div class="doctor-details-comment-list-box page-infinite-wrapper">
+			<div class="doctor-details-comment-list-box">
 				<div class="page-infinite-list">
 					<div class="leh-null-data" v-if="!doctorRateItems.length">暂无评价</div>
 					<ul>
@@ -126,7 +126,8 @@
 	.evaluation-head .mint-cell-value .mint-cell-label{margin-top: 7px;}
 	.evaluation-head-arr{position: absolute;top: 0;left: 10px;width: 15%;height: 60px;display: inline-block;padding-top: 13px;color: #fff;}
 	.evaluation-head-title{height: 40px;line-height: 50px;text-align: center;font-size: 16px;color: #fff;}
-	.evaluation-head-img{width: 48px;height: 48px;overflow: hidden;border-radius: 50%;margin-right: 10px;}
+	.evaluation-head-img{width: 48px;height: 48px;overflow: hidden;border-radius: 50%;margin-right: 10px;text-align: center;}
+	.evaluation-head-img img{width: 100%;min-height: 100%;height: auto}
 	.evaluation-content{position:absolute;top: 125px;bottom: 0;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
 	.doctor-details-comment-list-box{padding-left: 10px;}
 	.doctor-details-comment-list{padding: 10px 10px 10px 0;overflow: hidden;border-bottom: 1px solid #e5e5e5;}

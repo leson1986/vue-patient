@@ -6,7 +6,7 @@
 				<mt-tab-container-item id="在线门诊">
 					<div class="mint-tab-container-item">
 						<div class="consult-tap-box">
-							<mt-tab-item :class="{'leh-guide': firstIn}" v-link="{path: '/online/photo', replace: true}">
+							<mt-tab-item :class="{'leh-guide': firstTime}" v-link="{path: '/online/photo', query: {firsttime: firstTime}, replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								拍照上传
 
@@ -201,15 +201,16 @@
 
 				let _self = this
 
-				_self.isDoctorPage = to.query.tohome || false
+				//_self.isDoctorPage = to.query.tohome || false
 				_self.isMydoctor = to.query.mydoctor
-				if(_self.isDoctorPage) return // 是否从列表页返回
+			//	if(_self.isDoctorPage) return // 是否从列表页返回
 
 				// 在线门诊
 				getJson('api/records/getindex', '', (rsp)=>{
 					_self.unreadInfo = rsp.unreadInfo
 					_self.recordInfo = rsp.recordInfo
 					_self.rechecks = rsp.rechecks
+					_self.firstTime = rsp.firstTime ? 1 : 0
 
 					// 个人信息
 					getJson('api/records/patientIndex', '', (rsp_info)=>{
@@ -247,7 +248,7 @@
 				pageDoctorTotal: 0,   // 我的医生列表总数
 				pageDoctorNum: 1,  // 我的医生列表页码
 				isDoctorPage: false, // 是否由我的医生返回
-				firstIn: false // 是否第一次进入
+				firstTime: false // 是否第一次进入
 			};
 		},
 
@@ -348,13 +349,16 @@
 	/*我的医生首页*/
 	.doctor-index-box .mint-cell:after{border: 0;}
 	.doctor-index-box .mint-cell:before{left: 10px;}
-	.doctor-img{width: 50px;height: 50px;border-radius: 50%;overflow:hidden;margin-right: 10px;}
-	.doctor-index-box .mint-cell-mask.leh-red-dot:before{content: '';position: absolute;top: 0px;right: 10px;width: 8px;height: 8px;border-radius: 50% 50% 50% 50%;background-color: #f92b2b;}
+	.doctor-img{width: 50px;height: 50px;border-radius: 50%;overflow:hidden;margin-right: 10px;text-align: center;}
+	.doctor-img img{width: 100%;min-height: 100%;height: auto}
+	.doctor-index-box .mint-cell-mask.leh-red-dot:before{content: '';position: absolute;top: 1px;right: 12px;width: 8px;height: 8px;border-radius: 50% 50% 50% 50%;background-color: #f92b2b;}
 	.doctor-index-box .mint-cell-text span:nth-of-type(2){font-size: 12px;margin: 0 5px;}
 	.doctor-index-box .mint-cell-text span:nth-of-type(3){font-size: 13px;}
 	.doctor-index-box .mint-cell-label{font-size: 14px;}
+
 	.doctor-index {bottom: 100px}
 	.document-index-load-tap .mint-button--transparent{text-align: center;}
+
 	/*个人中心*/
 	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;}
 	.center-head-img{width: 55px;height: 55px;border: 1px solid #fff;border-radius: 50%;margin: 50px auto 15px;overflow: hidden;text-align: center;}

@@ -204,14 +204,15 @@
 	import {getJson, putJson} from 'util'
 	import {pageConfig} from 'wxconfig'
 	import wx from 'wx'
+	import $ from 'zepto'
 
 	export default{
 		route: {
 			data ({to, next}) {
 
+				pageConfig()
+
 				let _self = this
-
-
 				if(to.query.alllergicHis !== undefined){
 					_self.alllergicHis = to.query.alllergicHis
 					_self.notAlllergicHis = to.query.alllergicHis
@@ -221,7 +222,6 @@
 				}else if(to.query.disease !== undefined){
 					_self.disease = to.query.disease
 				}
-
 
 				_self.formPage = to.query.toinfo || false
 				if(_self.formPage) return // 是否其他页面返回
@@ -243,10 +243,11 @@
 					// 超过10个字加省略号
 					if(_self.notAlllergicHis.length > 10) {
 						_self.alllergicHis = _self.notAlllergicHis.substr(0,10) + '...'
+					}else {
+						_self.alllergicHis = _self.notAlllergicHis
 					}
+
 				},_self)
-
-
 				next()
 			}
 		},
@@ -266,6 +267,7 @@
 		    alllergicHis: '', // 过敏史 ,
 		    notAlllergicHis: '', // 未省略过的过敏史 ,
 		    photo: '', // 头像 ,
+		    serverId: '', // 上传图片返回的serverId
 		    email: '', // 邮箱 ,
 		    disease: '', // 所患疾病 ,
 		    diseaseHis: '', // 患病年限 ,
@@ -273,10 +275,6 @@
 	    }
 
 	  },
-
-		ready () {
-			pageConfig()
-		},
 
 		methods: {
 			showPicker () {
@@ -296,7 +294,7 @@
 					"gender": _self.gender,
 					"birthday": _self.birthday,
 					"alllergicHis": _self.notAlllergicHis,
-					"photo": _self.photo,
+					"serverId": _self.serverId,
 					"email": _self.email,
 					"disease": _self.disease,
 					"diseaseHis": _self.diseaseHis,
@@ -310,18 +308,41 @@
 
 			// 修改头像
 			editPic () {
+
 				let _self = this
 				wx.chooseImage({
-					count: 2, // 默认9
+					count: 1, // 默认9
 					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 					success: function(res) {
-						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-						console.log(res)
+
+						let localIds = res.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 						_self.photo = localIds
+						_self.uploadImage(localIds)
+
+					},
+					fail: function (res) {
+						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
 					}
 				});
 			},
+
+			uploadImage (localIds) {
+
+				let _self = this
+				wx.uploadImage({
+					localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+					isShowProgressTips: 1, // 默认为1，显示进度提示
+					success: function (res) {
+						_self.serverId = res.serverId; // 返回图片的服务器端ID
+
+					},
+					fail: function(res) {
+						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+					}
+				});
+
+			}
 		},
 
 		components: {
@@ -347,7 +368,8 @@
 	.info-main-box .info-main-list:nth-last-of-type(1) .mint-cell:before{border: 0;}
 	.info-main-list .mint-field-state{display: none}
 	.info-main-box .mint-cell{padding: 15px 10px;}
-	.info-img{width: 37px;height: 37px;border-radius: 50%;overflow: hidden;position: absolute;right:10px;top:50%;margin-top: -18px}
+	.info-img{width: 37px;height: 37px;border-radius: 50%;overflow: hidden;position: absolute;right:10px;top:50%;margin-top: -18px;text-align: center;}
+	.info-img img{width: 100%;min-height: 100%;height: auto}
 	.info-img-list .mint-cell-text{line-height: 37px}
 	.info-main-list .mint-cell:before{left: 10px;}
 	.info-sex{margin-right: 30px;font-size: 14px;color: #919191;height: 24px;line-height: 24px;}

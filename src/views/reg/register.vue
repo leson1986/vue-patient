@@ -52,8 +52,9 @@
 
 	export default{
 		route: {
-			data (transition) {
-				this.toQuery = transition.to.query
+			data ({to, next}) {
+				this.toQuery = to.query
+				next()
 			}
 		},
 
@@ -80,7 +81,7 @@
 				let name = $(this.$refs.name)
 				let birthday = $(this.$refs.birthday)
 				let patientTime = $(this.$refs.patient_time)
-				let sexy = this.sex? '女' : '男'
+				let sexy = this.sex? '2' : '1'
 
 				this.info = {
 					'mobile': this.toQuery.mobile,

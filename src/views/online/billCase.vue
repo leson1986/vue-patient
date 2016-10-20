@@ -15,7 +15,7 @@
 			</a>
 		</div>
 		<mt-picture class-name="document-written-content">
-			<mt-pic-list v-for="items in handwritingItems" :reddot="items.unread"  @click="showPic(items.id)">
+			<mt-pic-list v-for="items in handwritingItems" :reddot="items.unread"  @click="showPic(items.url)">
 				<img :src="items.url"/>
 				<p>{{ items.createTime }}</p>
 			</mt-pic-list>
@@ -36,10 +36,12 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
-				_self.dates = transition.to.query.dates
+				_self.dates = to.query.dates
+
+				next()
 			}
 		},
 
@@ -63,16 +65,9 @@
 		},
 
 		methods: {
-			showPic (ids){
+			showPic (urls){
 
-				let _self = this
-				let urlParams = []
-
-				for (var i = 0; i < _self.handwritingItems.length; i++) {
-
-					urlParams.push(_self.handwritingItems[i].url);
-				 }
-				wrapPic(urlParams, '手写病历') // 查看图片
+				wrapPic(urls, '手写病历') // 查看图片
 			},
 
 			closePic () {

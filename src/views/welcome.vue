@@ -20,15 +20,18 @@
 				let _self = this
 				_self.paths = to.query.paths || 'home' //不同的路径进口,默认进入首页
 
-				getJson('api/Authenticate', '', (rsp)=>{
+				if(openID){
+					_self.getAuthenticate()
+				}else {
+					var setOpenID = setInterval(()=> {
 
-					if(_self.paths === 'mydoctor'){
-						_self.$route.router.go({path: '/home', query: {mydoctor: true}, replace: true})
-					}else {
-						_self.$route.router.go({path: _self.paths, query: {actives: 'turn'}, replace: true})
-					}
+						if(openID){
+							_self.getAuthenticate()
+							clearInterval(setOpenID)
+						}
+					}, 250)
+				}
 
-				}, _self)
 
 				next()
 
@@ -38,6 +41,22 @@
 		data () {
 			return {
 				paths: ''
+			}
+		},
+
+		methods: {
+
+			getAuthenticate () {
+				let _self = this
+				getJson('api/Authenticate', '', (rsp)=>{
+
+					if(_self.paths === 'mydoctor'){
+						_self.$route.router.go({path: '/home', query: {mydoctor: true}, replace: true})
+					}else {
+						_self.$route.router.go({path: _self.paths, query: {actives: 'turn'}, replace: true})
+					}
+
+				}, _self)
 			}
 		}
 	}

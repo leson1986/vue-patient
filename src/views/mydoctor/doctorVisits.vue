@@ -10,7 +10,8 @@
 					<p :class="{'leh-text-ellipsis': !openmsg}">{{ lastNotice }}</p>
 				</label>
 				<div class="mint-cell-value" @click="openmsg = !openmsg">
-					<span class="mint-cell-text">展开</span>
+					<span class="mint-cell-text" v-if="openmsg">收起</span>
+					<span class="mint-cell-text" v-else>展开</span>
 				</div>
 			</a>
 		</div>
@@ -157,6 +158,9 @@
 						_self.monthItems = _self.reGroupArr(rsp.items)
 						_self.schedulesItems = _self.reGroupMonth(_self.monthItems)
 						_self.type = rsp.type
+					}else {
+						_self.monthItems = []
+						_self.schedulesItems = []
 					}
 
 					// 获取最新公告

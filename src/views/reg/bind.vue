@@ -102,7 +102,7 @@
 				let params = {
 					'mobile': _self.tel_val,
 					'code': _self.code_val,
-					'weiXinToken': '123456'
+					'weiXinToken': openID
 				}
 				if(_self.tel_val === ''){
 
@@ -124,13 +124,8 @@
 					_self.show_popup = true
 					return
 
-				}/*else if(）{
+				}
 
-				 this.tips = '验证码不正确'
-				 this.show_popup = true
-				 return
-
-				 }*/
 				postJson('api/register/bind', params, (rsp, recode, msg)=>{
 
 					if(recode === 1) {
@@ -138,7 +133,14 @@
 						this.show_popup = true
 						return
 					}else {
-						_self.$route.router.go({path: '/reg/register', query: params, replace: true})
+
+						if(rsp > 0) {
+
+							_self.$route.router.go({path: '/home', replace: true})
+						}else {
+
+							_self.$route.router.go({path: '/reg/register', query: params, replace: true})
+						}
 					}
 				},_self)
 

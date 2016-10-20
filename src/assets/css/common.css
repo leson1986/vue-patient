@@ -342,7 +342,7 @@ label.mint-cell-title{
 	z-index: 1000;
 	float: left;
 	min-width: 96%;
-	max-height: 115px;
+	max-height: 122px;
 	padding: 5px 0;
 	margin: 0 2%;
 	font-size: 14px;
@@ -361,7 +361,7 @@ label.mint-cell-title{
 
 .leh-select-drag-box li {
 	display: block;
-	padding: 3px 20px;
+	padding: 5px 20px;
 	clear: both;
 	font-weight: 400;
 	line-height: 1.42857143;
@@ -699,6 +699,11 @@ label.mint-cell-title{
 	background: no-repeat 50%;
 	background-size: cover;
 	position: relative;
+	text-align: center;
+}
+.weui_uploader_file img{
+	max-height: 100%;
+	height:auto;
 }
 
 .weui_uploader_status {

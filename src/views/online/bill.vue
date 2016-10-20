@@ -102,8 +102,8 @@
 				this.active = to.query.actives
 
 
-				this.isBillPage = to.query.tobill || false
-				if(this.isBillPage) return // 是否从列表页返回
+				//this.isBillPage = to.query.tobill || false
+				//if(this.isBillPage) return // 是否从列表页返回
 
 				// 初始化数据
 				this.pageMedicalNum = 1

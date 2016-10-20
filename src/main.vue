@@ -20,8 +20,6 @@ import {pageConfig, getOpenID} from 'wxconfig'
 export default {
   ready () {
     // 微信配置
-	  pageConfig()
-	  getOpenID()
 
   },
   data () {

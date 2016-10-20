@@ -3,8 +3,8 @@
 	<mt-header fixed isgrey title="拍照上传">
 		<mt-button  v-link="{path: '/home', replace: true}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
-	<div class="leh-float-box " :class="{'leh-guide': firstUpload}">
-		<mt-button type="green" @click="uploadPic">上传</mt-button>
+	<div class="leh-float-box" :class="{'leh-guide': firstUpload}" @click="uploadGuide">
+		<mt-button type="green":class="{'leh-bg-grey-btn': !is_conf}" @click="uploadPic">上传</mt-button>
 		<div class="photo-btn-tip-img-box">
 			<img src="../../assets/img/photo-updata-btn.png"/>
 		</div>
@@ -23,7 +23,7 @@
 		<div class="leh-null-box"></div>
 		<div class="photo-tap-box">
 			<!--未上传-->
-			<div class="photo-frist-tap" :class="{'leh-guide': firstIn}" @click="msgBox">
+			<div class="photo-frist-tap" :class="{'leh-guide': firstTime}" v-if="!isUpload" @click="msgBox">
 				<div class="photo-frist-ico-box">
 					<span class="iconfont icon-wx-camera">
 							<div class="photo-tip-img-box">
@@ -33,47 +33,18 @@
 				</div>
 				<p>点击上传图片</p>
 			</div>
-			<div class="leh-black-shade"></div>
-			<!--上传-->
-			<!--<div class="photo-tap">
-				<div class="weui_cells weui_cells_form">
-					<div class="weui_cell">
-						<div class="weui_cell_bd weui_cell_primary">
-							<div class="weui_uploader">
-								<div class="weui_uploader_bd">
-									<ul class="weui_uploader_files">
-										<li @click="showPic" class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<span class="leh-img-del-btn iconfont icon-wx-reduce"></span>
-										</li>
-										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<div class="weui_uploader_status_content">
-												<i class="weui_icon_warn"></i>
-											</div>
-										</li>
-										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<div class="weui_uploader_status_content">50%</div>
-										</li>
-										<li class="weui_uploader_file weui_uploader_status">
-												<img id="imgpath" />
-										</li>
-									</ul>
-									<div class="weui_uploader_input_wrp" @click="addPic">
-										<span class="iconfont icon-wx-add"></span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>-->
+			<div class="leh-black-shade" v-if="!isUpload"></div>
+
 			<div class="photo-tap">
 				<mt-picture>
-					<mt-pic-list v-for="items in picItems" :reddot="items.unread"  @click="showPic()">
-						<img :src="items"/>
-					</mt-pic-list>
-					<div class="weui_uploader_input_wrp" @click="addPic">
+
+					<ul class="weui_uploader_files">
+						<li class="weui_uploader_file" v-for="items in photoItems" track-by="$index" :reddot="items.unread">
+							<img :src="items"  @click="showPic(items)"/>
+							<span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
+						</li>
+					</ul>
+					<div class="weui_uploader_input_wrp" v-if="isUpload" @click="addPic">
 						<span class="iconfont icon-wx-add"></span>
 					</div>
 				</mt-picture>
@@ -94,37 +65,35 @@
 	import MtPicture from '../../components/picture.vue'
 	import MtPicList from '../../components/picList.vue'
 	import MessageBox from 'vue-msgbox'
-	import {getJson, wrapPic} from 'util'
+	import {getJson, postJson, wrapPic} from 'util'
 	import $ from 'zepto'
 	import wx from 'wx'
-	import {pageConfig, getOpenID} from 'wxconfig'
+	import {pageConfig} from 'wxconfig'
 
 	export default{
-		data () {
-			return{
-				viewpic: false,
-				firstIn: false, // 是否第一次进入
-				firstUpload: false, // 是否第一次上传
-				picItems: [
-					'http://7jpp73.com1.z0.glb.clouddn.com/1.jpg',
+		route: {
+			data ({to, next}) {
 
-					'http://7jpp73.com1.z0.glb.clouddn.com/2.jpg',
+				pageConfig()
+				this.photoItems = []
+				this.firstTime = Number(to.query.firsttime)
 
-					'http://7jpp73.com1.z0.glb.clouddn.com/3.jpg',
+				next()
 
-					'http://7jpp73.com1.z0.glb.clouddn.com/4.jpg',
-
-					'http://7jpp73.com1.z0.glb.clouddn.com/5.jpg'
-
-				], // 图片数组
 			}
 		},
 
-		ready () {
-
-			// WX 上传图片接口
-			pageConfig(this)
-			getOpenID(this)
+		data () {
+			return{
+				viewpic: false,
+				is_conf: false, // 未上传图片时，上传按钮不能用
+				firstTime: false, // 是否第一次进入
+				firstUpload: false, // 是否第一次上传
+				photoItems: [], // 图片数组
+				serverId: '', // 上传图片返回的serverId
+				serverIds: [], // 存储多图的serverId
+				isUpload: false, // 判断是否上传图片
+			}
 		},
 
 		methods: {
@@ -136,30 +105,17 @@
 				this.viewpic =false;
 			},
 
-			addPic () {
-
-				wx.chooseImage({
-					count: 1, // 默认9
-					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-					success: function(res) {
-						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-
-						document.getElementById("imgpath").src = localIds;
-					}
-				});
-			},
-
 			showPic () {
-				wrapPic(this.picItems, '拍照上传') // 查看图片
+				wrapPic(this.photoItems, '拍照上传') // 查看图片
 			},
 
 			msgBox () {
 
-				if(this.firstIn){
+				if(this.firstTime){
 
-					this.firstIn = false
+					this.firstTime = false
 					this.firstUpload = true
+					this.is_conf = true
 				}else {
 
 					this.firstUpload = false
@@ -168,12 +124,106 @@
 				}
 			},
 
+			// 添加图片
+			addPic () {
+
+				let _self = this
+				wx.chooseImage({
+					count: 9, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+
+						let localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+						let photoItems = _self.photoItems.concat(localIds) // 合并分次上传的localId
+
+						// 已经上传图片切换上传按钮
+						if(photoItems.length > 0){
+
+							_self.isUpload = true
+							_self.is_conf = true
+						}
+
+						_self.photoItems = _self.photoItems.concat(localIds)
+
+					}
+				});
+			},
+
 			// 上传
 			uploadPic () {
 
+				//if(!this.is_conf) return // 未上传图片，按钮不可用
+
+				if(this.firstUpload){
+
+					this.firstUpload = false
+				}else {
+					this.uploadImages()
+				}
+			},
+
+			// 上传图片
+			uploadImages () {
+
+				// 获取serverId
 				let _self = this
-				getJson('api/filecheck/upload', '', (rsp) => {
-				}, _self)
+
+				let localId = _self.photoItems.pop();
+				wx.uploadImage({
+					localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+					isShowProgressTips: 1, // 默认为1，显示进度提示
+					success: function (res) {
+
+						//_self.serverId = res.serverId; // 返回图片的服务器端ID
+						_self.serverIds.push(res.serverId)
+
+						//其他对serverId做处理的代码
+						if(_self.photoItems.length > 0){
+
+							_self.uploadImages();
+						}else {
+							// 上传
+							let params = {"items":_self.serverIds}
+
+							postJson('api/filecheck/upload', params, (rsp, recode, msg)=> {
+
+								if(recode == '1'){
+									alert(msg)
+								}else{
+									_self.$route.router.go({path: '/home', replace: true})
+								}
+							}, _self)
+						}
+					},
+					fail: function(res) {
+						alter(JSON.stringify(res));
+					}
+				});
+
+			},
+
+			// 删除图片
+			delPic (ind) {
+				let removePic = this.photoItems[ind]
+				this.photoItems.$remove(removePic)
+
+				// 已经上传图片切换上传按钮, 上传按钮失效
+				if(this.photoItems.length == 0){
+
+					this.isUpload = false
+					this.is_conf = false
+				}
+			},
+
+			// 引导上传
+			uploadGuide () {
+
+				if(this.firstUpload) {
+
+					this.is_conf = false        // 未上传图片，按钮不可用
+					this.firstUpload = false    // 隐藏引导图
+				}
 			}
 		},
 

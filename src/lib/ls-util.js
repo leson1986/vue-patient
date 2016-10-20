@@ -8,7 +8,7 @@
  */
 import Vue from 'vue'
 import {loader} from '../util/util'
-const SERVER = 'http://192.168.0.56:81/' // 'http://wx.jk7.com/' //
+const SERVER = 'http://wx.jk7.com/' //'http://192.168.0.56:81/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {
@@ -17,7 +17,8 @@ export function loadInterceptors () {
 
 		loader.show()
 		let headers = {}
-		let tokens = 'MjM0NTY3Og==' //'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
+		let tokens = btoa(openID + ':') //'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
+
 		headers.Authorization = 'Basic ' + tokens
 		request.headers = headers
 
@@ -25,7 +26,7 @@ export function loadInterceptors () {
 			if(!response.ok){
 				console.log(response.status)
 			}
-
+			console.log(JSON.stringify(response) + '---------------' + response.status)
 			loader.hide()
 			return response
 		});
@@ -126,7 +127,7 @@ export function delJson(url, options, callback, self) {
  *
  */
 export function wrapPic(picArr, titName, obj, isMask) {
-
+	console.log(typeof(picArr))
 	let elem = document.querySelectorAll('ul > li'),
 	    wrap = document.querySelector('#overlay')
 
@@ -145,7 +146,14 @@ export function wrapPic(picArr, titName, obj, isMask) {
 					 data.push(picArr[i].url);
 					 console.log(data)
 				 }*/
-				data = picArr
+
+				if(typeof(picArr) === 'string'){
+					data.push(picArr)
+				}else if(typeof(picArr) === 'object'){
+					data = picArr
+				}else {
+					console.log('图片变量类型必须为string或object' + typeof(picArr))
+				}
 				 wrap.className = wrap.className + ' in';
 
 				 // 延迟初始化插件是为了让CSS动画走完

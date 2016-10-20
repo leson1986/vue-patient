@@ -29,8 +29,9 @@
 			data ({to, next}) {
 
 				let _self = this
-				_self.formPage = to.query.tonotice || false
-				if(_self.formPage) return // 是否其他页面返回
+				//_self.formPage = to.query.tonotice || false
+				//if(_self.formPage) return // 是否其他页面返回
+
 				// 医生公告列表
 				_self.pageNoticeNum = 1
 				getJson('api/notices/index?pageIndex=1&pageSize=10', '', (rsp)=>{
