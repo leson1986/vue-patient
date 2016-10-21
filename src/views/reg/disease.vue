@@ -17,6 +17,12 @@
 					:class="{'leh-active': activeName == list}"
 			></mt-cell>
 		</div>
+		<div class="page-popup">
+			<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+				<p v-text="tips"></p>
+			</mt-popup>
+			<div v-show="show_popup" class="maskbox"></div>
+		</div>
 	</mt-content>
 </template>
 <script>
@@ -24,6 +30,7 @@
 	import MtHeader from '../../components/header.vue'
 	import MtButton from '../../components/button.vue'
 	import MtCell from '../../components/cell.vue'
+	import MtPopup from '../../components/popup.vue'
 	import {putJson, optionData} from 'util'
 	import $ from 'zepto'
 
@@ -50,6 +57,8 @@
 		    lists: optionData().patientDisease, // 病种列表
 		    item: [],
 		    diseaseInfo: '', // 病种
+		    show_popup: false, // 提示
+		    tips: '', // 提示内容
 	    }
 	  },
 
@@ -71,15 +80,41 @@
 			confirm () {
 
 				let _self = this
-				if(_self.is_conf && _self.is_info){
+				if(_self.diseaseInfo === _self.disease){
 
-					_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+					_self.show_popup = true
+					_self.tips = '病种没修改'
+					return
+				}else {
+
+					_self.show_popup = true
+					_self.tips = '保存成功'
 				}
-				if(_self.is_conf && !_self.is_info){
 
-					putJson('api/patient/disease/'+ _self.disease, '', (rsp)=>{
-						_self.$route.router.go('/home')
-					},_self)
+				setTimeout(() => {
+
+					if(_self.is_conf && _self.is_info){
+
+						_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+					}
+					if(_self.is_conf && !_self.is_info){
+
+						putJson('api/patient/disease/'+ _self.disease, '', (rsp)=>{
+							_self.$route.router.go('/home')
+						},_self)
+					}
+				},2000)
+
+
+			}
+		},
+
+		watch: {
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+					}, 2000);
 				}
 			}
 		},
@@ -88,7 +123,8 @@
 			MtContent,
 			MtHeader,
 			MtButton,
-			MtCell
+			MtCell,
+			MtPopup
 		}
 	}
 </script>

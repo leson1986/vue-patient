@@ -78,8 +78,8 @@
 
 				let _self = this
 				_self.ids = to.query.id
-				_self.isRatePage = to.query.todoctor || false
-				if(_self.isRatePage) return // 是否其他页面返回
+				//_self.isRatePage = to.query.todoctor || false
+				//if(_self.isRatePage) return // 是否其他页面返回
 
 
 				// 医生详情

@@ -57,11 +57,11 @@
 
 	export default{
 		route: {
-			data (transition) {
+			data ({to, next}) {
 
 				let _self = this
 
-				_self.ids = transition.to.query.id
+				_self.ids = to.query.id
 
 				// 公共信息
 				getJson('api/doctors/common/'+ _self.ids, '', (rsp)=>{
@@ -75,6 +75,7 @@
 					},_self)
 				},_self)
 
+				next()
 
 			}
 		},

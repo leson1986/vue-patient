@@ -165,7 +165,7 @@
 					let _self = this
 
 					if(_self.title_name === '提醒事项'){
-						_self.tips = '提醒事项不能为空'
+						_self.tips = '事项或时间未填写，请先填写完整。'
 						_self.show_popup = true
 						return
 					}

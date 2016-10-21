@@ -60,10 +60,6 @@
 	  	this.getHandwriting()
 		},
 
-		ready() {
-			//wrapPic(this.handwritingItems, '手写病历') // 查看图片
-		},
-
 		methods: {
 			showPic (urls){
 

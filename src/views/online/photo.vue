@@ -33,7 +33,7 @@
 				</div>
 				<p>点击上传图片</p>
 			</div>
-			<div class="leh-black-shade" v-if="!isUpload"></div>
+			<div class="leh-black-shade" v-if="firstTime || firstUpload"></div>
 
 			<div class="photo-tap">
 				<mt-picture>
@@ -75,6 +75,7 @@
 			data ({to, next}) {
 
 				pageConfig()
+				this.isUpload = false
 				this.photoItems = []
 				this.firstTime = Number(to.query.firsttime)
 
@@ -191,7 +192,7 @@
 								if(recode == '1'){
 									alert(msg)
 								}else{
-									_self.$route.router.go({path: '/home', replace: true})
+									_self.$route.router.go({path: '/online/bill', query: {actives: 'turn'}, replace: true})
 								}
 							}, _self)
 						}

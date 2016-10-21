@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="留言详情">
-		<mt-button v-link="{path: form_path, query: {tonote: true}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/user/note', replace: true}" icon="arr-left" slot="left"></mt-button>
 		<!--<mt-button slot="right" v-if="!ismsg" @click="closeMsg">关闭</mt-button>-->
 	</mt-header>
 	<div class="leh-float-box" v-if="isClose" @click="toFeedback">
@@ -274,10 +274,8 @@
 
 				// 回复留言
 				postJson('api/patientMessages/reply', params, (rsp)=>{
-					alert(rsp)
 					// 刷新页面
 					getJson('api/patientMessages/'+ _self.ids, '', (rsp_note)=>{
-						alert(rsp_note)
 						_self.noteDetails = rsp_note
 					},_self)
 				},_self)

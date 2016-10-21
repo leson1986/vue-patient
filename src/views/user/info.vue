@@ -120,7 +120,7 @@
 							<span class="mint-cell-text">个人邮箱</span>
 						</label>
 						<div class="mint-cell-value">
-							<input class="mint-field-core" placeholder="登录邮箱" type="email" v-model="email"  :value="email">
+							<input class="mint-field-core" maxlength="50" placeholder="登录邮箱" type="email" v-model="email"  :value="email">
 							<div class="mint-field-clear" style="display: none;">
 								<i class="mintui mintui-field-error"></i>
 							</div>

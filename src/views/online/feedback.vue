@@ -7,9 +7,10 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">选择医生</span>
-					<input type="text" v-model="name" :value="name" :id="doctor_id" readonly/>
-					<ul class="leh-select-drag-box" v-if="name && show_name">
-						<li v-for="items in users | filterBy name in 'name'"  @click="getName(items.name, items.id)">{{ items.name }}</li>
+					<!--<input type="text" :value="name" :id="doctor_id" readonly/>-->
+					<div class="online-msg-select-doc" @click="show_name = !show_name" v-text="name" :id="doctor_id"></div>
+					<ul class="leh-select-drag-box" v-show="show_name">
+						<li v-for="items in users"  @click="getName(items.name, items.id)">{{ items.name }}</li>
 					</ul>
 				</label>
 				<div class="mint-cell-value">
@@ -120,6 +121,7 @@
 
 				let _self = this
 				pageConfig()
+				_self.isUpload = false
 				_self.from_path = from.path
 				next()
 			}
@@ -131,7 +133,7 @@
 				tips: '',
 				show_popup: false,
 				from_path: '',
-				show_name: 1,
+				show_name: 0,
 				name: '', // 医生名称
 				doctor_id: '', // 医生ID
 				old_name: '',
@@ -162,7 +164,7 @@
 				this.name = names
 				this.doctor_id = ids
 				this.old_name = names
-				this.show_name = !this.show_name
+				this.show_name = 0
 			},
 
 			showPic () {
@@ -212,19 +214,42 @@
 			// 保存图片
 			saveMsgPop () {
 
-				if(this.name === ''){
+				let _self = this
+				if(_self.name === ''){
 					MessageBox('提示', '请先绑定专属医生才能使用留言功能，如有疑问，可致电：400-966-8838')
 					return
 				}
 
-				if(this.msg_val === '') {
-					this.tips = '请填写留言内容'
-					this.show_popup = true
+				if(_self.msg_val === '') {
+					_self.tips = '请填写留言内容'
+					_self.show_popup = true
 					return
 				}
 
-				// 上传图片
-				this.uploadImages()
+				if(_self.picItems.length == 0){
+
+					// 上传
+					let params = {
+						"drId": _self.doctor_id,
+						"content": _self.msg_val,
+						"serverIds": ''
+					}
+
+					postJson('api/PatientMessages', params, (rsp, recode, msg)=>{
+
+						if(recode == '1'){
+							alert(msg)
+						}else{
+							_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp, isclose: false}})
+						}
+
+					},_self)
+
+				}else {
+
+					// 上传图片
+					this.uploadImages()
+				}
 
 			},
 
@@ -313,14 +338,14 @@
 				}
 			},
 
-			name (val, oldVal) {
+			/*name (val, oldVal) {
 
 				if(val == this.old_name) {
 					this.show_name = 0
 				}else {
 					this.show_name = 1
 				}
-			}
+			}*/
 		},
 
 		components: {
@@ -348,5 +373,5 @@
 	.online-msg-tap .weui_cells{margin-top: 0;}
 	.online-msg-tap .weui_cells:before,.online-msg-tap .weui_cells:after{border: 0;}
 	.online-msg-tap .weui_uploader_input_wrp,.online-msg-tap .weui_uploader_file{margin-top: 8px;}
-
+	.online-msg-select-doc{margin-top: 15px;font-size: 14px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
 </style>
