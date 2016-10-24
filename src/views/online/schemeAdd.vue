@@ -241,7 +241,7 @@
 				}
 
 				putJson('api/recheck/'+ _self.ids, params, (rsp, recode, msg)=>{
-						alert('修改成功')
+					_self.$route.router.go('/online/scheme')
 				},_self)
 			}
 		},

@@ -7,9 +7,9 @@
 	</div>
 	<mt-content>
 		<!--无日程-->
-		<div class="leh-not-apply" v-if="is_visible">暂无日程安排</div>
+		<div class="leh-not-apply" v-if="!dailyItems.length">暂无日程安排</div>
 		<!--有日程-->
-		<div class="schedule-apply" v-if="!is_visible" v-for="datas in dailyItems">
+		<div class="schedule-apply" v-for="datas in dailyItems">
 			<div class="page-cell schedule-apply-title">
 				<a class="mint-cell">
 					<label class="mint-cell-title">

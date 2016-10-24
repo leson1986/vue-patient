@@ -201,6 +201,7 @@
 	import MtAddressPicker from '../../components/address-picker.vue'
 	import MtModal from '../../components/modal.vue'
 	import MtField from '../../components/field.vue'
+	import MessageBox from 'vue-msgbox'
 	import {getJson, putJson} from 'util'
 	import {pageConfig} from 'wxconfig'
 	import wx from 'wx'
@@ -302,7 +303,7 @@
 				}
 
 				putJson('api/patient/myinfo', params, (rsp)=>{
-					alert('修改成功！')
+					MessageBox('提示','修改成功！')
 				},_self)
 			},
 
@@ -322,7 +323,7 @@
 
 					},
 					fail: function (res) {
-						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+						alert(JSON.stringify(res));
 					}
 				});
 			},
@@ -338,7 +339,7 @@
 
 					},
 					fail: function(res) {
-						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+						alert(JSON.stringify(res));
 					}
 				});
 
@@ -378,4 +379,6 @@
 	.info-sex .icon-wx-female{font-size: 14px;}
 	.info-main-list .mint-cell-value .icon-wx-arr-right,
 	.info-main-list .mint-cell-value .icon-wx-arr-down{color: #aaa;position: absolute;top:50%;right: 10px;margin-top: -8px}
+	.info-main-list input{position: relative;display:block;}
+
 </style>

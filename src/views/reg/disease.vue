@@ -17,13 +17,13 @@
 					:class="{'leh-active': activeName == list}"
 			></mt-cell>
 		</div>
-		<div class="page-popup">
-			<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
-				<p v-text="tips"></p>
-			</mt-popup>
-			<div v-show="show_popup" class="maskbox"></div>
-		</div>
 	</mt-content>
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+		<div v-show="show_popup" class="maskbox"></div>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content'

@@ -4,7 +4,7 @@
 	</mt-header>
 	<mt-content class="page-infinite">
 		<div class="page-cell disease-list">
-			<div class="page-infinite-list">
+			<div class="page-infinite-list notice-list">
 
 				<div class="leh-null-data" v-if="!noticeItems.length">暂无公告</div>
 				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :reddot="items.unread" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.drId}, replace: true}"></mt-cell>
@@ -89,4 +89,6 @@
 <style>
 	.notice-list .mint-cell:after{border: 0;}
 	.notice-list .mint-cell:before{left: 0;}
+	.notice-list .mint-cell-text{font-size: 14px;}
+	.notice-list .mint-cell-value{font-size: 12px}
 </style>

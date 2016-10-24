@@ -7,6 +7,22 @@
 		<div class="register-ipt-box">
 			<div class="page-part">
 				<mt-field label="姓名" placeholder="请输入用户名" type="text" :istitle="true" v-ref:name></mt-field>
+				<!--<div class="mint-field">
+					<a class="mint-cell mint-field-cell">
+						<div class="mint-cell-title">
+							<span class="mint-cell-text">姓名</span>
+						</div>
+						<div class="mint-cell-value">
+							<input class="mint-field-core" value="" placeholder="请输入用户名" type="text">
+							<div class="mint-field-clear" style="display: none;">
+								<i class="mintui mintui-field-error"></i>
+							</div>
+							<span class="mint-field-state is-default">
+					      <i class="mintui mintui-field-default"></i>
+					    </span>
+						</div>
+					</a>
+				</div>-->
 				<div class="mint-field">
 					<a class="mint-cell mint-field-cell">
 						<div class="mint-cell-title">
@@ -81,13 +97,13 @@
 				let name = $(this.$refs.name)
 				let birthday = $(this.$refs.birthday)
 				let patientTime = $(this.$refs.patient_time)
-				let sexy = this.sex? '2' : '1'
+				let sexy = this.sex? 2 : 1
 
 				this.info = {
 					'mobile': this.toQuery.mobile,
 					'weiXinToken': this.toQuery.weiXinToken,
 					'code': this.toQuery.code,
-					'name': name.val(),
+					'name': name.val().replace(/^\s+|\s+$/g,""),
 					'sex': sexy,
 					'birthday': birthday.val(),
 					'diseaseHistroy': patientTime.val()
@@ -100,12 +116,25 @@
 				let name = $(_self.$refs.name)
 				_self.name_val = name.val()
 
+
+
+
 				_self.getRegisterInfo()
 				if(_self.is_reg){
 
-					if(_self.name_val === ''){
+					var names = _self.name_val;
+					if(names == ""){
 						_self.show_popup = true
-						return
+						return;
+					}else{
+						names = names.replace(/(^\s*)/g, "");//去除开头空格
+						var expression = new RegExp("^[\u4E00-\u9FA5A-Za-z ]+$");
+						if(!expression.test(names)){
+
+							_self.show_popup = true
+							name.val('')
+							return;
+						}
 					}
 
 					postJson('api/register', _self.info, (rsp)=>{

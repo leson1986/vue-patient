@@ -13,10 +13,16 @@
 		<div class="leh-full-btn">
 			<mt-button size="large" type="green" @click="nextStep">下一步</mt-button>
 		</div>
+		<!--<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>-->
+	</mt-content>
+
+	<div class="page-popup">
 		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
 			<p v-text="tips"></p>
 		</mt-popup>
-	</mt-content>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content'

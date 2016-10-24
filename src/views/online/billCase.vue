@@ -15,6 +15,7 @@
 			</a>
 		</div>
 		<mt-picture class-name="document-written-content">
+			<div class="leh-null-data" v-if="!handwritingItems.length">暂无数据</div>
 			<mt-pic-list v-for="items in handwritingItems" :reddot="items.unread"  @click="showPic(items.url)">
 				<img :src="items.url"/>
 				<p>{{ items.createTime }}</p>
@@ -75,7 +76,7 @@
 				let _self = this
 				getJson('api/Handwriting', '', (rsp) => {
 
-					_self.handwritingItems  = rsp
+					_self.handwritingItems  = rsp || []
 				}, _self)
 			}
 		},

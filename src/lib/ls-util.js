@@ -26,7 +26,6 @@ export function loadInterceptors () {
 			if(!response.ok){
 				console.log(response.status)
 			}
-			console.log(JSON.stringify(response) + '---------------' + response.status)
 			loader.hide()
 			return response
 		});

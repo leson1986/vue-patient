@@ -149,7 +149,7 @@
 				// 加载手写病历信息
 				getJson('api/handwriting/summary', '', (rsp)=>{
 
-					_self.summaryItems = rsp
+					_self.summaryItems = rsp || []
 
 					// 加载病历列表
 					getJson('api/Medical?pageIndex=1&pageSize=8', '', (rsp_medical)=>{

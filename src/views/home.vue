@@ -85,7 +85,7 @@
 									<label class="mint-cell-title">
 										<span class="mint-cell-text leh-c-green">我的日程</span>
 									</label>
-									<div class="mint-cell-value">
+									<div class="mint-cell-value" v-if="rechecks.length">
 										<span class="leh-c-red leh-fs-twelve">有新日程更新啦~点击→</span>
 										<span>更多</span>
 									</div>
