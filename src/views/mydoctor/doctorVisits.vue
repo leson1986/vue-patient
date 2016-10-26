@@ -7,9 +7,10 @@
 			<a class="mint-cell">
 				<span class="leh-c-orange iconfont icon-wx-notice"></span>
 				<label class="mint-cell-title">
-					<p :class="{'leh-text-ellipsis': !openmsg}">{{ lastNotice }}</p>
+					<p v-if="!!lastNotice" :class="{'leh-text-ellipsis': !openmsg}">{{ lastNotice }}</p>
+					<p v-else>暂无公告</p>
 				</label>
-				<div class="mint-cell-value" @click="openmsg = !openmsg">
+				<div class="mint-cell-value" v-if="!!lastNotice" @click="openmsg = !openmsg">
 					<span class="mint-cell-text" v-if="openmsg">收起</span>
 					<span class="mint-cell-text" v-else>展开</span>
 				</div>
@@ -94,6 +95,15 @@
 								</div>-->
 							</li>
 
+						</ul>
+					</div>
+					<!--背景-->
+					<div class="call-info-month-bg">
+						<ul>
+							<li class="call-info-month-bg-list"></li>
+							<li class="call-info-month-bg-list"></li>
+							<li class="call-info-month-bg-list"></li>
+							<li class="call-info-month-bg-list"></li>
 						</ul>
 					</div>
 				</div>
@@ -396,11 +406,11 @@
 	.call-info-time-list .page-cell:nth-last-of-type(1) .mint-cell:before,
 	.call-info-month-left-list:nth-last-of-type(1):after,
 	.call-info-month-right-item:nth-last-of-type(1):after{border: 0;}
-	.call-info-time-list .mint-cell-text{font-size: 14px;}
+	.call-info-time-list .mint-cell-text{font-size: 14px;line-height: 22px;}
 	.call-info-advertisement .mint-cell p{color: #f9975c;font-size: 14px;line-height: 20px;}
 	.call-info-advertisement .icon-wx-notice{padding-right: 8px;line-height: 20px;}
 	.call-info-advertisement .mint-cell-value .mint-cell-text{font-size: 12px;padding-left: 10px;color: #919191;line-height: 20px;}
-	.call-info-time-list .mint-cell-label{font-size: 12px;margin-top: 10px;}
+	.call-info-time-list .mint-cell-label{font-size: 12px;margin-top: 10px;line-height: 20px;}
 	.call-info-time-list .mint-cell-value span{color: #aaa;}
 	.call-info-week-box{background-color: #f6fcff;padding-left: 10px;position: relative;overflow: hidden}
 	.call-info-week-box:before,.call-info-month-box:before{content:'';width:100%;position: absolute;top: -1px;border-top:1px solid #e5e5e5;}
@@ -433,7 +443,12 @@
 	.call-info-month-right-item p{margin-top: 5px;font-size: 12px;}
 	.call-info-month-right-item:nth-of-type(1) span{color: #a7a7a7;font-size: 12px;}
 	.call-info-month-right-item:nth-of-type(1) p{font-size: 14px;}
-	.call-info-txt{padding: 12px 10px;font-size: 12px;color: #363636;line-height: 20px;}
+	.call-info-txt{padding: 12px 10px;font-size: 14px;color: #363636;line-height: 20px;}
+
+	.call-info-month-bg{background-color: #f6fcff;}
+	.call-info-month-bg-list{height: 50px;border-bottom:1px dotted #e5e5e5;}
+	.call-info-month-bg-list:nth-last-of-type(1){border-bottom:0;}
+	.call-info-month-bg-list:nth-of-type(1){border-bottom-style:solid;background-color: #fff;}
 
 	.leh-grey-table .paddingleft {padding-left: 100px}
 </style>

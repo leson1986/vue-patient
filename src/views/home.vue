@@ -93,7 +93,7 @@
 								</a>
 							</div>
 							<!--无日程-->
-							<div class="consult-list-not-task" v-if="rechecks.length === 0">
+							<div class="consult-list-not-task" v-link="{path: '/online/schemeAdd',replace: true}" v-if="rechecks.length === 0" >
 								<div class="breathe-btn">+</div>
 								<p>暂无日程添加</p>
 							</div>

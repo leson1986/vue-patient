@@ -163,7 +163,7 @@
 			showPic (){
 
 				this.maskbox = true
-				wrapPic(this.picUrls, '我的检查单', _self, true)
+				wrapPic(this.picUrls, '我的检查单', this, true)
 			},
 
 		},

@@ -91,19 +91,33 @@
 					_self.tips = '保存成功'
 				}
 
-				setTimeout(() => {
+
 
 					if(_self.is_conf && _self.is_info){
 
-						_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+						_self.show_popup = true
+						_self.tips = '保存成功'
+						setTimeout(() => {
+							_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+						},2000)
 					}
 					if(_self.is_conf && !_self.is_info){
 
-						putJson('api/patient/disease/'+ _self.disease, '', (rsp)=>{
-							_self.$route.router.go('/home')
+						putJson('api/register/disease/'+ openID + '/'+ _self.disease, '', (rsp, recode, msg)=>{
+							if(recode === 0){
+
+								_self.show_popup = true
+								_self.tips = '保存成功'
+								setTimeout(() => {
+									_self.$route.router.go('/home')
+								},2000)
+
+							}else{
+
+								alert(msg)
+							}
 						},_self)
 					}
-				},2000)
 
 
 			}

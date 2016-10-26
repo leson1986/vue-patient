@@ -100,9 +100,9 @@
 				let sexy = this.sex? 2 : 1
 
 				this.info = {
-					'mobile': this.toQuery.mobile,
-					'weiXinToken': this.toQuery.weiXinToken,
-					'code': this.toQuery.code,
+					'mobile': this.toQuery.mobile || '',
+					'weiXinToken': openID,
+					'code': this.toQuery.code || '',
 					'name': name.val().replace(/^\s+|\s+$/g,""),
 					'sex': sexy,
 					'birthday': birthday.val(),

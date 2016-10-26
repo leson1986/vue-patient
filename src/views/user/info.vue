@@ -192,6 +192,11 @@
 
 	</div>
 	<mt-modal v-if="visible"></mt-modal>
+	<div class="page-popup">
+		<mt-popup v-show="showpopup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content.vue'
@@ -201,6 +206,7 @@
 	import MtAddressPicker from '../../components/address-picker.vue'
 	import MtModal from '../../components/modal.vue'
 	import MtField from '../../components/field.vue'
+	import MtPopup from '../../components/popup.vue'
 	import MessageBox from 'vue-msgbox'
 	import {getJson, putJson} from 'util'
 	import {pageConfig} from 'wxconfig'
@@ -259,6 +265,8 @@
 		    province: '',
 		    city: '',
 		    sex: 1,
+		    showpopup: false,
+		    tips: '',
 		    formPage: '', // 来自其他页面
 		    infoItems: '', // 信息
 		    name: '', // 姓名 ,
@@ -291,6 +299,19 @@
 			saveInfo () {
 
 				let _self = this
+
+				var email = _self.email;
+				if (email != '') {
+					var patrn = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+					if (!patrn.exec(email)) {
+						_self.email = ''
+
+						_self.showpopup = true
+						_self.tips = '请输入合法的电子邮箱'
+						return;
+					}
+				}
+
 				let params = {
 					"gender": _self.gender,
 					"birthday": _self.birthday,
@@ -303,7 +324,8 @@
 				}
 
 				putJson('api/patient/myinfo', params, (rsp)=>{
-					MessageBox('提示','修改成功！')
+					_self.showpopup = true
+					_self.tips = '修改成功'
 				},_self)
 			},
 
@@ -346,6 +368,16 @@
 			}
 		},
 
+		watch: {
+			showpopup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.showpopup = false;
+					}, 2000);
+				}
+			}
+		},
+
 		components: {
 			MtContent,
 			MtHeader,
@@ -353,7 +385,8 @@
 			MtButton,
 			MtAddressPicker,
 			MtModal,
-			MtField
+			MtField,
+			MtPopup
 		}
 	}
 </script>

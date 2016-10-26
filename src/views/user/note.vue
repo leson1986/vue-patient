@@ -24,7 +24,7 @@
 										<span class="leh-fs-fourteen">{{ items.drCustName }}</span>
 										<span class="fr leh-fs-fourteen leh-c-grey">{{ items.lastActiveTime }}</span>
 									</span>
-								<span class="mint-cell-label">{{ items.lastReplyContent }}</span>
+								<span class="mint-cell-label">{{ items.lastReplyContent || '暂无回复' }}</span>
 							</label>
 							<div class="mint-cell-value">
 								<span></span>

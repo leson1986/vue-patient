@@ -94,10 +94,14 @@
 			<mt-button size="large" type="green" @click="saveMsgPop">发布</mt-button>
 		</div>
 
+
+	</mt-content>
+
+	<div class="page-popup">
 		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
 			<p v-text="tips"></p>
 		</mt-popup>
-	</mt-content>
+	</div>
 	<!-- 用于展示插件的容器 -->
 	<div class="overlay" id="overlay"></div>
 </template>

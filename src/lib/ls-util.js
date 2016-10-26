@@ -8,7 +8,7 @@
  */
 import Vue from 'vue'
 import {loader} from '../util/util'
-const SERVER = 'http://wx.jk7.com/' //'http://192.168.0.56:81/' //
+const SERVER ='http://wx.jk7.com/' // 'http://test.jk7.com/' //  'http://192.168.0.56:81/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {
@@ -17,7 +17,7 @@ export function loadInterceptors () {
 
 		loader.show()
 		let headers = {}
-		let tokens = btoa(openID + ':') //'MTIzNDU2Og=='(123456)   'MjM0NTY3Og=='(234567)
+		let tokens = btoa(openID + ':')
 
 		headers.Authorization = 'Basic ' + tokens
 		request.headers = headers
@@ -26,6 +26,7 @@ export function loadInterceptors () {
 			if(!response.ok){
 				console.log(response.status)
 			}
+
 			loader.hide()
 			return response
 		});
@@ -38,8 +39,6 @@ export function loadInterceptors () {
 export function getJson(url, options, callback, self) {
 	loadInterceptors()
 
-	//Vue.http.headers.common['Authorization'] = 'Basic MTIzNDU2Og==';
-
 	if(typeof callback != "function" || (callback instanceof RegExp)){
 		return alert("错误提示：请传入正确的回调函数");
 	}
@@ -51,8 +50,18 @@ export function getJson(url, options, callback, self) {
 			callback(data, recode, msg)
 		}, (response) => {
 
-			if(response.status === 401) {
-				self.$route.router.go({path: '/reg/bind', replace: true})
+			if(response.status === 401){
+				console.log(response.body)
+				if(response.body === '2'){
+					self.$route.router.go({path: '/reg/bind', replace: true})
+				}else if(response.body === '3'){
+					self.$route.router.go({path: '/reg/register', replace: true})
+				}else if(response.body === '4'){
+					self.$route.router.go({path: '/reg/disease', replace: true})
+				}else {
+					alert('非法访问')
+				}
+
 			}else {
 				alert(response.status + '  ' +response.data.message)
 			}
@@ -73,7 +82,15 @@ export function postJson(url, options, callback, self) {
 		}, (response) => {
 
 			if(response.status === 401) {
-				self.$route.router.go({path: '/reg/bind', replace: true})
+				if(response.body === '2'){
+					self.$route.router.go({path: '/reg/bind', replace: true})
+				}else if(response.body === '3'){
+					self.$route.router.go({path: '/reg/register', replace: true})
+				}else if(response.body === '4'){
+					self.$route.router.go({path: '/reg/disease', replace: true})
+				}else {
+					alert('非法访问')
+				}
 			}else {
 				alert(response.status + '  ' +response.data.message)
 			}
