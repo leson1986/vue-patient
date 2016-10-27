@@ -302,5 +302,4 @@
 	.schedule-add-list .mint-cell-mask{margin-right: 10px;}
 	.schedule-add-list .icon-wx-writte{margin-right: 7px;}
 	.schedule-add-list .mint-cell{overflow: visible;}
-	.schedule-add-list .mint-cell .leh-select-drag-box{padding: 0 5px;}
 </style>

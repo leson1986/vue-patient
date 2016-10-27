@@ -364,7 +364,7 @@ label.mint-cell-title{
 
 .leh-select-drag-box li {
 	display: block;
-	padding: 3px 20px;
+	padding: 5px 20px;
 	clear: both;
 	font-weight: 400;
 	line-height: 1.42857143;
@@ -436,14 +436,13 @@ label.mint-cell-title{
 
 .breathe-btn {
 	position: relative;
-	width: 50px;
-	height: 50px;
+	width: 60px;
+	height: 60px;
 	border-radius: 50%;
 	margin: 30px auto 15px;
-	line-height: 50px;
+	line-height: 60px;
 	border: 1px solid #98d89d;
 	color: #fff;
-	font-size: 20px;
 	text-align: center;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
 	overflow: hidden;
@@ -673,7 +672,7 @@ label.mint-cell-title{
 }
 
 .weui_cell {
-	padding: 10px 15px;
+	padding: 10px;
 	position: relative;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -712,7 +711,9 @@ label.mint-cell-title{
 	max-height: 100%;
 	height: auto;
 }
-
+.weui_uploader_file:nth-last-of-type(1){
+	margin-right: 29px;
+}
 .weui_uploader_status {
 	position: relative
 }
@@ -739,7 +740,6 @@ label.mint-cell-title{
 .weui_uploader_input_wrp {
 	float: left;
 	position: relative;
-	margin-left: 20px;
 	margin-top: 28px !important;
 	margin-right: 9px;
 	margin-bottom: 9px;

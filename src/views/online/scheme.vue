@@ -5,7 +5,7 @@
 	<div class="leh-float-box">
 		<mt-button type="green" v-link="'/online/schemeAdd'">新增日程</mt-button>
 	</div>
-	<mt-content>
+	<mt-content class="leh-bg-grey-body">
 		<!--无日程-->
 		<div class="leh-not-apply" v-if="!dailyItems.length">暂无日程安排</div>
 		<!--有日程-->

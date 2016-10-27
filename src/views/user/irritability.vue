@@ -9,7 +9,7 @@
 	<mt-content class="page-popup">
 		<div class="allergic-list-box">
 			<ul>
-				<li class="allergic-list" v-for="items in irritability" v-if="items">
+				<li class="allergic-list" v-for="items in irritability" track-by="$index"  v-if="items">
 					<span class="iconfont icon-wx-reduce-round" @click="delIrritability($event)"></span>
 					<input type="text" placeholder="请输入过敏原" :value="items" maxlength="10"/>
 				</li>
@@ -19,8 +19,8 @@
 				</li>
 			</ul>
 		</div>
-		<div class="page-button-group">
-			<button class="mint-button mint-button--transparent mint-button--large" @click="addIrritability">
+		<!--<div class="page-button-group">
+			<button class="mint-button mint-button&#45;&#45;transparent mint-button&#45;&#45;large" @click="addIrritability">
 				<span class="mint-button-icon">
 					<span class="iconfont icon-wx-add-round leh-c-green allergic-list-add-btn"></span>
 				</span>
@@ -28,6 +28,16 @@
 					新增过敏史
 				</label>
 			</button>
+		</div>-->
+
+
+		<div class="allergic-add-list">
+			<ul>
+				<li class="allergic-list" @click="addIrritability">
+					<span class="iconfont icon-wx-add-round"></span>
+					<input type="text" value="新增过敏史" readonly/>
+				</li>
+			</ul>
 		</div>
 
 	</mt-content>
@@ -168,15 +178,10 @@
 </script>
 
 <style>
-	.allergic-list-box{padding-left:37px;margin-bottom: 16px;}
+	.allergic-list-box,.allergic-add-list{padding-left:37px;margin-bottom: 16px;}
 	.allergic-list{padding:10px 10px 10px 0;border-bottom: 1px solid #e5e5e5;position: relative;margin-top: 12px;}
-	.allergic-list-box input{width: 100%;border: 0;font-size: 14px;color: #363636;}
-	.allergic-list .icon-wx-reduce-round{position: absolute;top: 0;left:-37px;width: 37px;height: 39px;line-height: 39px;text-align: center;color: #ff6060;}
-	.allergic-list-add-btn{margin: 6px;}
-	.mint-button--transparent {
-		font-size: 16px;
-		color: #363636;
-		text-align: left;
-		background-color: transparent;
-	}
+	.allergic-list-box input,.allergic-add-list input{width: 100%;border: 0;font-size: 14px;color: #363636;}
+	.allergic-list .icon-wx-reduce-round,.allergic-list .icon-wx-add-round{position: absolute;top: 0;left:-37px;width: 37px;height: 39px;line-height: 39px;text-align: center;color: #ff6060;}
+	.allergic-list .icon-wx-add-round{color: #1faa2b;}
+	.allergic-add-list .allergic-list{border-bottom:0;}
 </style>

@@ -41,7 +41,7 @@
 					</a>
 				</div>
 				<mt-field label="出生日期" placeholder="请输入生日" type="date" :istitle="true" v-ref:birthday></mt-field>
-				<mt-field label="患病起始年限" placeholder="请输入患病起始年限" type="date" :istitle="true" v-ref:patient_time></mt-field>
+				<mt-field label="患病起始年限" placeholder="请输入患病起始年限" type="month" name="month" :istitle="true" v-ref:patient_time></mt-field>
 			</div>
 			<p>注：用户注册时，请务必填写与将要上传的病历姓名匹配的名字，以便于医生能快速查找。</p>
 			<div class="register-take-box">
@@ -173,6 +173,7 @@
 	.register-ipt-box .mint-cell:before{border-bottom-color: rgba(255,255,255,0.5);}
 	.register-ipt-box .mint-cell input{background-color: transparent;color: #fff;}
 	.register-ipt-box .mint-cell-text{color: #fff;}
+	.register-ipt-box .mint-field-clear{color: #00930d;opacity: 1}
 	.register-mint-cell-value-hight{height: 25px;}
 	.register-ipt-box p{font-size: 12px;color: #fff;margin: 20px 0 40px;line-height: 20px;}
 	.register-take-box{margin-bottom: 15px;color: #fff;font-size: 12px;overflow: hidden;position: relative;left: 50%;margin-left: -75px;line-height: 14px;display: inline-block;width: 150px;}

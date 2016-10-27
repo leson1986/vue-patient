@@ -249,7 +249,7 @@
 	.document-index-head .mint-header-button{width: 18%;float: left;line-height: 40px;margin-left: 10px;}
 	.document-index-head .mint-button--default{float: left;width:20%;padding:0;margin-top:5px;height:30px;border:1px solid #fff;background-color: transparent;border-radius: 0;box-shadow: 0 0 0 transparent;}
 	.document-index-head .mint-button--default:nth-of-type(1){border-right: 0;}
-	.document-index-head .mint-button--default:nth-of-type(3){border-left: 0;}
+	.document-index-head .mint-button--default:nth-of-type(3){border-left: 0;margin-left: -0.5px}
 	.document-index-head .mint-button--default.leh-active{background-color: #fff;color: #1faa2b;}
 	.document-index-head .mint-button--default.leh-active .mint-button-text{color: #1faa2b;}
 	.document-index-head .mint-button--default:nth-of-type(1){border-bottom-left-radius: 5px;border-top-left-radius: 5px;overflow: hidden;}

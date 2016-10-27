@@ -16,7 +16,7 @@
 			<div class="doctor-details-list">
 				<div class="doctor-details-list-title" @click="updown1 = !updown1">
 					<span class="leh-c-green">执业地点</span>
-					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown1, 'icon-wx-arr-down': updown1 }"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-down': !updown1, 'icon-wx-arr-up': updown1 }"></span>
 				</div>
 				<div class="height-normal" :class="{ 'height-auto': updown1}">
 					<div>{{ doctorItems.hosipitalName }} &nbsp;&nbsp; {{ doctorItems.custName }}</span></div>
@@ -27,7 +27,7 @@
 			<div class="doctor-details-list">
 				<div class="doctor-details-list-title" @click="updown2 = !updown2">
 					<span class="leh-c-green">医生擅长</span>
-					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown2, 'icon-wx-arr-down': updown2 }"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-down': !updown2, 'icon-wx-arr-up': updown2 }"></span>
 				</div>
 				<div class="height-normal" :class="{ 'height-auto': updown2}">{{ doctorItems.remark || '暂无信息'  }}</div>
 			</div>
@@ -35,7 +35,7 @@
 			<div class="doctor-details-list">
 				<div class="doctor-details-list-title" @click="updown3 = !updown3">
 					<span class="leh-c-green">医生简介</span>
-					<span class="fr iconfont" :class="{ 'icon-wx-arr-up': !updown3, 'icon-wx-arr-down': updown3 }"></span>
+					<span class="fr iconfont" :class="{ 'icon-wx-arr-down': !updown3, 'icon-wx-arr-up': updown3 }"></span>
 				</div>
 				<p :class="{ 'height-auto': updown3}">{{ doctorItems.introduction || '暂无信息' }}</p>
 			</div>
@@ -56,7 +56,7 @@
 				<div class="leh-null-data" v-if="!doctorRateItems.length">暂无评价</div>
 				<ul>
 					<li class="doctor-details-comment-list" v-for="items in doctorRateItems">
-						<p class="leh-double-text-ellipsis">{{ items.content || '暂无评价' }}</p>
+						<p class="leh-double-text-ellipsis">{{ items.content || '暂无评价内容' }}</p>
 						<div class="doctor-details-comment-list-bd">
 							<span class="fl">{{ items.markName }}</span>
 							<span class="fr">{{ items.createTime }}</span>

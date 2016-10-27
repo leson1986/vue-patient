@@ -56,7 +56,7 @@ wx.hideMenuItems({
 export function pageConfig() {
 
 	$.ajax({
-		url: 'http://wx.jk7.com/api/valid',
+		url: 'http://test.jk7.com/api/valid',
 		type: 'GET',
 		dataType: "json",
 		contentType: 'application/x-www-form-urlencoded',

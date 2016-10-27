@@ -75,9 +75,21 @@
 			data ({to, next}) {
 
 				pageConfig()
-				this.isUpload = false
-				this.photoItems = []
-				this.firstTime = Number(to.query.firsttime)
+
+				let _self = this
+				_self.isUpload = false
+				_self.photoItems = []
+				_self.firstTime = Number(to.query.firsttime)
+
+				// 获取是否绑定医生
+				getJson('api/patient/withDoctor', '', (rsp, recode, msg)=> {
+
+					if(recode == '1'){
+						alert(msg)
+					}else{
+						_self.withDoctor = rsp
+					}
+				}, _self)
 
 				next()
 
@@ -94,6 +106,7 @@
 				serverId: '', // 上传图片返回的serverId
 				serverIds: [], // 存储多图的serverId
 				isUpload: false, // 判断是否上传图片
+				withDoctor: false // 是否绑定医生
 			}
 		},
 
@@ -129,6 +142,11 @@
 			addPic () {
 
 				let _self = this
+				if(!_self.withDoctor){
+					MessageBox('提示', '您还没有绑定医生，请绑定后再上传')
+					return
+				}
+
 				wx.chooseImage({
 					count: 9, // 默认9
 					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有

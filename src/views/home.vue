@@ -85,7 +85,7 @@
 									<label class="mint-cell-title">
 										<span class="mint-cell-text leh-c-green">我的日程</span>
 									</label>
-									<div class="mint-cell-value" v-if="rechecks.length">
+									<div class="mint-cell-value" v-if="0">
 										<span class="leh-c-red leh-fs-twelve">有新日程更新啦~点击→</span>
 										<span>更多</span>
 									</div>
@@ -94,8 +94,10 @@
 							</div>
 							<!--无日程-->
 							<div class="consult-list-not-task" v-link="{path: '/online/schemeAdd',replace: true}" v-if="rechecks.length === 0" >
-								<div class="breathe-btn">+</div>
-								<p>暂无日程添加</p>
+								<div class="breathe-btn">
+									<span class="iconfont icon-wx-add"></span>
+								</div>
+								<p>暂无日程点击添加</p>
 							</div>
 							<!--有日程-->
 							<div class="page-cell consult-list-main">
@@ -333,7 +335,7 @@
 	.consult-list-title .mint-cell:before,.consult-list-title .mint-cell:after{border: 0;}
 	.consult-list-title .mint-cell-value span:nth-of-type(2){font-size: 14px;margin-left: 5px;}
 	.consult-list-main .mint-cell{font-size: 14px;}
-	.consult-list-main .mint-cell:nth-last-of-type(1):before{border: 0;}
+	.consult-list-main .mint-cell:before{left: 10px;}
 	.consult-list-main .mint-cell-mask{margin-right: 10px;}
 	.consult-list-main .mint-cell-mask.icon-wx-loading{color: #fcdb57;}
 	.consult-list-main .mint-cell-mask.icon-wx-sick{color: #faa28d;}
@@ -342,6 +344,7 @@
 	.consult-list-text{flex: 2;}
 	.consult-list-text span span{margin-left: 12px;}
 	.consult-list-not-task{height: 141px;background-color: #fff;border-top: 1px solid #e5e5e5;}
+	.consult-list-not-task .icon-wx-add{font-size: 26px;}
 	.consult-list-not-task p{text-align: center;font-size: 12px;color: #363636;}
 	.consult-padding-bottom{padding-bottom: 55px;}
 	.consult-padding-bottom .mint-tab-container-wrap,.consult-container-item-hight{height: 100%;}
@@ -361,14 +364,14 @@
 
 	/*个人中心*/
 	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;}
-	.center-head-img{width: 55px;height: 55px;border: 1px solid #fff;border-radius: 50%;margin: 50px auto 15px;overflow: hidden;text-align: center;}
-	.center-head-img img{width: 45px;height: 45px;border-radius: 50%;margin-top: 4px;}
+	.center-head-img{width: 65px;height: 65px;border: 1px solid #fff;border-radius: 50%;margin: 40px auto 15px;overflow: hidden;text-align: center;}
+	.center-head-img img{width: 55px;height: 55px;border-radius: 50%;margin-top: 4px;}
 	.center-name{text-align: center;font-size: 16px;color: #fff;}
 	.center-content{padding-top: 165px;}
 	.center-content .mint-cell:after,
-	.center-content .mint-cell:nth-of-type(3):before,
-	.center-content .mint-cell:nth-of-type(4):before{border: 0;}
-	.center-content .mint-cell:nth-of-type(2){margin-bottom: 8px;}
+	.center-content .mint-cell:nth-last-of-type(1):before,
+	.center-content .mint-cell:nth-last-of-type(2):before{border: 0;}
+	.center-content .mint-cell:nth-last-of-type(1){margin-top: 8px;}
 	.center-content .mint-cell:before{left: 10px;}
 	.center-content .mint-cell-text{font-size: 14px;}
 	.center-content .mint-cell-mask{margin-right: 10px;}

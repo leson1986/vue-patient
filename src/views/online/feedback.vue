@@ -27,47 +27,14 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">上传图片</span>
+					<span class="leh-c-grey leh-fs-twelve">(最多仅允许上传5张照片)</span>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
 		<div class="online-msg-tap-box">
 			<div class="online-msg-tap">
-				<!--<div class="weui_cells weui_cells_form">
-					<div class="weui_cell">
-						<div class="weui_cell_bd weui_cell_primary">
-							<div class="weui_uploader">
-								<div class="weui_uploader_bd">
-									<ul class="weui_uploader_files">
-										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-										<li class="weui_uploader_file" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<span class="online-msg-del-btn">-</span>
-										</li>
-										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<div class="weui_uploader_status_content">
-												<i class="weui_icon_warn"></i>
-											</div>
-										</li>
-										<li class="weui_uploader_file weui_uploader_status" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)">
-											<div class="weui_uploader_status_content">50%</div>
-										</li>
-									</ul>
-									&lt;!&ndash;未上传图片时&ndash;&gt;
-									<div class="weui_uploader_input_wrp" style="display: none;">
-										<span class="iconfont icon-wx-camera"></span>
-										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
-									</div>
-									&lt;!&ndash;已上传一张或一张以上图片时&ndash;&gt;
-									<div class="weui_uploader_input_wrp">
-										<span class="iconfont icon-wx-add"></span>
-										<input class="weui_uploader_input" type="file" accept="image/*" multiple="">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>-->
+
 				<div class="photo-tap">
 					<mt-picture>
 						<!--<mt-pic-list v-for="items in picItems" :reddot="items.unread">
@@ -180,8 +147,14 @@
 			addPic () {
 
 				let _self = this
+				let len = _self.picItems.length
+				if(len === 5 ){
+					this.tips = '最多仅允许上传5张照片'
+					this.show_popup = true
+					return
+				}
 				wx.chooseImage({
-					count: 5, // 默认9
+					count: 5 - len, // 默认9
 					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 					success: function(res) {
@@ -204,7 +177,7 @@
 						// 上传图片不能超过5张
 						if(picItems.length > 5 ){
 
-							this.tips = '一次只能添加5张图片'
+							this.tips = '最多仅允许上传5张照片'
 							this.show_popup = true
 							return
 						}else{
@@ -234,8 +207,8 @@
 
 					// 上传
 					let params = {
-						"drId": _self.doctor_id,
-						"content": _self.msg_val,
+						     "drId": _self.doctor_id,
+						  "content": _self.msg_val,
 						"serverIds": ''
 					}
 
@@ -244,6 +217,7 @@
 						if(recode == '1'){
 							alert(msg)
 						}else{
+							_self.msg_val = ''
 							_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp, isclose: false}})
 						}
 
@@ -279,8 +253,8 @@
 
 							// 上传
 							let params = {
-								"drId": _self.doctor_id,
-								"content": _self.msg_val,
+								     "drId": _self.doctor_id,
+								  "content": _self.msg_val,
 								"serverIds": _self.serverIds
 							}
 
@@ -314,7 +288,7 @@
 					this.isUpload = false
 				}
 
-				// 满5张隐藏上传按钮
+				// 不满5张显示上传按钮
 				if(this.picItems.length < 5 ){
 
 					this.isFull = false
