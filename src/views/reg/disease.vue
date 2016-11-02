@@ -85,7 +85,7 @@
 					_self.show_popup = true
 					_self.tips = '病种没修改'
 					return
-				}else {
+				}else if(_self.diseaseInfo !== ''){
 
 					_self.show_popup = true
 					_self.tips = '保存成功'
@@ -98,7 +98,7 @@
 						_self.show_popup = true
 						_self.tips = '保存成功'
 						setTimeout(() => {
-							_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}})
+							_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}, replace: true})
 						},2000)
 					}
 					if(_self.is_conf && !_self.is_info){
@@ -109,7 +109,7 @@
 								_self.show_popup = true
 								_self.tips = '保存成功'
 								setTimeout(() => {
-									_self.$route.router.go('/home')
+									_self.$route.router.go({path: '/home', replace: true})
 								},2000)
 
 							}else{

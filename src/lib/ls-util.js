@@ -143,7 +143,7 @@ export function delJson(url, options, callback, self) {
  *
  */
 export function wrapPic(picArr, titName, obj, isMask) {
-	console.log(typeof(picArr))
+
 	let elem = document.querySelectorAll('ul > li'),
 	    wrap = document.querySelector('#overlay')
 

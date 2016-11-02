@@ -3,6 +3,7 @@
 		<mt-button v-link="{path: '/home'}" icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class-name="leh-bg-grey-body">
+		<div class="leh-null-data" v-if="!noteItems.length">暂无数据</div>
 		<div class="note-box">
 			<ul>
 				<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id, isclose: items.isClose}, replace: true}">

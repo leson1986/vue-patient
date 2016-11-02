@@ -7,7 +7,7 @@
 			<div class="page-infinite-list notice-list">
 
 				<div class="leh-null-data" v-if="!noticeItems.length">暂无公告</div>
-				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :reddot="items.unread" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.drId}, replace: true}"></mt-cell>
+				<mt-cell v-for="items in noticeItems" :title="items.drName + '医生公告更新'" :reddot="items.unread" :value="items.updateTime" istitle v-link="{path: '/user/noticeDetail', query: {id: items.drId, name: items.drName + '公告'}, replace: true}"></mt-cell>
 			</div>
 
 			<div class="page-infinite-loading document-index-load-tap" v-if="pageNoticeNum*10 <= pageNoticeTotal">

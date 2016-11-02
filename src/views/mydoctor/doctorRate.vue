@@ -34,7 +34,7 @@
 					<div class="leh-null-data" v-if="!doctorRateItems.length">暂无评价</div>
 					<ul>
 						<li class="doctor-details-comment-list" v-for="items in doctorRateItems">
-							<p class="leh-double-text-ellipsis">{{ items.content || '暂无评价'}}</p>
+							<p class="leh-double-text-ellipsis">{{ items.content }}</p>
 							<div class="doctor-details-comment-list-bd">
 								<span class="fl">{{ items.markName }}</span>
 								<span class="fr">{{ items.createTime }}</span>

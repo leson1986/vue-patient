@@ -9,7 +9,7 @@
 	<div class="msg-details-ft" v-if="!isClose">
 		<div class="msg-details-ft-type">
 			<div class="msg-details-ft-left">
-				<textarea v-model="msg" v-el:msgbox></textarea>
+				<textarea maxlength="200" v-model="msg" v-el:msgbox></textarea>
 			</div>
 			<div class="msg-details-ft-right">
 				<span class="iconfont icon-wx-footer-add" v-if="!addpic" @click="addPicFun"></span>
@@ -46,7 +46,7 @@
 					<div class="msg-details-content-title">
 						<div class="msg-details-content-title-img">
 							<img :src="items.userPhoto" v-if="items.userPhoto !== null"/>
-							<img src="../../assets/img/private.jpg" v-if="items.userPhoto === null"/>
+							<img src="../../assets/img/private.jpg" v-if="items.userPhoto === null || items.userPhoto === ''"/>
 						</div>
 						<span>{{ items.userName }}</span>
 					</div>
@@ -356,7 +356,7 @@
 	@import '../../assets/css/MPreview.mobile.css';
 
 	.msg-details-head .mint-cell:after,.msg-details-content .mint-cell:after{border: 0;}
-	.msg-details-head .mint-cell-text{line-height: 22px;}
+	.msg-details-head .mint-cell-text{line-height: 22px;word-wrap:break-word;font-size: 14px;}
 	.msg-details-head .mint-cell-label,.msg-details-content .mint-cell-label{text-align: right;color: #aaa;}
 	.msg-details-photo{overflow: hidden;padding: 20px 0;}
 	.msg-details-img{text-align: center;width: 181px;height: 181px;line-height: 181px;margin: 0 auto;}

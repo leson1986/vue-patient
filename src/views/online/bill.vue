@@ -19,6 +19,7 @@
 							</label>
 							<div class="mint-cell-value">
 								<span class="leh-c-black">{{ summaryItems.updateTime }}</span>
+								<span class="iconfont icon-wx-arr-right"></span>
 							</div>
 						</a>
 					</div>
@@ -255,10 +256,10 @@
 	.document-index-head .mint-button--default:nth-of-type(1){border-bottom-left-radius: 5px;border-top-left-radius: 5px;overflow: hidden;}
 	.document-index-head .mint-button--default:nth-of-type(3){border-bottom-right-radius: 5px;border-top-right-radius: 5px;overflow: hidden;}
 	.document-index-head .mint-button--default .mint-button-text{color: #fff;}
-	.document-index-title .mint-cell:after,.document-index-title .mint-cell:before{border: 0;}
+	.document-index-title .mint-cell:after,.document-index-title:nth-of-type(1) .mint-cell:before,.document-index-list .mint-cell:nth-of-type(1):after{border: 0;}
 	.document-index-list .mint-cell:nth-last-of-type(1):before{left: 10px;}
 	.document-index-list .mint-cell-text{width: 120px;display: inline-block;}
-	.document-index-list-text{font-size: 14px;color: #919191;margin-top: 10px;}
+	.document-index-list-text{font-size: 14px;color: #919191;margin-top: 10px;min-height: 14px;}
 	.document-index-list .mint-cell-value span,.document-index-check-list .mint-cell-value span{font-size: 14px;}
 	.document-index-list .mint-cell-value span{padding-top: 25px;}
 	.document-index-list .mint-cell-value:after{right: 0;top: 4px;}
@@ -267,5 +268,6 @@
 	.document-index-load-tap .mint-button--transparent{text-align: center;}
 	.document-index-load-tap .icon-wx-load{color: #e5e5e5;}
 	.document-index-load-tap .mint-button-text{font-size: 14px;}
+	.document-index-title .mint-cell-value .icon-wx-arr-right{margin-left: 5px}
 
 </style>

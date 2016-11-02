@@ -216,10 +216,10 @@
 	.schedule-apply-list .mint-cell-value span{font-size: 22px;}
 	.schedule-apply-list.leh-active .mint-cell-value span{color: #ff6060;}
 	.schedule-apply-list .mint-cell:before{left: 10px;}
-	.schedule-apply-main{width: 60px;float: left;}
+	.schedule-apply-main{width: 60px;float: left;border-right: 1px solid #e5e5e5;}
 	.schedule-apply-list .mint-cell-text{font-size: 16px;}
 	.schedule-apply-list .mint-cell-label{font-size: 22px;margin-top: 5px;}
-	.schedule-apply-txt{float:left;border-left: 1px solid #e5e5e5;padding-left: 15px;height: 40px;line-height: 40px;font-size: 14px;}
-	.document-index-load-tap .mint-button--transparent{text-align: center;}
+	.schedule-apply-txt{float:left;padding-left: 15px;height: 40px;line-height: 40px;font-size: 16px;max-width: 80%;}
+
 
 </style>

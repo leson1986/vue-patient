@@ -119,7 +119,7 @@
 
 					},
 					fail: function (res) {
-						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+						alert(JSON.stringify(res));
 					}
 				});
 			},
@@ -140,8 +140,8 @@
 						}, _self)
 
 					},
-					fail: function(res) {
-						alterShowMessage("操作提示", JSON.stringify(res), "1", "确定", "", "", "");
+					fail: function (res) {
+						alert(JSON.stringify(res));
 					}
 				});
 
@@ -175,5 +175,6 @@
 	.transform-list-text p{font-size: 12px;color: #919191;line-height: 20px;}
 	.transform-list-box span.fr{line-height: 50px;font-size: 14px;}
 	.transform-img-ico{position: absolute;bottom: -7px;right: -7px;font-size: 14px;font-weight:bold;color: #ff6060;}
+	.transform-list-box .sl-li:nth-last-of-type(1) .sl-content:after{border-top: 1px solid #e5e5e5;}
 
 </style>

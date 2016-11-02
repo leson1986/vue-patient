@@ -41,4 +41,5 @@
 	.about-list .mint-cell:after,
 	.about-list .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.about-list .mint-cell:before{left: 10px;}
+	.about-list .mint-cell-text{font-size: 14px;}
 </style>

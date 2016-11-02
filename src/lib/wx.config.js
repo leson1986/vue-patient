@@ -52,6 +52,7 @@ wx.hideMenuItems({
 	menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
 });
 
+
 /*网页注入，使用JSAPI功能必须添加此部分代码*/
 export function pageConfig() {
 
@@ -61,12 +62,13 @@ export function pageConfig() {
 		dataType: "json",
 		contentType: 'application/x-www-form-urlencoded',
 		data: {
-			pageurl: htmlSrc
+			pageurl: encodeURI(htmlSrc)
 		},
 		success: function(data){
 			wxconfig(data);
 		}
 	});
 }
+
 
 

@@ -406,7 +406,7 @@
 	.call-info-time-list .page-cell:nth-last-of-type(1) .mint-cell:before,
 	.call-info-month-left-list:nth-last-of-type(1):after,
 	.call-info-month-right-item:nth-last-of-type(1):after{border: 0;}
-	.call-info-time-list .mint-cell-text{font-size: 14px;line-height: 22px;}
+	.call-info-time-list .mint-cell-text{font-size: 14px;}
 	.call-info-advertisement .mint-cell p{color: #f9975c;font-size: 14px;line-height: 20px;}
 	.call-info-advertisement .icon-wx-notice{padding-right: 8px;line-height: 20px;}
 	.call-info-advertisement .mint-cell-value .mint-cell-text{font-size: 12px;padding-left: 10px;color: #919191;line-height: 20px;}
@@ -415,10 +415,10 @@
 	.call-info-week-box{background-color: #f6fcff;padding-left: 10px;position: relative;overflow: hidden}
 	.call-info-week-box:before,.call-info-month-box:before{content:'';width:100%;position: absolute;top: -1px;border-top:1px solid #e5e5e5;}
 	.call-info-week-box ul{padding-left: 20px;border-bottom: 1px solid #e5e5e5;}
-	.call-info-week-list{height: 42px;line-height: 40px;padding-right: 10px;color: #363636;border-bottom: 1px dotted #e5e5e5;}
+	.call-info-week-list{height: 42px;line-height: 40px;padding-right: 10px;color: #363636;border-bottom: 1px dotted #e5e5e5;align-items: center}
 	.call-info-week-list span.fl{margin-right: 10px;}
 	.call-info-week-list span.fr{font-size: 16px;}
-	.call-info-week-list span.fr span{font-size: 12px;}
+	.call-info-week-list span.fr span{font-size: 12px;margin-left: 3px}
 	.call-info-month-box{position: relative;overflow: hidden;height: 200px;}
 	.call-info-month-box:before,
 	.call-info-month-box:after,

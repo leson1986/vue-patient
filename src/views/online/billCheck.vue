@@ -31,7 +31,7 @@
 				</div>
 			</a>
 		</div>
-		<div class="check-text-box">
+		<div class="check-text-box" v-if="checkData.conclusion">
 			<span class="leh-c-blue">结论</span>
 			<p>{{ checkData.conclusion }}</p>
 		</div>
@@ -58,6 +58,14 @@
 			</div>
 		</mt-popup>
 	</mt-content>
+
+	<!--// 提示框-->
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+	</div>
+
 	<!-- 用于展示插件的容器 -->
 	<div class="maskbox" v-if="maskbox"></div>
 	<div class="overlay" id="overlay"></div>
@@ -94,6 +102,8 @@
 				viewpic: false,
 				popup_visible: false,
 				tableHeight: false,
+				show_popup: false,
+				tips: '',
 				checkData: '', // 检查单详情数据
 				chkTypeId: '', // 检查单类型Id
 				groupId: '', // 检查单ID
@@ -162,12 +172,27 @@
 			// 查看原图
 			showPic (){
 
+				if(this.picUrls.length === 0) {
+
+					this.tips = '当前检查单没有对应的原图'
+					this.show_popup = true
+					return
+				}
 				this.maskbox = true
 				wrapPic(this.picUrls, '我的检查单', this, true)
 			},
 
 		},
 
+		watch: {
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+					}, 2000);
+				}
+			}
+		},
 
 		components: {
 			MtContent,
@@ -188,14 +213,11 @@
 	@import '../../assets/css/MPreview.mobile.css';
 
 	.sick-title .mint-cell:after,.sick-title .mint-cell:before{border: 0;}
-	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:5px;border: 1px solid;border-radius: 50%;}
+	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:8px;border: 1px solid;border-radius: 50%;}
 	.sick-title .mint-cell-text{line-height: 25px;}
-	.sick-title p{padding-left: 30px;margin-top: 10px;}
-	.sick-title p span{margin-left: 10px;}
-	.sick-title span.mint-cell-label{margin-left: 30px;font-size: 14px;}
-	.sick-list .mint-cell-label{line-height: 25px;}
-	.sick-list .mint-cell:after,.sick-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-last-of-type(1):before{border: 0;}
-	.sick-from-list .mint-cell-label p{line-height: 25px;}
+	.sick-title p{padding-left: 33px;margin-top: 6px;}
+	.sick-title p span{margin-right: 10px;}
+	.sick-title span.mint-cell-label{margin-left: 33px;font-size: 13px;margin-top:10px;}
 
 	.check-list .mint-cell{margin-right: 10px;}
 	.check-list .mint-cell span{font-size: 14px;}
@@ -203,9 +225,9 @@
 	.check-list .mint-cell:before{left: 10px;}
 	.check-list .mint-cell-title span.mint-cell-text{max-width: 120px;float: left;}
 	.check-list .mint-cell-value span.fr{width: 60px;margin-left: 10px;}
-	.check-text-box{padding: 20px 10px;overflow: hidden;}
+	.check-text-box{padding: 20px 10px; padding-bottom: 0;overflow: hidden;}
 	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
-	.check-arr-btn{border: 0;text-align: center;height: 40px;}
+	.check-arr-btn{border: 0; padding-top: 20px;text-align: center;height: 40px;}
 
 	.check-table-height {max-height: 200px; overflow: hidden}
 	.check-table-height-auto {height: auto}

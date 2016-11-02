@@ -7,16 +7,16 @@
 			<a class="mint-cell document-written-title">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">手写病历</span>
+					<span class="mint-cell-text">更新日期</span>
 				</label>
 				<div class="mint-cell-value">
 					<span class="leh-c-green">{{ dates }}</span>
 				</div>
 			</a>
 		</div>
+		<div class="leh-null-data" v-if="!handwritingItems.length">暂无数据</div>
 		<mt-picture class-name="document-written-content">
-			<div class="leh-null-data" v-if="!handwritingItems.length">暂无数据</div>
-			<mt-pic-list v-for="items in handwritingItems" :reddot="items.unread"  @click="showPic(items.url)">
+			<mt-pic-list v-for="items in handwritingItems" :reddot="items.unread"  @click="showPic(items.url, items.id)">
 				<img :src="items.url"/>
 				<p>{{ items.createTime }}</p>
 			</mt-pic-list>
@@ -62,9 +62,15 @@
 		},
 
 		methods: {
-			showPic (urls){
+			showPic (urls, ids){
 
-				wrapPic(urls, '手写病历') // 查看图片
+				let _self = this
+				// 消除红点
+				postJson('api/handwriting/hasRead/'+ ids, '', (rsp) => {
+
+					wrapPic(urls, '手写病历') // 查看图片
+					_self.getHandwriting ()
+				}, _self)
 			},
 
 			closePic () {
@@ -100,7 +106,8 @@
 	.document-written-content .weui_uploader_file{background-color: #ededed;height: 130px;width: 90px;text-align: center;margin-top:10px;margin-right: 20px;margin-bottom: 30px;position: relative;}
 	.document-written-content .weui_uploader_file img{width: auto;height: auto;max-height: 100%;max-width: 100%;}
 	.document-written-content .weui_uploader_file:after{top: -6px;right: -6px;}
-	.document-written-content .weui_uploader_file p{width: 100%;position: absolute;bottom: -25px;font-size: 14px;}
+	.document-written-content .weui_uploader_file p{width: 100%;position: absolute;bottom: -55px;font-size: 14px;}
+
 
 
 </style>

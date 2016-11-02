@@ -20,7 +20,7 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">留言内容</span>
-					<textarea rows="1" placeholder="请输入你需要留言的内容" v-model="msg_val"></textarea>
+					<textarea class="msg-val" rows="1" placeholder="请输入你需要留言的内容" v-model="msg_val" maxlength="100"></textarea>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
@@ -184,6 +184,9 @@
 							_self.picItems = _self.picItems.concat(localIds)
 						}
 
+					},
+					fail: function (res) {
+						alert(JSON.stringify(res));
 					}
 				});
 			},
@@ -219,6 +222,7 @@
 						}else{
 							_self.msg_val = ''
 							_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp, isclose: false}})
+
 						}
 
 					},_self)
@@ -263,7 +267,8 @@
 								if(recode == '1'){
 									alert(msg)
 								}else{
-									_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp}})
+									_self.msg_val = ''
+									_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp, isclose: false}})
 								}
 
 							},_self)
@@ -271,8 +276,8 @@
 						}
 
 					},
-					fail: function(res) {
-						alter(JSON.stringify(res));
+					fail: function (res) {
+						alert(JSON.stringify(res));
 					}
 				});
 			},
@@ -315,7 +320,14 @@
 					}, 2000);
 				}
 			},
-
+			'msg_val' (newVal){
+				let msgTest = $('.msg-val')
+				let scrollH = msgTest[0].scrollHeight
+				msgTest.height(scrollH)
+				if(!newVal){
+					msgTest.height(24)
+				}
+			}
 			/*name (val, oldVal) {
 
 				if(val == this.old_name) {
@@ -343,7 +355,8 @@
 	@import '../../assets/css/normalize.css';
 	@import '../../assets/css/MPreview.mobile.css';
 
-	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
+	.online-msg-ipt-box{overflow: hidden}
+	.online-msg-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible}
 	.online-msg-ipt-box .mint-cell:after,.online-msg-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.online-msg-ipt-box .mint-cell:before{left: 10px;transform: scaleY(1);}
 	.online-msg-ipt-box input,.online-msg-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;}
@@ -352,4 +365,6 @@
 	.online-msg-tap .weui_cells:before,.online-msg-tap .weui_cells:after{border: 0;}
 	.online-msg-tap .weui_uploader_input_wrp,.online-msg-tap .weui_uploader_file{margin-top: 8px;}
 	.online-msg-select-doc{margin-top: 15px;font-size: 14px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.online-msg-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;}
+
 </style>

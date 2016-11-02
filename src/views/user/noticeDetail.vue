@@ -1,5 +1,5 @@
 <template>
-	<mt-header fixed isgrey title="林医生公告">
+	<mt-header fixed isgrey :title="title">
 		<mt-button v-link="{path: '/user/notice', query: {tonotice: true}}"  icon="arr-left" slot="left"></mt-button>
 	</mt-header>
 	<mt-content class-name="leh-bg-grey-body">
@@ -26,6 +26,7 @@
 
 				let _self = this
 				_self.ids = to.query.id
+				_self.title = to.query.name
 
 				// 医生公告详情列表
 				_self.pageNoticeListNum = 1
@@ -45,6 +46,7 @@
 		data () {
 			return{
 				ids: '', // 医生ID
+				title: '', // 标题（医生名称）
 				noticesList: [], // 医生公告列表
 				pageNoticeListNum: 1, // 医生公告页数
 				pageNoticeListTotal: 0, // 医生公告总页数
@@ -81,7 +83,10 @@
 <style>
 	.notice-content-list .mint-cell:after,.notice-content-list .mint-cell:before{border: 0;}
 	.notice-content-list .mint-cell{margin-bottom: 8px;}
-	.notice-content-list .mint-cell-label{text-align: right;color: #363636;}
-	.notice-content-list .mint-cell-text {line-height: 22px}
-	.document-index-load-tap .mint-button--transparent{text-align: center;}
+	.notice-content-list .mint-cell-label{text-align: right;color: #363636;font-size: 12px}
+	.notice-content-list .mint-cell-text{line-height: 24px;font-size: 14px;}
+
+
+	.notice-content-list .mint-cell-text {font-size: 14px}
+
 </style>

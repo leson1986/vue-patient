@@ -406,8 +406,8 @@
 	.info-img img{width: 100%;min-height: 100%;height: auto}
 	.info-img-list .mint-cell-text{line-height: 37px}
 	.info-main-list .mint-cell:before{left: 10px;}
-	.info-sex{margin-right: 30px;font-size: 14px;color: #919191;height: 24px;line-height: 24px;}
-	.info-sex.leh-active{color: #363636;}
+	.info-sex{margin-right: 30px;font-size: 14px;color: rgba(54,54,54,0.3);height: 24px;line-height: 24px;}
+	.info-sex.leh-active{color: #000;}
 	.info-sex .icon-wx-male,
 	.info-sex .icon-wx-female{font-size: 14px;}
 	.info-main-list .mint-cell-value .icon-wx-arr-right,

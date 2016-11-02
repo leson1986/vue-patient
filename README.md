@@ -5,15 +5,9 @@
 git clone https://github.com/leson1986/vue-patient.git
 ```
 
-通过`npm`安装本地服务第三方依赖模块(需要已安装[Node.js](https://nodejs.org/))，使用npm安装依赖模块可能会很慢，建议换成[cnpm](http://cnpmjs.org/)
-
-```shell
-npm install -g cnpm --registry=http://registry.npm.taobao.org
-```
-
 ```bash
 # 安装依赖模块
-cnpm install
+npm install
 
 # 启动服务
 npm run dev
@@ -57,3 +51,7 @@ npm run build
 
 ### 项目参考
 参看 eteplus/vue-sui-demo  https://github.com/eteplus/vue-sui-demo
+
+### 微信图片上传接口
+1. SPA单页面应用，在html时，就开始获取openID，并全站只运行一次即可
+2. SPA单页面应用，在调用微信图片上传接口时，要注册wx.config，在html时就必须要获取带有code与state参数的链接，某个组件（相当于页面）需要调用此接口时，注册一次wx.config（在安卓机（部分机型），出现不可知的原因，一次报签名无效，暂时尚未找到解决方案。如果有解决方案的大神，请赐教，谢谢！）

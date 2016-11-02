@@ -36,7 +36,7 @@
 									<div class="mint-cell-value"></div>
 								</a>
 							</div>
-							<div class="page-cell consult-list-main">
+							<div class="page-cell consult-list-main leh-ex">
 								<a class="mint-cell" v-link="{path: '/online/bill', query: {actives: 'turn'}, replace: true}">
 									<span class="mint-cell-mask iconfont icon-wx-loading"></span>
 									<label class="mint-cell-title">
@@ -85,8 +85,9 @@
 									<label class="mint-cell-title">
 										<span class="mint-cell-text leh-c-green">我的日程</span>
 									</label>
-									<div class="mint-cell-value" v-if="0">
-										<span class="leh-c-red leh-fs-twelve">有新日程更新啦~点击→</span>
+									<div class="mint-cell-value">
+										<span class="leh-c-red leh-fs-twelve" v-if="0">有新日程更新啦~点击→</span>
+										<span>&nbsp;</span>
 										<span>更多</span>
 									</div>
 									<span class="iconfont icon-wx-arr-right"></span>
@@ -321,7 +322,7 @@
 	.consult-tabbar-box>.mint-tab-item{background-color: #fff;}
 	.consult-tabbar-box>.mint-tab-item.is-selected{background-color: #fff;color: #1faa2b;}
 	.consult-tabbar-box>.mint-tab-item.is-selected .mint-tab-item-label{color: #1faa2b;}
-	.consult-tabbar-box>.mint-tab-item .mint-tab-item-icon{background: url(../assets/img/index-nav.png) no-repeat;background-size: 75px auto;display: inline-block;}
+	.consult-tabbar-box>.mint-tab-item .mint-tab-item-icon{background: url(../assets/img/index-nav.png) no-repeat;background-size: 75px auto;display: inline-block;margin-bottom: 0}
 	.consult-tabbar-box .mint-tab-item:nth-of-type(2) .mint-tab-item-icon{background-position:-26px 0;}
 	.consult-tabbar-box .mint-tab-item:nth-of-type(3) .mint-tab-item-icon{background-position:-53px 0;}
 	.consult-tabbar-box .mint-tab-item:nth-of-type(1).is-selected .mint-tab-item-icon{background-position:0 -28px;}
@@ -341,7 +342,8 @@
 	.consult-list-main .mint-cell-mask.icon-wx-sick{color: #faa28d;}
 	.consult-list-main .mint-cell-mask.icon-wx-check{color: #81d9ff;}
 	.consult-list-main .mint-cell-value .icon-wx-arr-right{color: #aaa;}
-	.consult-list-text{flex: 2;}
+	.leh-ex .mint-cell-title{display: inline-block;width: 80px;position: relative;top:-1px;}
+	.consult-list-text{-webkit-box-flex: 2;-ms-flex: 2;flex: 2;}
 	.consult-list-text span span{margin-left: 12px;}
 	.consult-list-not-task{height: 141px;background-color: #fff;border-top: 1px solid #e5e5e5;}
 	.consult-list-not-task .icon-wx-add{font-size: 26px;}
@@ -355,7 +357,7 @@
 	.doctor-img{width: 50px;height: 50px;border-radius: 50%;overflow:hidden;margin-right: 10px;text-align: center;}
 	.doctor-img img{width: 100%;min-height: 100%;height: auto}
 	.doctor-index-box .mint-cell-mask.leh-red-dot:before{content: '';position: absolute;top: 1px;right: 12px;width: 8px;height: 8px;border-radius: 50% 50% 50% 50%;background-color: #f92b2b;}
-	.doctor-index-box .mint-cell-text span:nth-of-type(2){font-size: 12px;margin: 0 5px;}
+	.doctor-index-box .mint-cell-text span:nth-of-type(2){font-size: 13px;margin: 0 5px;}
 	.doctor-index-box .mint-cell-text span:nth-of-type(3){font-size: 13px;}
 	.doctor-index-box .mint-cell-label{font-size: 14px;}
 

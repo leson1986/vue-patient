@@ -165,6 +165,9 @@
 
 						_self.photoItems = _self.photoItems.concat(localIds)
 
+					},
+					fail: function (res) {
+						alert(JSON.stringify(res));
 					}
 				});
 			},
@@ -215,8 +218,8 @@
 							}, _self)
 						}
 					},
-					fail: function(res) {
-						alter(JSON.stringify(res));
+					fail: function (res) {
+						alert(JSON.stringify(res));
 					}
 				});
 

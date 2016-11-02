@@ -33,7 +33,7 @@
 			<a class="mint-cell">
 				<span class="mint-cell-mask"></span>
 				<label class="mint-cell-title">
-					<span class="mint-cell-text">特征</span>
+					<span class="mint-cell-text">体征</span>
 					<span class="mint-cell-label">{{ medicalData.physicalSign || '暂无内容' }}</span>
 				</label>
 				<div class="mint-cell-value">
@@ -62,7 +62,7 @@
 			</a>
 		</div>
 		<div class="leh-null-box"></div>
-		<div class="page-cell sick-list">
+		<div class="page-cell sick-list leh-ex">
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">处方</span>
@@ -103,6 +103,14 @@
 			</div>
 		</mt-popup>
 	</mt-content>
+
+	<!--// 提示框-->
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+	</div>
+
 	<!-- 用于展示插件的容器 -->
 	<div class="maskbox" v-if="maskbox"></div>
 	<div class="overlay" id="overlay"></div>
@@ -138,6 +146,8 @@
 	    	testxx: '',
 		    viewpic: false,
 		    popup_visible: false,
+		    show_popup: false,
+		    tips: '',
 		    medicalId: '', // 病历ID
 		    medicalData: '',  // 病历详情数据
 		    indexList: [], // 病历索引列表
@@ -202,6 +212,13 @@
 			// 查看原图
 			showPic (){
 
+				if(this.picUrls.length === 0) {
+
+					this.tips = '当前病历没有对应的原图'
+					this.show_popup = true
+					return
+				}
+
 				this.maskbox =true
 				wrapPic(this.picUrls, '我的病历', this, true)
 			},
@@ -209,10 +226,10 @@
 		},
 
 		watch: {
-			popupVisible2(val) {
+			show_popup(val) {
 				if (val) {
 					setTimeout(() => {
-						this.popupVisible2 = false;
+						this.show_popup = false;
 					}, 2000);
 				}
 			}
@@ -237,14 +254,16 @@
 	@import '../../assets/css/MPreview.mobile.css';
 
 	.sick-title .mint-cell:after,.sick-title .mint-cell:before{border: 0;}
-	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:5px;border: 1px solid;border-radius: 50%;}
+	.sick-title .leh-c-blue{width: 25px;height: 25px;line-height: 25px;text-align: center;display: inline-block;float:left;margin-right:8px;border: 1px solid;border-radius: 50%;}
 	.sick-title .mint-cell-text{line-height: 25px;}
-	.sick-title p{padding-left: 30px;margin-top: 10px;}
-	.sick-title p span:first-child {margin-right: 10px}
-	.sick-title span.mint-cell-label{margin-left: 30px;font-size: 14px;}
-	.sick-list .mint-cell-label{line-height: 25px;}
-	.sick-list .mint-cell:after,.sick-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-last-of-type(1):before{border: 0;}
+	.sick-title p{padding-left: 33px;margin-top: 6px;}
+	.sick-title p span{margin-right: 10px;}
+	.sick-title span.mint-cell-label{margin-left: 33px;font-size: 13px;margin-top: 10px}
+	.sick-list .mint-cell-label{line-height: 22px;font-size: 14px;margin-top: 8px}
+	.sick-list .mint-cell:after,.sick-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-last-of-type(1):before,.sick-from-list .mint-cell:nth-of-type(1):after{border: 0;}
 	.sick-from-list .mint-cell-label p{line-height: 25px;}
+	.sick-list .mint-cell-text{font-size: 15px;}
+	.sick-list.leh-ex .mint-cell:before{border-bottom: 1px solid #e5e5e5;}
 
 
 	/*侧滑*/

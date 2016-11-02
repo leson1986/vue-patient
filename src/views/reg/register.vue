@@ -76,7 +76,7 @@
 
 	  data () {
 	    return{
-	      is_reg: 0,
+	      is_reg: 1,
 		    sex: 0,
 		    show_popup: false,
 		    name_val: '',
