@@ -8,7 +8,7 @@
  */
 import Vue from 'vue'
 import {loader} from '../util/util'
-const SERVER = 'http://test.jk7.com/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
+const SERVER = 'http://wx.jk7.com/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {

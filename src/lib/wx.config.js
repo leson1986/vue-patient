@@ -11,39 +11,11 @@ export function wxconfig (data){
 		signature: data.signature, // 必填，签名，见附录1
 		jsApiList: [
 			'checkJsApi',
-			/*'onMenuShareTimeline',
-			'onMenuShareAppMessage',
-			'onMenuShareQQ',
-			'onMenuShareWeibo',
-			'hideMenuItems',
-			'showMenuItems',
-			'hideAllNonBaseMenuItem',
-			'showAllNonBaseMenuItem',
-			'translateVoice',
-			'startRecord',
-			'stopRecord',
-			'onRecordEnd',
-			'playVoice',
-			'pauseVoice',
-			'stopVoice',
-			'uploadVoice',
-			'downloadVoice',*/
 			'chooseImage',
 			'previewImage',
 			'uploadImage',
 			'downloadImage',
-			/*'getNetworkType',
-			'openLocation',
-			'getLocation',
-			'hideOptionMenu',
-			'showOptionMenu',
-			'closeWindow',
-			'scanQRCode',
-			'chooseWXPay',
-			'openProductSpecificView',
-			'addCard',
-			'chooseCard',
-			'openCard'*/
+			'translateVoice'
 		] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 	});
 }
@@ -56,15 +28,20 @@ wx.hideMenuItems({
 /*网页注入，使用JSAPI功能必须添加此部分代码*/
 export function pageConfig() {
 
+	let u = navigator.userAgent, app = navigator.appVersion;
+	// var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+	let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
 	$.ajax({
-		url: 'http://test.jk7.com/api/valid',
+		url: 'http://wx.jk7.com/api/valid',
 		type: 'GET',
 		dataType: "json",
 		contentType: 'application/x-www-form-urlencoded',
 		data: {
-			pageurl: encodeURI(htmlSrc)
+			pageurl: (isiOS) ? iosUrl : window.location.href
 		},
 		success: function(data){
+
 			wxconfig(data);
 		}
 	});
