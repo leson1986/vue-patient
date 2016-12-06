@@ -37,14 +37,28 @@
 	export default{
 		route: {
 			data ({to, next}) {
+				this.allHis = to.query.allHis
 				this.is_info = to.query.info
 				this.diseaseInfo = to.query.diseaseinfo
+
+				this.getgender = to.query.gender ;
+				this.getbirthday = to.query.birthday ;
+				this.getalllergicHis = to.query.alllergicHis ;
+				this.getserverId = to.query.serverId ;
+				this.getemail = to.query.email ;
+				this.getdisease = to.query.disease ;
+				this.getdiseaseHis = to.query.diseaseHis ;
+				this.getnativePlace = to.query.nativePlace ;
+
 
 				if(this.diseaseInfo !== '') {
 					this.selected(this.diseaseInfo)
 				}
 
 				next()
+
+
+
 			}
 		},
 
@@ -59,6 +73,16 @@
 		    diseaseInfo: '', // 病种
 		    show_popup: false, // 提示
 		    tips: '', // 提示内容
+		    allHis: '', // 过敏源
+		    infoMail: '',
+		    getgender:'',
+		    getbirthday: '',
+		    getalllergicHis: '',
+		    getserverId: '',
+		    getemail: '',
+		    getdisease: '',
+		    getdiseaseHis: '',
+		    getnativePlace: ''
 	    }
 	  },
 
@@ -98,7 +122,25 @@
 						_self.show_popup = true
 						_self.tips = '保存成功'
 						setTimeout(() => {
-							_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease}, replace: true})
+							window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+									_self.getgender +
+									'&birthday='+
+									_self.getbirthday +
+									'&alllergicHis='+
+									_self.allHis +
+									'&serverId='+
+									_self.getserverId +
+									'&email='+
+									_self.getemail +
+									'&disease='+
+									_self.getdisease +
+									'&diseaseHis='+
+									_self.getdiseaseHis +
+									'&nativePlace='+ _self.getnativePlace;
+
+
+						//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+_self.allHis+'&disease='+_self.disease+'&openID=2&infoMail='+_self.infoMail;
+						//	_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease, 'alllergicHis': _self.allHis}, replace: true})
 						},2000)
 					}
 					if(_self.is_conf && !_self.is_info){

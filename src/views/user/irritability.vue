@@ -60,7 +60,11 @@
 	export default{
 		route: {
 			data ({to, next}) {
-				this.irritability = to.query.info
+				//this.irritability = to.query.info
+				this.allHis = to.query.allHis
+				this.irritability = to.query.allHis
+				this.diseaseInfo = to.query.diseaseinfo
+				this.infoMail = to.query.infoMail
 				if(this.irritability !== ''){
 					this.irritability = this.irritability.split('、')
 				}
@@ -85,7 +89,10 @@
 				btn_color: 'grey',
 				isbutton: false,
 				changeinfo: false,
-				kfc: ''
+				kfc: '',
+				diseaseInfo: '', // 病种
+				allHis: '',
+				infoMail: '' // 缓存前一页面数据
 			}
 		},
 
@@ -112,7 +119,8 @@
 				this.show_popup = true
 				this.tips = '保存成功'
 				setTimeout(() => {
-					this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: alllergiVal}})
+					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&alllergicHis='+alllergiVal+'&disease='+this.diseaseinfo+'&toinfo=true&infoMail='+this.infoMail;
+				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: alllergiVal, disease: this.diseaseinfo}})
 				},2000)
 			},
 
@@ -142,11 +150,15 @@
 						if(action === 'confirm'){
 							this.save()
 						}else {
-							this.$route.router.go({path: '/user/info', query: {'toinfo': true}})
+
+							window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
+						//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 						}
 					});
 				}else{
-					this.$route.router.go({path: '/user/info', query: {'toinfo': true}})
+
+					window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
+				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 				}
 
 			},

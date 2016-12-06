@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>随访家园患者端</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="bookmark" href="/favicon.ico"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<style>
+	@import './assets/css/mint-ui.css';
+	@import './assets/css/common.css';
+	@import './assets/css/normalize.css';
+	@import './assets/css/MPreview.mobile.css';
+
+	.photo-img-box{margin: 20px auto;text-align: center;}
+	.photo-text-box{padding: 0 10px 20px;}
+	.photo-text-box p{font-size: 14px;line-height: 20px;color: #363636;}
+	.photo-frist-ico-box{width: 107px;height: 107px;background-color: #f0f0f0;margin: 30px auto 10px;border-radius:5px;line-height: 107px;text-align: center;}
+	.photo-frist-ico-box .icon-wx-camera{font-size: 60px;}
+	.photo-frist-tap p{text-align: center;}
+	.photo-tap .weui_cells:before,.photo-tap .weui_cells:after{border: 0;}
+	.photo-tap .weui_uploader_input_wrp,.photo-tap .weui_uploader_file{margin-top: 8px;}
+
+	.photo-tip-img-box{display:none;position: absolute;top:-260%;left:-110%;margin-left:-31%;z-index: 6;width: 400%;}
+	.photo-frist-tap~.leh-black-shade{display: none;}
+	.photo-btn-tip-img-box{
+		display: none;
+		position: absolute;
+		bottom: 10px;
+		left: 40%;
+		z-index: 7;
+		width: 60%;
+	}
+	.leh-guide .icon-wx-camera{position: relative;z-index: 7;color: #fff;}
+	.leh-guide.leh-float-box{z-index: 99;}
+	.leh-guide .mint-button--large{position: relative;overflow: visible;background-color: #1faa2b;}
+	.leh-guide .photo-tip-img-box,
+	.leh-guide~.leh-black-shade,
+	.leh-guide.leh-float-box~.leh-wrap .leh-black-shade,
+	.leh-guide .photo-btn-tip-img-box{display: block;}
+
+
+	.img-list { list-style: none; padding: 0; margin: 0; }
+	.img-list:after { display: table; content: " "; }
+	.img-list > li { box-sizing: border-box; padding: 10px; position: relative; float: left; width: 50%; }
+	.img-list > li img { width: 100%; height: 100%; vertical-align: top; }
+	.img-list > li > a { display: block; }
+	.img-list > li > span { font-size: 14px; padding: 0px 10px; position: absolute; bottom: 15px; right: 20px; border-radius: 3px; background: rgba(37,37,37,0.6); color: #fff; }
+	.img-list > li:first-child { padding-right: 5px; }
+	.img-list > li:last-child { padding-left: 5px; }
+	.img-list > li:first-child span { right: 15px; }
+	.overlay { background: #000; width: 100%; height: 100%; overflow: hidden; position: fixed; top: 0; left: 0; z-index: 99;
+		-webkit-transition: all 300ms ease-in 0s;
+		transition: all 300ms ease-in 0s;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		-webkit-transform: translate3d(100%, 0px, 0px);
+		transform: translate3d(100%, 0px, 0px);
+	}
+	.overlay.in {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+		transform: translate3d(0px, 0px, 0px);
+	}
+</style>
+
+<!--测试引用-->
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
+<!--正式引用-->
+<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
+<body id="photo">
+<header class="mint-header is-fixed leh-bg-grey-head">
+	<div class="mint-header-button is-left">
+		<!--<a @click="historyBack">-->
+		<a href="http://test.jk7.com/home">
+			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
+		</a>
+	</div>
+	<h1 class="mint-header-title leh-c-black">拍照上传</h1>
+	<div class="mint-header-button is-right"> </div>
+</header>
+<div class="leh-float-box" :class="{'leh-guide': firstUpload}" @click="uploadGuide">
+	<button class="mint-button mint-button--green mint-button--large leh-bg-grey-btn" :class="{'leh-bg-grey-btn': !is_conf}" @click="uploadPic">
+		<label class="mint-button-text">上传</label>
+		<div class="photo-btn-tip-img-box">
+			<img src="./assets/img/photo-updata-btn.png"/>
+		</div>
+	</button>
+</div>
+<div class="leh-wrap">
+	<div class="photo-img-box">
+		<img src="./assets/img/photo-img.png" />
+	</div>
+	<div class="photo-text-box">
+		<p>1、请先绑定医生后再进行病历、检查单上传；</p>
+		<p>2、上传照片后，符合标准的病历、检查单数据会直接录入系统；</p>
+		<p>3、如需重新拍摄资料，APP会向您反馈信息；</p>
+		<p>4、图片上传后，随访家园会在3-5个工作日内进行转换。</p>
+		<p>5、上传成功后，您已经绑定的医生能立即关注到您的病历、检查单信息。</p>
+	</div>
+	<div class="leh-null-box"></div>
+	<div class="photo-tap-box">
+		<!--未上传-->
+		<div class="photo-frist-tap"  :class="{'leh-guide': firstTime}" v-if="!isUpload" @click="msgBox">
+			<div class="photo-frist-ico-box">
+						<span class="iconfont icon-wx-camera">
+							<div class="photo-tip-img-box">
+								<img src="./assets/img/photo-updata-tip.png"/>
+							</div>
+						</span>
+			</div>
+			<p>点击上传图片</p>
+		</div>
+		<div class="leh-black-shade" v-if="firstTime || firstUpload"></div>
+		<!--上传-->
+		<div class="photo-tap">
+			<div class="weui_cells weui_cells_form">
+				<div class="weui_cell">
+					<div class="weui_cell_bd weui_cell_primary">
+						<div class="weui_uploader">
+							<div class="weui_uploader_bd">
+								<ul class="weui_uploader_files">
+									<li class="weui_uploader_file" v-for="items in photoItems" track-by="$index" :reddot="items.unread">
+										<img :src="items" @click="showPic(items)">
+										<span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
+									</li>
+								</ul>
+								<div class="weui_uploader_input_wrp" v-if="isUpload" @click="addPic">
+									<span class="iconfont icon-wx-add"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 用于展示插件的容器 -->
+<div class="overlay" id="overlay"></div>
+
+
+<script>
+	var vue;
+	function vue_init () {
+		vue = new Vue({
+			el: "#photo",
+			data: {
+				openID: '', // 获取身份ID
+				viewpic: false,
+				is_conf: false, // 未上传图片时，上传按钮不能用
+				firstTime: false, // 是否第一次进入
+				firstUpload: false, // 是否第一次上传
+				photoItems: [], // 图片数组
+				serverId: '', // 上传图片返回的serverId
+				serverIds: [], // 存储多图的serverId
+				isUpload: false, // 判断是否上传图片
+				withDoctor: false // 是否绑定医生
+			},
+			ready: function () {
+
+				var _self = this
+
+				// 获取URL参数
+				function getQueryString (key) {
+					var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+					var result = window.location.search.substr(1).match(reg);
+					return result?decodeURIComponent(result[2]):null;
+				}
+
+				// 初始值
+				this.openID = getQueryString('openID')*1
+				this.isUpload = false
+				this.photoItems = []
+				this.firstTime = getQueryString('firsttime')*1
+
+				// 上传图片，验证签名
+				function pageConfig() {
+
+					$.ajax({
+						url: 'http://test.jk7.com/api/valid',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						data: {
+							pageurl: window.location.href
+						},
+						success: function(data){
+
+							wxconfig(data);
+						}
+					});
+				}
+				pageConfig()
+
+				// 获取是否绑定医生--从首页进入
+				function withDoctorFromHome() {
+					$.ajax({
+						url: 'http://test.jk7.com/api/patient/withDoctor',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						success: function (data) {
+
+							if (data.recode == '1') {
+								alert(data.msg)
+							} else {
+								_self.withDoctor = data.data
+							}
+						}
+					});
+				}
+				// 直接进入，获取身份ID
+				function getOpenID() {
+					var src = window.location.search;
+					var a = src.indexOf('code');
+					var b = src.indexOf('&state');
+
+					var code = src.substr(a + 5, b - (a + 5));
+
+					//获取openid
+					$.ajax({
+						url: 'http://test.jk7.com/api/UserInfo',
+						type: 'GET',
+						dataType: "text",
+						contentType: 'application/x-www-form-urlencoded',
+						data: {
+							code: code,
+							state: "STATE"
+						},
+						success: function(data){
+							getAuthenticate(data)
+						}
+					});
+				}
+				// 身份验证
+				function getAuthenticate (oID) {
+					$.ajax({
+						url: 'http://test.jk7.com/api/Authenticate',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						headers: {
+							'Authorization': 'Basic ' + btoa(oID + ':')
+						},
+						success: function(data){
+							withDoctor(oID)
+						},
+						error: function (res) {
+							if (res.status === 401) {
+								if (res.responseText == '2') {
+									window.location.href='http://test.jk7.com/reg/bind';
+								} else if (res.responseText == '3') {
+									window.location.href='http://test.jk7.com/reg/register';
+								} else if (res.responseText == '4') {
+									window.location.href='http://test.jk7.com/reg/disease';
+								} else {
+									alert('非法访问')
+								}
+
+								return;
+							}
+						}
+					});
+				}
+
+				// 获取是否绑定医生
+				function withDoctor(oID) {
+					$.ajax({
+						url: 'http://test.jk7.com/api/patient/withDoctor',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						headers: {
+							'Authorization': 'Basic ' + btoa(oID + ':')
+						},
+						success: function(data){
+
+							if(data.recode == '1'){
+								alert(data.msg)
+							}else{
+								_self.withDoctor = data.data
+							}
+						}
+					});
+
+				}
+
+
+				if(!this.openID){
+					getOpenID()
+				}else{
+
+					withDoctorFromHome()
+				}
+
+
+				function wxconfig (data){
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: data.appId, // 必填，公众号的唯一标识
+						nonceStr: data.nonceStr, // 必填，生成签名的随机串
+						timestamp: data.timestamp, // 必填，生成签名的时间戳
+						signature: data.signature, // 必填，签名，见附录1
+						jsApiList: [
+							'checkJsApi',
+							'chooseImage',
+							'previewImage',
+							'uploadImage',
+							'downloadImage',
+							'translateVoice'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+				}
+
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+				});
+			},
+			methods: {
+
+				showPic: function () {
+					this.wrapPic(this.photoItems, '拍照上传') // 查看图片
+				},
+				wrapPic: function (picArr, titName) {
+
+					var wrap = document.querySelector('#overlay'),
+							  title = titName || '查看图片',
+							  data = [];
+
+					if(typeof(picArr) === 'string'){
+						data.push(picArr)
+					}else if(typeof(picArr) === 'object'){
+						data = picArr
+					}else {
+						console.log('图片变量类型必须为string或object' + typeof(picArr))
+					}
+					wrap.className = wrap.className + ' in';
+
+					// 延迟初始化插件是为了让CSS动画走完
+					setTimeout(function() {
+						MPreview({
+							data: data,
+							title: title,
+							direction: 'left',
+							wrap: '#overlay',
+							init: function() {
+							},
+							close: function() {
+								wrap.className = wrap.className.replace(' in', '');
+							}
+						});
+					}, 400);
+
+				},
+
+				msgBox: function () {
+
+					if(this.firstTime){
+
+						this.firstTime = false
+						this.firstUpload = true
+						this.is_conf = true
+					}else {
+
+						this.firstUpload = false
+						this.addPic()
+						//MessageBox('提示', '一次只能添加9张图片');
+					}
+				},
+				addPic: function () {
+
+					var _self = this
+					if(!_self.withDoctor){
+						alert('您还没有绑定医生，请绑定后再上传')
+						return
+					}
+
+					wx.chooseImage({
+						count: 9, // 默认9
+						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+						success: function(res) {
+
+							var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+							var photoItems = _self.photoItems.concat(localIds) // 合并分次上传的localId
+
+							// 已经上传图片切换上传按钮
+							if(photoItems.length > 0){
+
+								_self.isUpload = true
+								_self.is_conf = true
+							}
+
+							_self.photoItems = _self.photoItems.concat(localIds)
+
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+
+				},
+
+				// 上传
+				uploadPic: function () {
+
+					if(this.firstUpload){
+
+						this.firstUpload = false
+					}else {
+						this.uploadImages()
+					}
+				},
+				// 上传图片
+				uploadImages: function () {
+
+					// 获取serverId
+					var _self = this
+
+					var localId = _self.photoItems.pop();
+					wx.uploadImage({
+						localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+
+							//_self.serverId = res.serverId; // 返回图片的服务器端ID
+							_self.serverIds.push(res.serverId)
+
+							//其他对serverId做处理的代码
+							if(_self.photoItems.length > 0){
+
+								_self.uploadImages();
+							}else {
+								// 上传
+								var params = {"items":_self.serverIds}
+								$.ajax({
+									type: "POST",
+									url: 'http://test.jk7.com/api/filecheck/upload',
+									data: params,
+									dataType: 'json',
+									success: function (res) {
+
+										if(res.recode == '1'){
+											alert(msg)
+										}else{
+											_self.serverIds.length = 0
+											window.location.href='http://test.jk7.com/online/bill?actives=turn';
+										}
+									},
+									error: function (XMLHttpRequest, textStatus, errorThrown) {
+										alert('网络出错')
+										return;
+									}
+								});
+							}
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+
+				},
+				// 删除图片
+				delPic: function (ind) {
+					var removePic = this.photoItems[ind]
+					this.photoItems.$remove(removePic)
+
+					// 已经上传图片切换上传按钮, 上传按钮失效
+					if(this.photoItems.length == 0){
+
+						this.isUpload = false
+						this.is_conf = false
+					}
+				},
+
+				// 引导上传
+				uploadGuide: function () {
+
+					if(this.firstUpload) {
+						this.is_conf = false        // 未上传图片，按钮不可用
+						this.firstUpload = false    // 隐藏引导图
+					}
+				}
+			},
+		});
+
+	}
+	vue_init()
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

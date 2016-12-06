@@ -90,6 +90,7 @@
 	export default{
 		route : {
 			data (transition) {
+				console.log(1111)
 				this.is_visible = transition.to.query.isEdit;
 				if(transition.to.query.isEdit){
 					this.value = '06:22'
@@ -114,7 +115,7 @@
 				title: '',
 				bgcolor: '',
 				active_name: '',
-				value: '2015:09:12:01:02',
+				value: '06:22',
 				visible3: true,
 				drug: ''
 			}

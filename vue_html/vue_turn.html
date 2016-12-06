@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>随访家园患者端</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="bookmark" href="/favicon.ico"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<style>
+	@import './assets/css/mint-ui.css';
+	@import './assets/css/common.css';
+	@import './assets/css/normalize.css';
+	@import './assets/css/MPreview.mobile.css';
+
+	.transform-list-img-box{width: 40px;height: 50px;background-color:#e5e5e5;float: left;text-align: center;position: relative;}
+	.transform-list-img-box img{height: auto;width: auto;max-height: 100%;max-width: 100%;}
+	.transform-list-text{float: left;padding-left: 20px;padding-top:5px;width: 65%;height: 50px;display: inline-block;overflow: hidden;}
+	.transform-list-text p{font-size: 12px;color: #919191;line-height: 20px;}
+	.transform-list-box span.fr{line-height: 50px;font-size: 14px;}
+	.transform-img-ico{position: absolute;bottom: -7px;right: -7px;font-size: 14px;font-weight:bold;color: #ff6060;}
+	.transform-list-box .sl-li:nth-last-of-type(1) .sl-content:after{border-top: 1px solid #e5e5e5;}
+	.msgbox {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate3d(-50%, -50%, 0);
+		transform: translate3d(-50%, -50%, 0);
+		background-color: #fff;
+		width: 85%;
+		border-radius: 3px;
+		font-size: 16px;
+		-webkit-user-select: none;
+		overflow: hidden;
+		opacity: 1;
+		backface-visibility: hidden;
+	}
+	.msgbox-header{
+		padding: 15px 0 0;
+		border-bottom: none;
+	}
+	.msgbox-content {
+		padding: 10px 20px;
+		min-height: 36px;
+		position: relative;
+		border-bottom: 1px solid #ddd;
+	}
+	.msgbox-close {
+		display: inline-block;
+		position: absolute;
+		top: 14px;
+		right: 15px;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		line-height: 20px;
+		text-align: center;
+	}
+	.msgbox-input > input {
+		border: 1px solid #dedede;
+		border-radius: 5px;
+		padding: 4px 5px;
+		width: 100%;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		outline: none;
+	}
+	.msgbox-errormsg {
+		color: red;
+		font-size: 12px;
+		min-height: 16px;
+	}
+	.msgbox-title {
+		padding-left: 10px;
+		font-size: 16px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 8px;
+	}
+	.msgbox-status {
+		float: left;
+		width: 36px;
+		height: 36px;
+		font-size: 36px !important;
+	}
+	.msgbox-status.icon-success {
+		color: #94c852;
+	}
+	.msgbox-status.icon-warning {
+		color: #ff9c00;
+	}
+	.msgbox-status.icon-error {
+		color: #ff4248;
+	}
+	.msgbox-message {
+		font-size: 16px;
+		line-height: 36px;
+		text-align: center;
+		color: #999;
+		margin: 0;
+	}
+	.msgbox-btns {
+		display: flex;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		font-size: 16px;
+	}
+	.msgbox-btn {
+		display: block;
+		background-color: #fff;
+		border: 0;
+		flex: 1;
+		margin: 0;
+		border-radius: 0;
+	}
+	.msgbox-btn:active {
+		background-color: #3492e9;
+		color: #fff;
+		outline: none;
+	}
+	.msgbox-btn:focus {
+		outline: none;
+	}
+	.msgbox-confirm {
+		width: 50%;
+	}
+	.msgbox-cancel {
+		width: 50%;
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-confirm-highlight,
+	.msgbox-cancel-highlight {
+		font-weight: 800;
+	}
+	.msgbox-btns-reverse {
+		-webkit-box-direction: reverse;
+	}
+	.msgbox-btns-reverse .msgbox-confirm {
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-btns-reverse .msgbox-cancel {
+		border-right: 0;
+	}
+	.pop-bounce-transition {
+		transition: .2s .1s;
+	}
+	.pop-bounce-enter {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.7);
+	}
+	.pop-bounce-leave {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.9);
+	}
+
+</style>
+
+<!--测试引用-->
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
+<!--正式引用-->
+<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
+<body id="msg">
+<header class="mint-header is-fixed leh-bg-grey-head">
+	<div class="mint-header-button is-left">
+		<a href="http://test.jk7.com/online/bill?actives=turn">
+			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
+		</a>
+	</div>
+	<h1 class="mint-header-title leh-c-black">转换中单据</h1>
+	<div class="mint-header-button is-right"></div>
+</header>
+<div class="leh-wrap page-popup">
+	<div class="transform-list-box">
+		<ul class="sl-box">
+			<translate-item
+					v-for="items in turnDatas"
+					:name="items.id"
+					:delbtn="items.isFail">
+				<div class="transform-list-img-box" @click="showPic(items.url)">
+					<img :src="items.url"/>
+					<span class="transform-img-ico iconfont icon-wx-close" v-if="items.isFail"></span>
+				</div>
+				<div class="transform-list-text" v-if="items.isFail" @click="addPic(items.id)">
+					<p>图片过于模糊或无法识别</p>
+					<p>点击重新上传</p>
+				</div>
+				<span class="fr" v-if="!items.isFail">
+						转换中
+					</span>
+				<span class="fr leh-c-red" v-else>
+						转换失败
+					</span>
+			</translate-item>
+
+		</ul>
+	</div>
+</div>
+
+<!--提示框-->
+<div class="msgbox-wrapper" style="position: absolute; z-index: 1005;" v-show="showTips">
+	<div class="msgbox pop-bounce-transition" >
+		<div class="msgbox-header">
+			<div class="msgbox-title">提示</div>
+		</div>
+		<div class="msgbox-content">
+			<div class="msgbox-status d-icon"></div>
+			<div class="msgbox-message"><p>是否删除此单据</p></div>
+		</div>
+		<div class="msgbox-btns">
+			<button class="msgbox-btn msgbox-cancel " @click="handleAction(0)">取消</button>
+			<button class="msgbox-btn msgbox-confirm " @click="handleAction(1)">确定</button>
+		</div>
+	</div>
+</div>
+<div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
+<!-- 用于展示插件的容器 -->
+<div class="overlay" id="overlay"></div>
+
+
+<script>
+	var vue;
+	function vue_init () {
+		vue = new Vue({
+			el: "#msg",
+			data: {
+				ids: '',
+				dates: '', // 转换中日期
+				turnDatas: [], // 转换中数组,
+				turnTitle: '',
+				showTips: false,
+				serverId: '', // 上传图片返回的serverId
+				photo: '' // 重新上传的图片
+			},
+			ready: function () {
+
+				// 获取URL参数
+				function getQueryString (key) {
+					var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+					var result = window.location.search.substr(1).match(reg);
+					return result?decodeURIComponent(result[2]):null;
+				}
+
+				// 初始值
+				this.dates = getQueryString('dates')
+				this.getTurnList(this.dates)
+
+				// 上传图片，验证签名
+				function pageConfig() {
+
+					$.ajax({
+						url: 'http://test.jk7.com/api/valid',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						data: {
+							pageurl: window.location.href
+						},
+						success: function(data){
+							wxconfig(data);
+						}
+					});
+				}
+				pageConfig()
+
+				function wxconfig (data){
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: data.appId, // 必填，公众号的唯一标识
+						nonceStr: data.nonceStr, // 必填，生成签名的随机串
+						timestamp: data.timestamp, // 必填，生成签名的时间戳
+						signature: data.signature, // 必填，签名，见附录1
+						jsApiList: [
+							'checkJsApi',
+							'chooseImage',
+							'previewImage',
+							'uploadImage',
+							'downloadImage',
+							'translateVoice'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+				}
+
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+				});
+			},
+			methods: {
+				handleAction: function (blr) {
+
+					if(blr){
+						// 确定
+						this.showTips = false
+						this.delTurn(this.ids)
+					}else{
+						// 取消
+						this.showTips = false
+					}
+				},
+				delTurn: function (ids) {
+
+					var _self = this
+					$.ajax({
+						type: "DELETE",
+						url: 'http://test.jk7.com/api/filecheck/'+ ids,
+						dataType: 'json',
+						success: function (res) {
+
+							_self.getTurnList(_self.dates)
+						},
+						error: function (XMLHttpRequest, textStatus, errorThrown) {
+							alert('网络出错')
+							return;
+						}
+					});
+				},
+
+				// 获取转换中详情
+				getTurnList: function (dates) {
+
+					var _self = this
+					$.ajax({
+						type: "GET",
+						url: 'http://test.jk7.com/api/filecheck/'+ dates,
+						dataType: 'json',
+						success: function (res) {
+
+							_self.turnDatas = res.data
+						},
+						error: function (XMLHttpRequest, textStatus, errorThrown) {
+							alert('网络出错')
+							return;
+						}
+					});
+				},
+
+				// 查看图片
+				showPic: function (url) {
+
+					this.wrapPic(url, '转换中单据') // 查看图片
+				},
+				wrapPic: function (picArr, titName) {
+
+					var wrap = document.querySelector('#overlay'),
+							title = titName || '查看图片',
+							data = [];
+
+					if(typeof(picArr) === 'string'){
+						data.push(picArr)
+					}else if(typeof(picArr) === 'object'){
+						data = picArr
+					}else {
+						console.log('图片变量类型必须为string或object' + typeof(picArr))
+					}
+					wrap.className = wrap.className + ' in';
+
+					// 延迟初始化插件是为了让CSS动画走完
+					setTimeout(function() {
+						MPreview({
+							data: data,
+							title: title,
+							direction: 'left',
+							wrap: '#overlay',
+							init: function() {
+							},
+							close: function() {
+								wrap.className = wrap.className.replace(' in', '');
+							}
+						});
+					}, 400);
+
+				},
+
+				// 添加图片
+				addPic: function (ids) {
+
+					var _self = this
+					wx.chooseImage({
+						count: 1, // 默认9
+						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+						success: function(res) {
+
+							var localIds = res.localIds[0].toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+							_self.photo = localIds
+							_self.uploadImage(localIds, ids)
+
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				},
+
+				// 上传图片
+				uploadImage: function (localIds, id) {
+
+					var _self = this
+					wx.uploadImage({
+						localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+
+							_self.serverId = res.serverId; // 返回图片的服务器端ID
+							$.ajax({
+								type: "PUT",
+								url: 'http://test.jk7.com/api/filecheck/reupload/'+ id + '/'+ res.serverId,
+								dataType: 'json',
+								success: function (res) {
+
+									_self.getTurnList(_self.dates)
+								},
+								error: function (XMLHttpRequest, textStatus, errorThrown) {
+									alert('网络出错')
+									return;
+								}
+							});
+
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+
+				},
+			}
+		});
+
+	}
+
+
+	Vue.component('translate-item', {
+		template: '<li class="sl-li ui-border-b">'+
+								'<div class="sl-content">'+
+								'<slot></slot>'+
+								'</div>'+
+								'<div class="sl-opts" v-if="delbtn" @click="handleDel">'+
+								'<span class="leh-bg-red leh-c-white" :id="name">删除</span>'+
+								'</div>'+
+							'</li>',
+		events: {
+		},
+		props: {
+			title: '',
+			name: '',
+			delbtn: Boolean
+		},
+		data: function () {
+			return {
+				show: 0,
+				b_f: null,
+			}
+		},
+		ready: function (){
+			var listItem = $('.sl-content'),
+					listOpts = $('.sl-opts');
+
+			var onthel = false, // 是否处于最左端
+					isScroll = false, // 列表是否滚动状态
+					btnL = 0, // 按钮个数
+					initX = 0, // 初始X坐标
+					initY = 0, // 初始Y坐标
+					endX = 0, // 结束时X坐标
+					endY = 0, // 结束时Y坐标
+					moveX = 0, // listItem 移动的距离
+					expandLi = null; // 是否存在展开的list
+
+			var slideMaxWid = listOpts.width();
+
+			var handleSlide = (function() {
+
+				listItem.on('touchstart',function(e){
+
+					// 判断有无已经展开的li，如果有，是否是当前的li，如果不是，将展开的li收起
+					if( expandLi ){
+						if( expandLi.parent().index()!==$(this).parent().index() ){
+							// 判断当前list是左滑还是上下滑
+							if( Math.abs(endY-initY) < Math.abs(endX-initX) ){
+								e.preventDefault();
+							}
+							expandLi.css('-webkit-transform','translateX('+0+'px)');
+						}
+					}
+
+					initX = e.targetTouches[0].pageX;
+					initY = e.targetTouches[0].pageY;
+
+					moveX = $(this).offset().left;
+
+					$(this).on('touchmove',function(e){
+
+						btnL = $(e.target).parents('.sl-li').find('.sl-opts').length;
+						var curY = e.targetTouches[0].pageY;
+						var curX = e.targetTouches[0].pageX;
+						var X = curX - initX; // 不断获取移动的距离
+
+						$(this).removeClass('animated');
+
+						if( Math.abs(endY-initY)<Math.abs(endX-initX) ){
+
+							e.preventDefault();
+							if( moveX==0 ){
+								if( X>0 ) {
+									$(this).css('-webkit-transform','translateX('+0+'px)');
+								}else if( X<0 ){
+
+									if(btnL) {
+										if( X<-slideMaxWid ) X=-slideMaxWid;
+										$(this).css('-webkit-transform','translateX('+X+'px)');
+									}else{
+										$(this).css('-webkit-transform','translateX('+0+'px)');
+									}
+								}
+							}
+							// 已经处于最左
+							else if( moveX < 0 ){
+								onthel = true;
+								if( X>0 ) { // 向右滑
+									if( X-slideMaxWid>0 ){
+										$(this).css('-webkit-transform','translateX('+0+'px)');
+									}else{
+										if(btnL) {
+											$(this).css('-webkit-transform','translateX('+(X-slideMaxWid)+'px)');
+										}else{
+											$(this).css('-webkit-transform','translateX('+0+'px)');
+										}
+
+									}
+								}else { // 左滑
+									$(this).addClass('animated');
+									$(this).css('-webkit-transform','translateX('+0+'px)');
+								}
+							}
+						}else{
+							isScroll = true;
+						}
+
+					})
+				})
+
+				listItem.on('touchend',function(e){
+
+					btnL = $(e.target).parents('.sl-li').find('.sl-opts').length;
+					endX = e.changedTouches[0].pageX;
+					endY = e.changedTouches[0].pageY;
+					var X = endX - initX;
+
+					$(this).addClass('animated');
+					//Slide to right or the distance of slide to left less than 20;
+					if( X>-20||onthel||isScroll ){
+						$(this).css('-webkit-transform','translateX('+0+'px)');
+						onthel = false;
+						isScroll = false;
+					}else {
+						if(btnL){
+							$(this).css('-webkit-transform','translateX('+(-slideMaxWid)+'px)');
+							expandLi = $(this);
+						}else{
+							$(this).css('-webkit-transform','translateX('+0+'px)');
+							onthel = false;
+							isScroll = false;
+						}
+
+					}
+				})
+
+			})();
+		},
+		methods: {
+
+			handleDel: function ($event) {
+
+				vue.showTips = true
+				vue.ids = $($event.target).attr('id')
+			}
+		}
+	})
+
+	vue_init()
+</script>
+
+
+
+</body>
+</html>

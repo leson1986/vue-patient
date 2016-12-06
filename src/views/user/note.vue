@@ -6,7 +6,8 @@
 		<div class="leh-null-data" v-if="!noteItems.length">暂无数据</div>
 		<div class="note-box">
 			<ul>
-				<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id, isclose: items.isClose}, replace: true}">
+				<li class="note-list" v-for="items in noteItems" @click="toNoteUrl(items.id, items.isClose)">
+				<!--<li class="note-list" v-for="items in noteItems" v-link="{path: '/user/noteDetail', query:{id: items.id, isclose: items.isClose}, replace: true}">-->
 					<p class="note-list-title" :class="{'leh-red-dot': items.unread}">
 						<span class="iconfont" :class="{'icon-wx-ask-round': !items.isClose, 'icon-wx-take-round': items.isClose}"></span>
 						{{ items.contents }}
@@ -78,6 +79,9 @@
 		},
 
 		methods: {
+			toNoteUrl: function (ids, isclose) {
+				window.location.href='http://test.jk7.com/vue_html/vue_note.html?id='+ ids +'&isclose='+ isclose;
+			},
 
 			// 获取更多医生列表信息
 			moreNote () {

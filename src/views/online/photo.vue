@@ -213,6 +213,7 @@
 								if(recode == '1'){
 									alert(msg)
 								}else{
+									_self.serverIds.length = 0
 									_self.$route.router.go({path: '/online/bill', query: {actives: 'turn'}, replace: true})
 								}
 							}, _self)

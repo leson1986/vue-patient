@@ -66,7 +66,8 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="turn" :active.sync="active">
 					<div class="leh-null-data" v-if="!fileCheckItems.length">暂无数据</div>
-					<a class="mint-cell document-index-check-list" v-for="items in fileCheckItems" v-link="{path: '/online/billTurn', query:{date: items.date}, replace: true}">
+					<a class="mint-cell document-index-check-list" v-for="items in fileCheckItems" @click="toTurnUrl(items.date)">
+						<!--<a class="mint-cell document-index-check-list" v-for="items in fileCheckItems" v-link="{path: '/online/billTurn', query:{date: items.date}, replace: true}">-->
 						<span class="mint-cell-mask"></span>
 						<label class="mint-cell-title">
 							<span class="mint-cell-text" :class="{'leh-red-dot': items.unread}">{{ items.date }}</span>
@@ -136,6 +137,10 @@
 		},
 
 		methods: {
+			// 跳转到拍照页面
+			toTurnUrl (dates) {
+				window.location.href='http://test.jk7.com/vue_html/vue_turn.html?dates='+ dates;
+			},
 			lehBack () {
 				$(".leh-active").removeClass('leh-active')
 				this.$route.router.go({path: '/home'})

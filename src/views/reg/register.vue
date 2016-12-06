@@ -7,22 +7,6 @@
 		<div class="register-ipt-box">
 			<div class="page-part">
 				<mt-field label="姓名" placeholder="请输入用户名" type="text" :istitle="true" v-ref:name></mt-field>
-				<!--<div class="mint-field">
-					<a class="mint-cell mint-field-cell">
-						<div class="mint-cell-title">
-							<span class="mint-cell-text">姓名</span>
-						</div>
-						<div class="mint-cell-value">
-							<input class="mint-field-core" value="" placeholder="请输入用户名" type="text">
-							<div class="mint-field-clear" style="display: none;">
-								<i class="mintui mintui-field-error"></i>
-							</div>
-							<span class="mint-field-state is-default">
-					      <i class="mintui mintui-field-default"></i>
-					    </span>
-						</div>
-					</a>
-				</div>-->
 				<div class="mint-field">
 					<a class="mint-cell mint-field-cell">
 						<div class="mint-cell-title">
@@ -171,7 +155,7 @@
 	.register-ipt-box .mint-cell{background-color: transparent;color: #fff;}
 	.register-ipt-box .mint-cell:after{border-top: 0;}
 	.register-ipt-box .mint-cell:before{border-bottom-color: rgba(255,255,255,0.5);}
-	.register-ipt-box .mint-cell input{background-color: transparent;color: #fff;}
+	.register-ipt-box .mint-cell input{background-color: transparent;color: #fff;position: relative;display: block;}
 	.register-ipt-box .mint-cell-text{color: #fff;}
 	.register-ipt-box .mint-field-clear{color: #00930d;opacity: 1}
 	.register-mint-cell-value-hight{height: 25px;}
@@ -181,7 +165,7 @@
 	.register-btn{border-color: #8fd595 !important;}
 	.register-btn.leh-active{background-color: #8fd595;}
 	.register-btn .mint-button-text{color: #fff;}
-	.register-sex-box{float: left;margin-right: 20px;}
+	.register-sex-box{float: left;margin-right: 20px;position: relative;}
 	.register-sex-box span{margin-right: 8px;color: rgba(255,255,255,0.5);}
 	.register-sex-box.leh-active span{color: rgba(255,255,255,1);}
 	.register-sex-box .icon-wx-male,

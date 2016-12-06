@@ -7,8 +7,9 @@
 *
  */
 import Vue from 'vue'
+import $ from 'zepto'
 import {loader} from '../util/util'
-const SERVER = 'http://wx.jk7.com/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
+const SERVER = 'http://test.jk7.com/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {
@@ -19,12 +20,15 @@ export function loadInterceptors () {
 		let headers = {}
 		let tokens = btoa(openID + ':')
 
-		headers.Authorization = 'Basic ' + tokens
-		request.headers = headers
+		if('Og==' !== tokens){
+
+			headers.Authorization = 'Basic ' + tokens
+			request.headers = headers
+		}
 
 		next((response) => {
 			if(!response.ok){
-				console.log(response.status)
+				alert('status=='+response.status)
 			}
 
 			loader.hide()
@@ -43,7 +47,39 @@ export function getJson(url, options, callback, self) {
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
-	return self.$http.get(SERVER + url, {
+	return $.ajax({
+		url: SERVER + url,
+		type: 'GET',
+		dataType: "json",
+		contentType: 'application/x-www-form-urlencoded',
+		headers: {
+			'Authorization': 'Basic ' + btoa(openID + ':')
+		},
+		beforeSend: function (xhr) {
+			loader.show()
+		},
+		success: function(data){
+			loader.hide()
+			callback(data.data, data.recode, data.msg)
+		},
+		error: function (res) {
+			if (res.status === 401) {
+				if (res.responseText == '2') {
+					self.$route.router.go({ path: '/reg/bind', replace: true })
+				} else if (res.responseText == '3') {
+					self.$route.router.go({ path: '/reg/register', replace: true })
+				} else if (res.responseText == '4') {
+					self.$route.router.go({ path: '/reg/disease', replace: true })
+				} else {
+					alert('非法访问')
+				}
+
+				return;
+			}
+		}
+	});
+
+	/*return self.$http.get(SERVER + url, {
 		params: options
 	})
 		.then(({data: {recode, msg, data}}) => {
@@ -51,7 +87,6 @@ export function getJson(url, options, callback, self) {
 		}, (response) => {
 
 			if(response.status === 401){
-				console.log(response.body)
 				if(response.body === '2'){
 					self.$route.router.go({path: '/reg/bind', replace: true})
 				}else if(response.body === '3'){
@@ -65,7 +100,7 @@ export function getJson(url, options, callback, self) {
 			}else {
 				alert(response.status + '  ' +response.data.message)
 			}
-	});
+	});*/
 }
 
 // post请求
@@ -76,7 +111,40 @@ export function postJson(url, options, callback, self) {
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
-	return self.$http.post(SERVER + url, options)
+	return $.ajax({
+		url: SERVER + url,
+		type: 'POST',
+		dataType: "json",
+		contentType: 'application/x-www-form-urlencoded',
+		data: options,
+		headers: {
+			'Authorization': 'Basic ' + btoa(openID + ':')
+		},
+		beforeSend: function (xhr) {
+			loader.show()
+		},
+		success: function(data){
+			loader.hide()
+			callback(data.data, data.recode, data.msg)
+		},
+		error: function (res) {
+			if (res.status === 401) {
+				if (res.responseText == '2') {
+					self.$route.router.go({ path: '/reg/bind', replace: true })
+				} else if (res.responseText == '3') {
+					self.$route.router.go({ path: '/reg/register', replace: true })
+				} else if (res.responseText == '4') {
+					self.$route.router.go({ path: '/reg/disease', replace: true })
+				} else {
+					alert('非法访问')
+				}
+
+				return;
+			}
+		}
+	});
+
+	/*return self.$http.post(SERVER + url, options)
 		.then(({data: {recode, msg, data}}) => {
 			callback(data, recode, msg)
 		}, (response) => {
@@ -94,7 +162,7 @@ export function postJson(url, options, callback, self) {
 			}else {
 				alert(response.status + '  ' +response.data.message)
 			}
-		});
+		});*/
 
 }
 
@@ -106,12 +174,35 @@ export function putJson(url, options, callback, self) {
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
+
+	return $.ajax({
+		url: SERVER + url,
+		type: 'PUT',
+		dataType: "json",
+		contentType: 'application/x-www-form-urlencoded',
+		data: options,
+		headers: {
+			'Authorization': 'Basic ' + btoa(openID + ':')
+		},
+		beforeSend: function (xhr) {
+			loader.show()
+		},
+		success: function(data){
+			loader.hide()
+			callback(data.data, data.recode, data.msg)
+		},
+		error: function (res) {
+			alert('网络出错')
+			return
+		}
+	});
+	/*
 	return self.$http.put(SERVER + url, options)
 		.then(({data: {recode, msg, data}}) => {
 			callback(data, recode, msg)
 		}, (response) => {
 				alert(response.status + '  ' +response.data.message)
-		});
+		});*/
 
 }
 
@@ -123,12 +214,34 @@ export function delJson(url, options, callback, self) {
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
+	return $.ajax({
+		url: SERVER + url,
+		type: 'DELETE',
+		dataType: "json",
+		contentType: 'application/x-www-form-urlencoded',
+		data: options,
+		headers: {
+			'Authorization': 'Basic ' + btoa(openID + ':')
+		},
+		beforeSend: function (xhr) {
+			loader.show()
+		},
+		success: function(data){
+			loader.hide()
+			callback(data.data, data.recode, data.msg)
+		},
+		error: function (res) {
+			alert('网络出错')
+			return
+		}
+	});
+/*
 	return self.$http.delete(SERVER + url, options)
 		.then(({data: {recode, msg}}) => {
 			callback(recode, msg)
 		}, (response) => {
 			alert(response.status + '  ' +response.data.message)
-		});
+		});*/
 
 }
 
@@ -147,21 +260,9 @@ export function wrapPic(picArr, titName, obj, isMask) {
 	let elem = document.querySelectorAll('ul > li'),
 	    wrap = document.querySelector('#overlay')
 
-		// for (var i = 0, len = elem.length; i < len; i++) {
-			// elem[i].index = i;
-		//	 elem[i].addEventListener('touchstart', function(e) {
-		//		 e.preventDefault();
-
 				 var //ext = this.index === 0 ? '' : 'M_',
 				 title = titName || '查看图片',
 				 data = [];
-
-				 /*for (var i = 0; i < picArr.length; i++) {
-
-				 	console.log(picArr)
-					 data.push(picArr[i].url);
-					 console.log(data)
-				 }*/
 
 				if(typeof(picArr) === 'string'){
 					data.push(picArr)
@@ -194,9 +295,6 @@ export function wrapPic(picArr, titName, obj, isMask) {
 						 }
 					 });
 				 }, 400);
-
-		//	 }, false);
-		// }
 
 }
 

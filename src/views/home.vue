@@ -6,7 +6,15 @@
 				<mt-tab-container-item id="在线门诊">
 					<div class="mint-tab-container-item">
 						<div class="consult-tap-box">
-							<mt-tab-item :class="{'leh-guide': firstTime}" v-link="{path: '/online/photo', query: {firsttime: firstTime}, replace: true}">
+							<!--<mt-tab-item :class="{'leh-guide': firstTime}" v-link="{path: '/vue_html/vue_photo.html', query: {firsttime: firstTime, openID: 1}, replace: true}">
+								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
+								拍照上传
+
+								<div class="consult-tip-img-box">
+									<img src="../assets/img/consult-index-tip.png"/>
+								</div>
+							</mt-tab-item>-->
+							<mt-tab-item :class="{'leh-guide': firstTime}" @click="toPhotoUrl">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								拍照上传
 
@@ -20,10 +28,14 @@
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								用药提醒
 							</mt-tab-item>
-							<mt-tab-item v-link="{path: '/online/feedback', replace: true}">
+							<mt-tab-item  @click="toMsgUrl">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								留言咨询
 							</mt-tab-item>
+							<!--<mt-tab-item v-link="{path: '/online/feedback', replace: true}">
+								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
+								留言咨询
+							</mt-tab-item>-->
 						</div>
 						<div class="leh-null-box"></div>
 						<div class="consult-list-box">
@@ -141,7 +153,8 @@
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="个人中心" class="consult-container-item-hight">
-					<div class="center-head" v-link="'/user/info'">
+					<div class="center-head" @click="toInfoUrl()">
+						<!--<div class="center-head" v-link="'/user/info'">-->
 						<div class="center-head-img">
 							<img :src="personeInfo.patientPhoto" v-if="personeInfo.patientPhoto !== null"/>
 							<img src="../assets/img/private.jpg" v-if="personeInfo.patientPhoto === null"/>
@@ -153,6 +166,20 @@
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
 							<!--<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>-->
+							<a class="mint-cell" href="http://test.jk7.com/html/pay/pay.html" v-show="openIDS == 'oiQzTjlkhtQvz2l5fkQ3sIhsd3rU'">
+
+								<div class="mint-cell-title">
+									<i class="iconfont icon-wx-link"></i>
+									<span class="mint-cell-text">支付测试</span>
+
+								</div>
+								<div class="mint-cell-value">
+									<span></span>
+									<span class="iconfont icon-wx-arr-right"></span>
+								</div>
+
+							</a>
+
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
 					</div>
@@ -195,6 +222,7 @@
 	import MtTabItem from '../components/tab-item.vue'
 	import MtCell from '../components/cell.vue'
 	import MtPopup from '../components/popup.vue'
+	import $ from 'zepto'
 	import {getJson} from 'util'
 
 	export default{
@@ -203,6 +231,8 @@
 			data ({to, next}) {
 
 				let _self = this
+
+				_self.openIDS = openID // 测试支付使用
 
 				//_self.isDoctorPage = to.query.tohome || false
 				_self.isMydoctor = to.query.mydoctor
@@ -233,6 +263,7 @@
 
 		data() {
 			return {
+				openIDS: '', //测试支付使用
 				list: [],
 				loading: false,
 				allLoaded: false,
@@ -263,6 +294,18 @@
 		},
 
 		methods: {
+			// 跳转到拍照页面
+			toPhotoUrl () {
+				window.location.href='http://test.jk7.com/vue_html/vue_photo.html?openID=1&firstTime='+ this.firstTime;
+			},
+			// 跳转到留言页面
+			toMsgUrl () {
+				window.location.href='http://test.jk7.com/vue_html/vue_msg.html';
+			},
+			// 跳转到个人信息
+			toInfoUrl () {
+				window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=1&alllergicHis=&disease=';
+			},
 			// 我的医生列表
 			getDoctors () {
 
@@ -361,7 +404,7 @@
 	.doctor-index-box .mint-cell-text span:nth-of-type(3){font-size: 13px;}
 	.doctor-index-box .mint-cell-label{font-size: 14px;}
 
-	.doctor-index {bottom: 100px}
+
 	.document-index-load-tap .mint-button--transparent{text-align: center;}
 
 	/*个人中心*/

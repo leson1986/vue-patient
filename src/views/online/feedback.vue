@@ -268,6 +268,7 @@
 									alert(msg)
 								}else{
 									_self.msg_val = ''
+									_self.serverIds.length = 0
 									_self.$route.router.go({path: '/user/noteDetail', query: {id: rsp, isclose: false}})
 								}
 

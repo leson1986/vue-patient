@@ -32,6 +32,11 @@ export default function (router) {
 			  require(['./views/reg/disease'], resolve)
 		  }
 	  },
+	  '/reg/camera': {
+		  component (resolve) {
+			  require(['./views/reg/camera'], resolve)
+		  }
+	  },
 
 	  // 在线门诊
 	  '/online/photo': {
