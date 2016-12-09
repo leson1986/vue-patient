@@ -324,29 +324,7 @@
 						_self.alllergicHis = _self.alllergicHis.substr(0,10) + '...'
 					}
 				}
-				/*if(getQueryString('disease')){
-					_self.disease = getQueryString('disease')
-				}*/
 
-				/*var paramss = {}
-				if(this.openID == '2'){
-					paramss = {
-						"name":  getQueryString('name'),
-						"mobile":  getQueryString('mobile'),
-						"gender":  getQueryString('gender'),
-						"birthday": getQueryString('birthday'),
-						"alllergicHis": _self.alllergicHis,
-						"photo": getQueryString('photo'),
-						"email": getQueryString('email'),
-						"disease": getQueryString('disease'),
-						"diseaseHis": getQueryString('diseaseHis'),
-						"nativePlace": getQueryString('nativePlace')
-					}
-
-					this.paramsMain = paramss
-				}
-
-				alert(JSON.stringify(this.paramsMain))*/
 				// 上传图片，验证签名
 				function pageConfig() {
 
@@ -375,18 +353,6 @@
 						contentType: 'application/x-www-form-urlencoded',
 						success: function (data) {
 							var rsp = data.data
-							if(this.openID == '2'){
-								rsp = {
-									"gender":  getQueryString('gender'),
-									"birthday": getQueryString('birthday'),
-									"notAlllergicHis": _self.alllergicHis,
-									"photo": getQueryString('photo'),
-									"email": getQueryString('email'),
-									"disease": getQueryString('disease'),
-									"nativePlace": getQueryString('nativePlace')
-								}
-								_self.serverId = getQueryString('serverId')
-							}
 
 							_self.name = rsp.name
 							_self.mobile = rsp.mobile
@@ -398,6 +364,19 @@
 							_self.disease = rsp.disease
 							_self.diseaseHis = rsp.diseaseHis
 							_self.nativePlace = rsp.nativePlace
+
+							if(_self.openID == '2'){
+
+								_self.gender = getQueryString('gender')*1
+								_self.birthday = getQueryString('birthday')
+								_self.notAlllergicHis = getQueryString('alllergicHis')
+								_self.photo = getQueryString('photo')
+								_self.email = getQueryString('email')
+								_self.disease = getQueryString('disease')
+								_self.diseaseHis = getQueryString('diseaseHis')
+								_self.nativePlace = getQueryString('nativePlace')
+								_self.serverId = getQueryString('serverId')
+							}
 
 							// 超过10个字加省略号
 							if(_self.notAlllergicHis.length > 10) {
@@ -535,6 +514,8 @@
 							this.birthday +
 							'&alllergicHis='+
 							this.notAlllergicHis +
+							'&photo='+
+							this.photo +
 							'&serverId='+
 							this.serverId +
 							'&email='+
@@ -546,7 +527,26 @@
 							'&nativePlace='+ $('#city').val() ;
 				},
 				toIrritabilityUrl: function () {
-					window.location.href='http://test.jk7.com/user/irritability?allHis='+ this.notAlllergicHis + '&diseaseinfo='+ this.disease + '&infoMail='+ this.infoMain;
+
+					window.location.href='http://test.jk7.com/user/irritability?info=true&gender='+
+							this.gender +
+							'&birthday='+
+							this.birthday +
+							'&alllergicHis='+
+							this.notAlllergicHis +
+							'&photo='+
+							this.photo +
+							'&serverId='+
+							this.serverId +
+							'&email='+
+							this.email +
+							'&disease='+
+							this.disease +
+							'&diseaseHis='+
+							this.diseaseHis +
+							'&nativePlace='+ $('#city').val() ;
+
+					//window.location.href='http://test.jk7.com/user/irritability?allHis='+ this.notAlllergicHis + '&diseaseinfo='+ this.disease + '&infoMail='+ this.infoMain;
 				},
 				showPicker: function () {
 					this.visible = true

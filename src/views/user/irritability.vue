@@ -61,10 +61,19 @@
 		route: {
 			data ({to, next}) {
 				//this.irritability = to.query.info
-				this.allHis = to.query.allHis
-				this.irritability = to.query.allHis
-				this.diseaseInfo = to.query.diseaseinfo
-				this.infoMail = to.query.infoMail
+				this.allHis = to.query.alllergicHis
+				this.irritability = to.query.alllergicHis
+
+				this.getgender = to.query.gender ;
+				this.getbirthday = to.query.birthday ;
+				this.getalllergicHis = to.query.alllergicHis ;
+				this.getserverId = to.query.serverId ;
+				this.getemail = to.query.email ;
+				this.getphoto = to.query.photo ;
+				this.getdisease = to.query.disease ;
+				this.getdiseaseHis = to.query.diseaseHis ;
+				this.getnativePlace = to.query.nativePlace ;
+
 				if(this.irritability !== ''){
 					this.irritability = this.irritability.split('、')
 				}
@@ -92,7 +101,15 @@
 				kfc: '',
 				diseaseInfo: '', // 病种
 				allHis: '',
-				infoMail: '' // 缓存前一页面数据
+				getgender:'',
+				getbirthday: '',
+				getalllergicHis: '',
+				getserverId: '',
+				getemail: '',
+				getphoto: '',
+				getdisease: '',
+				getdiseaseHis: '',
+				getnativePlace: ''
 			}
 		},
 
@@ -118,8 +135,28 @@
 
 				this.show_popup = true
 				this.tips = '保存成功'
+				var _self = this
 				setTimeout(() => {
-					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&alllergicHis='+alllergiVal+'&disease='+this.diseaseinfo+'&toinfo=true&infoMail='+this.infoMail;
+
+					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+							_self.getgender +
+							'&birthday='+
+							_self.getbirthday +
+							'&alllergicHis='+
+							alllergiVal +
+							'&photo='+
+							_self.getphoto +
+							'&serverId='+
+							_self.getserverId +
+							'&email='+
+							_self.getemail +
+							'&disease='+
+							_self.getdisease +
+							'&diseaseHis='+
+							_self.getdiseaseHis +
+							'&nativePlace='+ _self.getnativePlace;
+
+				//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&alllergicHis='+alllergiVal+'&disease='+this.diseaseinfo+'&toinfo=true&infoMail='+this.infoMail;
 				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: alllergiVal, disease: this.diseaseinfo}})
 				},2000)
 			},
@@ -140,7 +177,8 @@
 			},
 
 			backFun () {
-				if(this.isbutton){
+				let _self = this
+				if(_self.isbutton){
 
 					MessageBox({
 						title: '提示',
@@ -148,16 +186,52 @@
 						showCancelButton: true
 					}).then(action => {
 						if(action === 'confirm'){
-							this.save()
+							_self.save()
 						}else {
 
-							window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
+							window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+									_self.getgender +
+									'&birthday='+
+									_self.getbirthday +
+									'&alllergicHis='+
+									_self.allHis +
+									'&photo='+
+									_self.getphoto +
+									'&serverId='+
+									_self.getserverId +
+									'&email='+
+									_self.getemail +
+									'&disease='+
+									_self.getdisease +
+									'&diseaseHis='+
+									_self.getdiseaseHis +
+									'&nativePlace='+ _self.getnativePlace;
+
+						//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
 						//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 						}
 					});
 				}else{
 
-					window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
+					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+							_self.getgender +
+							'&birthday='+
+							_self.getbirthday +
+							'&alllergicHis='+
+							_self.allHis +
+							'&photo='+
+							_self.getphoto +
+							'&serverId='+
+							_self.getserverId +
+							'&email='+
+							_self.getemail +
+							'&disease='+
+							_self.getdisease +
+							'&diseaseHis='+
+							_self.getdiseaseHis +
+							'&nativePlace='+ _self.getnativePlace;
+
+				//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
 				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 				}
 

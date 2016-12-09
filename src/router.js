@@ -162,6 +162,56 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/user/noteDetail'], resolve)
 		  }
+	  },
+	  '/user/family': {
+		  component (resolve) {
+			  require(['./views/user/family'], resolve)
+		  }
+	  },
+	  '/user/familyAdd': {
+		  component (resolve) {
+			  require(['./views/user/familyAdd'], resolve)
+		  }
+	  },
+	  '/user/behavior': {
+		  component (resolve) {
+			  require(['./views/user/behavior'], resolve)
+		  }
+	  },
+	  '/user/variety': {
+		  component (resolve) {
+			  require(['./views/user/variety'], resolve)
+		  }
+	  },
+	  '/user/danger': {
+		  component (resolve) {
+			  require(['./views/user/danger'], resolve)
+		  }
+	  },
+	  '/user/blood': {
+		  component (resolve) {
+			  require(['./views/user/blood'], resolve)
+		  }
+	  },
+	  '/user/bloodAdd': {
+		  component (resolve) {
+			  require(['./views/user/bloodAdd'], resolve)
+		  }
+	  },
+	  '/user/drug': {
+		  component (resolve) {
+			  require(['./views/user/drug'], resolve)
+		  }
+	  },
+	  '/user/liver': {
+		  component (resolve) {
+			  require(['./views/user/liver'], resolve)
+		  }
+	  },
+	  '/user/liverAdd': {
+		  component (resolve) {
+			  require(['./views/user/liverAdd'], resolve)
+		  }
 	  }
   })
 

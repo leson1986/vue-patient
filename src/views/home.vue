@@ -24,10 +24,14 @@
 							</mt-tab-item>
 
 							<div class="leh-black-shade"></div>
-							<mt-tab-item @click="showpopup = true">
+							<mt-tab-item v-link="{path: '/online/remind', replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								用药提醒
 							</mt-tab-item>
+							<!--<mt-tab-item @click="showpopup = true">
+								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
+								用药提醒
+							</mt-tab-item>-->
 							<mt-tab-item  @click="toMsgUrl">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								留言咨询
@@ -165,7 +169,7 @@
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
-							<!--<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>-->
+							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
 							<a class="mint-cell" href="http://test.jk7.com/html/pay/pay.html" v-show="openIDS == 'oiQzTjlkhtQvz2l5fkQ3sIhsd3rU'">
 
 								<div class="mint-cell-title">

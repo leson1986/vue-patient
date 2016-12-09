@@ -44,7 +44,7 @@
 								<span>{{ items.rcdTime }}</span>
 							</div>
 						</a>
-						<div class="page-infinite-loading document-index-load-tap" v-if="pageMedicalNum*8 <= pageMedicalTotal">
+						<div class="page-infinite-loading document-index-load-tap" v-if="pageMedicalNum*8 < pageMedicalTotal">
 							<mt-button size="large" type="transparent" icon="load" @click="moreMedical" >点击加载更多</mt-button>
 						</div>
 					</div>
@@ -60,7 +60,7 @@
 							<span>{{ items.reportTime }}</span>
 						</div>
 					</a>
-					<div class="page-infinite-loading document-index-load-tap" v-if="pageChkNum*10 <= pageChkTotal">
+					<div class="page-infinite-loading document-index-load-tap" v-if="pageChkNum*10 < pageChkTotal">
 						<mt-button size="large" type="transparent" icon="load" @click="moreChk" >点击加载更多</mt-button>
 					</div>
 				</mt-tab-container-item>
@@ -76,7 +76,7 @@
 							<span>{{ items.processingQty }}个未转换</span>
 						</div>
 					</a>
-					<div class="page-infinite-loading document-index-load-tap" v-if="pageFileCheckNum*10 <= pageFileCheckTotal">
+					<div class="page-infinite-loading document-index-load-tap" v-if="pageFileCheckNum*10 < pageFileCheckTotal">
 						<mt-button size="large" type="transparent" icon="load" @click="moreFileCheck" >点击加载更多</mt-button>
 					</div>
 				</mt-tab-container-item>
@@ -266,7 +266,7 @@
 	.document-index-list .mint-cell-text{width: 120px;display: inline-block;}
 	.document-index-list-text{font-size: 14px;color: #919191;margin-top: 10px;min-height: 14px;}
 	.document-index-list .mint-cell-value span,.document-index-check-list .mint-cell-value span{font-size: 14px;}
-	.document-index-list .mint-cell-value span{padding-top: 25px;}
+	.document-index-list .mint-cell-value span{padding-top: 25px;display: block;position: relative}
 	.document-index-list .mint-cell-value:after{right: 0;top: 4px;}
 	.document-index-check-list:after{border: 0;}
 	.document-index-check-list:nth-last-of-type(1):before{left: 10px;}

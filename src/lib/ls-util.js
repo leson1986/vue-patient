@@ -9,7 +9,7 @@
 import Vue from 'vue'
 import $ from 'zepto'
 import {loader} from '../util/util'
-const SERVER = 'http://test.jk7.com/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
+const SERVER = 'http://192.168.0.56:81/' //'http://wx.jk7.com/' //  'http://192.168.0.56:81/' //
 
 // 请求完成前触发函数，类似于$.ajax->beforeSend回调
 export function loadInterceptors () {
@@ -115,7 +115,7 @@ export function postJson(url, options, callback, self) {
 		url: SERVER + url,
 		type: 'POST',
 		dataType: "json",
-		contentType: 'application/x-www-form-urlencoded',
+		contentType: 'application/json',
 		data: options,
 		headers: {
 			'Authorization': 'Basic ' + btoa(openID + ':')
@@ -174,12 +174,11 @@ export function putJson(url, options, callback, self) {
 		return alert("错误提示：请传入正确的回调函数");
 	}
 
-
 	return $.ajax({
 		url: SERVER + url,
 		type: 'PUT',
 		dataType: "json",
-		contentType: 'application/x-www-form-urlencoded',
+		contentType: 'application/json',
 		data: options,
 		headers: {
 			'Authorization': 'Basic ' + btoa(openID + ':')

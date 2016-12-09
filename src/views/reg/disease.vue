@@ -37,15 +37,16 @@
 	export default{
 		route: {
 			data ({to, next}) {
-				this.allHis = to.query.allHis
+				//this.allHis = to.query.allHis
 				this.is_info = to.query.info
-				this.diseaseInfo = to.query.diseaseinfo
+				this.diseaseInfo = to.query.disease
 
 				this.getgender = to.query.gender ;
 				this.getbirthday = to.query.birthday ;
 				this.getalllergicHis = to.query.alllergicHis ;
 				this.getserverId = to.query.serverId ;
 				this.getemail = to.query.email ;
+				this.getphoto = to.query.photo ;
 				this.getdisease = to.query.disease ;
 				this.getdiseaseHis = to.query.diseaseHis ;
 				this.getnativePlace = to.query.nativePlace ;
@@ -80,6 +81,7 @@
 		    getalllergicHis: '',
 		    getserverId: '',
 		    getemail: '',
+		    getphoto: '',
 		    getdisease: '',
 		    getdiseaseHis: '',
 		    getnativePlace: ''
@@ -127,13 +129,15 @@
 									'&birthday='+
 									_self.getbirthday +
 									'&alllergicHis='+
-									_self.allHis +
+									_self.getalllergicHis +
+									'&photo='+
+									_self.getphoto +
 									'&serverId='+
 									_self.getserverId +
 									'&email='+
 									_self.getemail +
 									'&disease='+
-									_self.getdisease +
+									_self.disease +
 									'&diseaseHis='+
 									_self.getdiseaseHis +
 									'&nativePlace='+ _self.getnativePlace;

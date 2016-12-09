@@ -4,12 +4,12 @@
 	</mt-header>
 	<mt-content>
 		<div class="page-cell disease-list">
-			<mt-cell title="家族病史" icon="family" icons="arr-right" istitle is-icon></mt-cell>
-			<mt-cell title="生活行为习惯" icon="flower" icons="arr-right" istitle is-icon></mt-cell>
-			<mt-cell title="高危因素" icon="snak" icons="arr-right" istitle is-icon></mt-cell>
-			<mt-cell title="血制品" icon="ddi" icons="arr-right" istitle is-icon></mt-cell>
-			<mt-cell title="吸毒" icon="durg" icons="arr-right" istitle is-icon></mt-cell>
-			<mt-cell title="肝穿情况" icon="gan" icons="arr-right" istitle is-icon></mt-cell>
+			<mt-cell title="家族病史" icon="family" icons="arr-right" istitle is-icon v-link="{path: '/user/family', replace: true}"></mt-cell>
+			<mt-cell title="生活行为习惯" icon="flower" icons="arr-right" istitle is-icon v-link="{path:'/user/behavior',replaec:true}"></mt-cell>
+			<mt-cell title="高危因素" icon="snak" icons="arr-right" istitle is-icon v-link="{path:'/user/danger',replaec:true}"></mt-cell>
+			<mt-cell title="血制品" icon="ddi" icons="arr-right" istitle is-icon v-link="{path:'/user/blood',replaec:true}"></mt-cell>
+			<mt-cell title="吸毒" icon="durg" icons="arr-right" istitle is-icon v-link="{path:'/user/drug',replaec:true}"></mt-cell>
+			<mt-cell title="肝穿情况" icon="gan" icons="arr-right" istitle is-icon v-link="{path:'/user/liver',replaec:true}"></mt-cell>
 		</div>
 	</mt-content>
 </template>
@@ -20,11 +20,11 @@
 	import MtCell from '../../components/cell.vue'
 
 	export default{
-	  data () {
-	    return{
-	      msg:'hello vue'
-	    }
-	  },
+		data () {
+			return{
+				msg:'hello vue'
+			}
+		},
 		components: {
 			MtHeader,
 			MtContent,

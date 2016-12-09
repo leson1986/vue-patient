@@ -1,6 +1,7 @@
 <template>
 	<mt-header fixed isgrey :title="title">
-		<mt-button v-link="'/online/remind'" icon="arr-left" slot="left"></mt-button>
+		<!--v-link="{path:'/online/remind', replace: true}"-->
+		<mt-button icon="arr-left" slot="left" @click="backs()"></mt-button>
 		<mt-button slot="right" v-show="is_visible">保存</mt-button>
 	</mt-header>
 
@@ -28,7 +29,7 @@
 			<div class="reminders-add-picker-up-bg"></div>
 			<div class="reminders-add-picker-down-bg"></div>
 			<!--------->
-			<mt-datetime-only :visible.sync="visible3" type="time" is-unit @confirm="handleChange" :value.sync="value"></mt-datetime-only>
+			<mt-datetime-only :visible.sync="visible3" type="time" is-unit @confirm="handleChange" :value="value" v-ref:times></mt-datetime-only>
 
 		</div>
 
@@ -88,21 +89,30 @@
 	import $ from 'zepto'
 
 	export default{
-		route : {
-			data (transition) {
-				console.log(1111)
-				this.is_visible = transition.to.query.isEdit;
-				if(transition.to.query.isEdit){
-					this.value = '06:22'
-					this.title = '编辑提醒'
-					this.bgcolor = 'danger'
-					this.active_name = '删除提醒'
-				}else {
-					this.value = '00:00'
-					this.title = '新增提醒'
-					this.bgcolor = 'green'
-					this.active_name = '保存'
+		route: {
+			data ({to, next}) {
+				let _self = this
+
+				_self.isEdit = to.query.isEdit
+				if(_self.isEdit == 1){
+					_self.value = '06:22'
+					_self.title = '编辑提醒'
+					_self.bgcolor = 'danger'
+					_self.active_name = '删除提醒'
+					_self.is_visible = true
+					//_self.getEdit()
+				}else if(_self.isEdit == 0){
+					_self.value = '00:00'
+					_self.title = '新增提醒'
+					_self.bgcolor = 'green'
+					_self.active_name = '保存'
+					_self.is_visible = false
+					//_self.getInit()
 				}
+				console.log(_self.is_visible)
+				console.log(_self.value)
+
+				next()
 			}
 		},
 
@@ -115,19 +125,19 @@
 				title: '',
 				bgcolor: '',
 				active_name: '',
-				value: '06:22',
+				value: '00:00',
 				visible3: true,
-				drug: ''
+				drug: '',
+				isEdit: ''
 			}
 		},
 
 		ready () {
-
 			$('#medicineName').focus( () => {
 				console.log($('#medicineName').val())
 			});
-		},
 
+		},
 		methods: {
 			cancle () {
 				this.ispopup  = false
@@ -140,7 +150,12 @@
 				if(this.is_visible){
 					alert('编辑')
 				}else{
-					alert('保存')
+					//alert('保存')
+					let _self = this
+					console.log(_self.$refs.times.value) // 获取更改的时间，直接_self.value只能获取到00:00
+					_self.value = null //"'00:00'"
+					console.log(_self.value)
+					_self.$route.router.go({path:'/online/remind', replace: true})
 				}
 			},
 			handleChange(value) {
@@ -154,6 +169,13 @@
 			},
 			dosage () {
 				this.visible2 = true
+			},
+			backs(){
+				let _self = this
+				console.log(_self.value)
+				_self.value = null //"'00:00'"
+				console.log(_self.value)
+				_self.$route.router.go({path:'/online/remind', replace: true})
 			}
 		},
 

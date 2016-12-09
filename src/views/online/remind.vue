@@ -21,7 +21,7 @@
 
 						delbtn>
 					<a class="mint-cell">
-						<label class="mint-cell-title" v-link="{path: '/online/remindAdd', query: {id: index, isEdit: true}, replace: true}">
+						<label class="mint-cell-title" v-link="{path: '/online/remindAdd', query: {id: index, isEdit: 1}, replace: true}">
 							<span class="mint-cell-text leh-red-dot">
 								<span>{{index}}对乙酰氨基酚片</span>
 							</span>
@@ -60,6 +60,12 @@
 	import $ from 'zepto'
 
 	export default{
+		route: {
+			data ({to, next}) {
+
+				next()
+			}
+		},
 		data () {
 			return{
 				is_visible: false,
@@ -75,8 +81,8 @@
 			conf () {
 				this.ispopup  = false
 			},
-			remindAdd (id) {
-				this.$route.router.go('/online/remindAdd')
+			remindAdd () {
+				this.$route.router.go({path:'/online/remindAdd',query:{ isEdit: 0}, replace: true})
 			},
 			msgBox (ids) {
 
