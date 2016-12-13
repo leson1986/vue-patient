@@ -12,7 +12,7 @@
                     <a class="mint-cell">
                         <label class="mint-cell-title">
                            <span class="mint-cell-text">
-                                <span>{{items.bloodType}}</span>
+                                <span class="fl">{{items.bloodType}}</span>
                                 <span class="leh-c-grey leh-fs-fourteen">{{items.useCount}}ml</span>
                                 <span class="fr leh-fs-fourteen">{{items.useDate}}</span>
                             </span>
@@ -61,12 +61,10 @@
                 getJson('api/bloodProduct/index?pageIndex=1&pageSize=8', '', (rsp)=>{
                     _self.bloodItems = rsp.items
                     _self.bloodTotal = rsp.totalQty
-                    console.log( _self.bloodTotal)
                 },_self)
             },
             moreBloodList(){
                 let _self = this
-
                 if(_self.bloodNum*8 >= _self.bloodTotal) {
                     return
                 }
@@ -83,10 +81,10 @@
                     message: '是否删除此数据?',
                     showCancelButton: true
                 }).then(action => {
-
                     if(action === 'confirm'){
                          // 删除
                         delJson('api/bloodProduct/'+ ids, '', (rsp)=>{
+                            _self.bloodNum = 1
                             _self.getBloodList()
                         },_self)
                     }
@@ -115,6 +113,7 @@
     .blood-list .mint-cell:before{left: 10px;}
     .blood-list .mint-cell-text{width: 100%;overflow: hidden;}
     .blood-list .mint-cell-text span:nth-of-type(1){margin-right: 10px}
+    .blood-list .mint-cell-text span:nth-of-type(2){max-width: 50%;display: inline-block;word-wrap: break-word}
     .blood-list .mint-cell-label{line-height: 20px;color: #363636;}
     .document-index-load-tap .mint-button--transparent{text-align: center;}
     .document-index-load-tap .icon-wx-load{color: #e5e5e5;}

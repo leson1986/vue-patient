@@ -34,7 +34,7 @@
             <a class="mint-cell">
                 <label class="mint-cell-title">
                     <span class="mint-cell-text leh-c-green">备注</span>
-                    <textarea class="msg-val" placeholder="请输入你需要备注的内容" v-model="msg_val"></textarea>
+                    <textarea class="msg-val" placeholder="请输入你需要备注的内容" maxlength="100" v-model="msg_val"></textarea>
                 </label>
                 <div class="mint-cell-value"></div>
             </a>
@@ -59,7 +59,7 @@
                 //初始化
                 this.reltionsName = ''
                 this.diseasesName = ''
-                this.msg_val = null
+                this.msg_val = ''
                 next()
             }
         },
@@ -95,39 +95,41 @@
                     "remark": _self.msg_val
                 }
                 if(params.relation == ''){
-                    _self.tips = '请选择亲属关系'
+                    _self.tips = '请填写亲属关系'
                     _self.show_popup = true
                     return
                 }else if(params.disease == ''){
-                    _self.tips = '请选择所患疾病'
+                    _self.tips = '请填写所患疾病'
                     _self.show_popup = true
                     return
                 }
-
-
                 postJson('api/FamilyHis',params, (rsp, recode, msg)=>{
+                    if(recode == "1"){
+                        alert(msg)
+                        return
+                    }
                     _self.tips = '保存成功'
                     _self.show_popup = true
                     setTimeout(() => {
                         this.$route.router.go({path: '/user/family',replace:true})
                     },2000)
                 },_self)
-
-
-                console.log(params.relation)
-                console.log(params.disease)
-                console.log(params.remark)
             },
             msgBox () {
-                MessageBox({
-                    title: '提示',
-                    message: '编辑内容未保存，是否退出?',
-                    showCancelButton: true
-                }).then(action => {
-                    if(action === 'confirm'){
+                let _self = this
+                if((_self.reltionsName != '')||(_self.diseasesName != '')||(_self.msg_val != '')){
+                    MessageBox({
+                        title: '提示',
+                        message: '编辑内容未保存，是否退出?',
+                        showCancelButton: true
+                    }).then(action => {
+                        if(action === 'confirm'){
                         this.$route.router.go({path: '/user/family',replace:true})
                     }
                 });
+                }else {
+                    this.$route.router.go({path: '/user/family',replace:true})
+                }
             }
         },
         watch:{

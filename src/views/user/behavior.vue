@@ -36,7 +36,7 @@
                             <span class="mint-cell-text">年限</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入饮酒年限" type="number" maxlength="10" v-model='drinkAge'>
+                            <input class="mint-field-core" placeholder="请输入饮酒年限" type="text" maxlength="5" v-model='drinkAge' onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -53,7 +53,7 @@
                             <span class="mint-cell-text">平均次数</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入每周饮酒次数" type="number" maxlength="10" v-model="drinkAvgTime">
+                            <input class="mint-field-core" placeholder="请输入每周饮酒次数" type="text" maxlength="9" v-model="drinkAvgTime" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -70,7 +70,7 @@
                             <span class="mint-cell-text">平均数量</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入每周饮酒数量" type="number" maxlength="10" v-model="drinkPer">
+                            <input class="mint-field-core" placeholder="请输入每周饮酒数量" type="text" maxlength="10" v-model="drinkPer" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -100,7 +100,7 @@
                             <span class="mint-cell-text">年限</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入抽烟年限" type="number" maxlength="10" v-model="smokeAge">
+                            <input class="mint-field-core" placeholder="请输入抽烟年限" type="text" maxlength="5" v-model="smokeAge" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -117,7 +117,7 @@
                             <span class="mint-cell-text">平均数量</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入每周抽烟数量" type="number" maxlength="10" v-model="smokeAvg">
+                            <input class="mint-field-core" placeholder="请输入每周抽烟数量" type="text" maxlength="5" v-model="smokeAvg" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -149,7 +149,7 @@
                             <span class="mint-cell-text">备注</span>
                         </label>
                         <div class="mint-cell-value">
-                            <textarea class="msg-val" placeholder="请输入其他备忘内容" v-model="msg_val"></textarea>
+                            <textarea class="msg-val" placeholder="请输入其他备忘内容" maxlength="100" v-model="msg_val"></textarea>
                         </div>
                     </a>
                 </div>
@@ -217,7 +217,7 @@
                             <span class="mint-cell-text">平均时间</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入每周吃鱼生的次数" type="number" maxlength="10" v-model="fishAvgEat">
+                            <input class="mint-field-core" placeholder="请输入每周吃鱼生的次数" type="text" maxlength="10" v-model="fishAvgEat" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -234,7 +234,7 @@
                             <span class="mint-cell-text">每次数量</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core" placeholder="请输入每次吃鱼生的重量" type="number" maxlength="10" v-model="fishPerEat">
+                            <input class="mint-field-core" placeholder="请输入每次吃鱼生的重量" type="text" maxlength="10" v-model="fishPerEat" onkeyup="this.value=this.value.replace(/\D/g,'')">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -282,7 +282,7 @@
                 }else{
                     _self.getBehaviorList()
                 }
-                _self.notKeep = false
+
                 next()
             }
         },
@@ -298,7 +298,7 @@
                 path_item:'',   //判断variety传过来的是鱼类还是酒类
                 tips:'',
                 show_popup: false,
-                notKeep:false,
+                notKeep:true,
                 id:'',
                 isVariety:false,
                 drinkAge:'',        //饮酒年限
@@ -312,6 +312,23 @@
                 fishStartEat:'',    //开始吃鱼生时间
                 fishAvgEat:'',  //鱼生平均时间
                 fishPerEat:'',   //鱼生每次数量
+                keepBtn:false,
+                firIsDrink:false,
+                firIsSmoke:false,
+                firIsFish:false,
+                firIsNosmoke:false,
+                firWineText:'',
+                firFishText:'',
+                firDrinkAge:'',        //饮酒年限
+                firDrinkAvgTime:'',    //饮酒平均次数
+                firDrinkPer:'',    //饮酒平均数量
+                firSmokeAge:'',    //抽烟年限
+                firSmokeAvg:'',    //抽烟平均数量
+                firMsg_val:'', //抽烟备注
+                firFishLastEat:'', //最近吃鱼生时间
+                firFishStartEat:'',    //开始吃鱼生时间
+                firFishAvgEat:'',  //鱼生平均时间
+                firFishPerEat:'',   //鱼生每次数量
             }
         },
         methods:{
@@ -320,27 +337,44 @@
                 getJson('api/lifeHabits/index', '', (rsp)=>{
 	                    _self.id = rsp.id
 	                    _self.isDrink = rsp.isDrink
+                        _self.firIsDrink = rsp.isDrink
 	                    _self.wineText = rsp.drinkType
+                        _self.firWineText = rsp.drinkType
 	                    _self.drinkAge = rsp.drinkAge
+                        _self.firDrinkAge = rsp.drinkAge
 	                    _self.drinkAvgTime = rsp.drinkAvgTime
+                        _self.firDrinkAvgTime = rsp.drinkAvgTime
 	                    _self.drinkPer = rsp.drinkPer
+                        _self.firDrinkPer = rsp.drinkPer
 	                    _self.isSmoke = rsp.isSmoke
+                        _self.firIsSmoke = rsp.isSmoke
 	                    _self.smokeAge = rsp.smokeAge
+                        _self.firSmokeAge = rsp.smokeAge
 	                    _self.smokeAvg = rsp.smokeAvg
+                        _self.firSmokeAvg = rsp.smokeAvg
 	                    if(rsp.isNosmoke == true){
 	                        _self.ifName = '是'
-	                        _self.isNosmoke = true
+                            _self.isNosmoke = true
+                            _self.firIsNosmoke = true
 	                    }else{
 	                        _self.ifName = '否'
-	                        _self.isNosmoke = false
+                            _self.isNosmoke = false
+                            _self.firIsNosmoke = false
 	                    }
-	                    _self.msg_val = rsp.smokeRemark
+                        _self.msg_val = rsp.smokeRemark
+                        _self.firMsg_val = rsp.smokeRemark
 	                    _self.isFish = rsp.isFish
-	                    _self.fishText = rsp.fishType
+                        _self.firIsFish = rsp.isFish
+                        _self.fishText = rsp.fishType
+                        _self.firFishText = rsp.fishType
 	                    _self.fishLastEat = rsp.fishLastEat
+                        _self.firFishLastEat = rsp.fishLastEat
 	                    _self.fishStartEat = rsp.fishStartEat
+                        _self.firFishStartEat = rsp.fishStartEat
 	                    _self.fishAvgEat = rsp.fishAvgEat
+                        _self.firFishAvgEat = rsp.fishAvgEat
 	                    _self.fishPerEat = rsp.fishPerEat
+                        _self.firFishPerEat = rsp.fishPerEat
 	              },_self)
             },
             getName(name,ifNo){
@@ -356,8 +390,8 @@
                     "isDrink": _self.isDrink,
                     "drinkType": _self.wineText,
                     "drinkAge": _self.drinkAge,
-                    "drinkAvgTime": _self.drinkAvgTime,
-                    "drinkPer": _self.drinkPer,
+                    "drinkAvgTime": _self.drinkAvgTime || 0,
+                    "drinkPer": _self.drinkPer || 0,
                     "isSmoke": _self.isSmoke,
                     "smokeAge": _self.smokeAge,
                     "smokeAvg": _self.smokeAvg,
@@ -367,38 +401,42 @@
                     "fishType": _self.fishText,
                     "fishLastEat": _self.fishLastEat,
                     "fishStartEat": _self.fishStartEat,
-                    "fishAvgEat": _self.fishAvgEat,
-                    "fishPerEat": _self.fishPerEat
+                    "fishAvgEat": _self.fishAvgEat || 0,
+                    "fishPerEat": _self.fishPerEat || 0
                 }
-
 
                 //必填项
                 if((_self.isDrink != false) && (behavior.drinkType == '')){
-                    _self.popupShow(true,'请选择酒类品种')
+                    _self.popupShow(true,'酒类品种尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isDrink != false) && (behavior.drinkAge == '')){
-                    _self.popupShow(true,'请填写饮酒年限')
+                    _self.popupShow(true,'饮酒年限尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isSmoke != false) && (behavior.smokeAge == '')){
-                    _self.popupShow(true, '请填写吸烟年限')
+                    _self.popupShow(true, '吸烟年限尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isSmoke != false) && (behavior.smokeAvg == '')){
-                    _self.popupShow(true, '请填写吸烟平均数量')
+                    _self.popupShow(true, '吸烟平均数量尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isFish != false) && (behavior.fishType == '')){
-                    _self.popupShow(true, '请选择鱼类品种')
+                    _self.popupShow(true, '鱼类品种尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isFish != false) && (behavior.fishLastEat == '')){
-                    _self.popupShow(true, '请选择最近时间')
+                    _self.popupShow(true, '最近时间尚未填写完整，请填写完全后再保存！')
                     return
                 }else if((_self.isFish != false) && (behavior.fishStartEat == '')){
-                    _self.popupShow(true,'请选择开始时间')
+                    _self.popupShow(true,'开始时间尚未填写完整，请填写完全后再保存！')
                     return
                 }
 
                 postJson('api/LifeHabits',behavior, (rsp, recode, msg)=>{
+                    if(recode == "1"){
+                        alert(msg)
+                        return
+                    }
                     _self.popupShow(true, '保存成功')
                     _self.notKeep = true
+                    _self.keepBtn = true
                 },_self)
 
             },
@@ -408,6 +446,17 @@
             },
             msgBox () {
                 let _self = this
+                if(_self.keepBtn == false){
+                    if((_self.firIsDrink == _self.isDrink)&&(_self.wineText == _self.firWineText)&&(_self.drinkAge == _self.firDrinkAge)&&(_self.drinkAvgTime == _self.firDrinkAvgTime)&&(_self.drinkPer==_self.firDrinkPer)&&(_self.isSmoke == _self.firIsSmoke)&&(_self.smokeAge == _self.firSmokeAge)&&(_self.isNosmoke == _self.firIsNosmoke)&&(_self.msg_val == _self.firMsg_val)&&(_self.isFish== _self.firIsFish)&&(_self.fishText==_self.firFishText)&&(_self.fishLastEat==_self.firFishLastEat)&&(_self.fishStartEat==_self.firFishStartEat)&&(_self.fishAvgEat==_self.firFishAvgEat)&&(_self.fishPerEat==_self.firFishPerEat)){
+                        _self.$route.router.go({path: '/user/sick',replace:true})
+                        return
+                    }else{
+                        _self.notKeep = false
+                    }
+                }else if(_self.keepBtn == true){
+                    _self.keepBtn = false
+                    _self.$route.router.go({path: '/user/sick',replace:true})
+                }
                 if(_self.notKeep == false){
                     MessageBox({
                         title: '提示',
@@ -418,8 +467,6 @@
                             _self.$route.router.go({path: '/user/sick',replace:true})
                         }
                     });
-                }else{
-                    _self.$route.router.go({path: '/user/sick',replace:true})
                 }
             }
         },
@@ -431,6 +478,7 @@
                 if(!newVal){
                     msgTest.height(24)
                 }
+                this.notKeep = false
             },
             show_popup(val) {
                 if (val) {
@@ -469,4 +517,5 @@
     .behavior-main-box textarea{min-height: 24px;height: 24px;line-height: 20px;width: 100%;border: 1px solid transparent;overflow-y: hidden;}
     .behavior-main-box .mint-cell-value input, .behavior-main-box .mint-cell-value textarea{display: block}
     .behavior-main-box .mint-cell-value .icon-wx-arr-down, .behavior-main-box .mint-cell-value .icon-wx-arr-right{margin: 0;position: absolute;right:10px;top:15px;}
+    .behavior-main-box .mint-cell-value span.leh-fs-twelve {margin-left: 10px}
 </style>

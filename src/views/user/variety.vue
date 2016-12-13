@@ -7,7 +7,7 @@
     </div>
     <mt-content>
         <div class="page-cell variety-list">
-            <a class="mint-cell" v-for="items in drinkLists" @click="active($event)" v-show="drink">
+            <a class="mint-cell" :class="{'drink-cell': drink}" v-for="items in drinkLists" @click="active($event)" v-show="drink">
                 <label class="mint-cell-title">
                     <span class="mint-cell-text">{{items}}</span>
                 </label>
@@ -15,7 +15,7 @@
                     <span class="iconfont icon-wx-take"></span>
                 </div>
             </a>
-            <a class="mint-cell" v-for="items in fishLists" @click="active($event)" v-show="fish">
+            <a class="mint-cell" :class="{'fish-cell': fish}" v-for="items in fishLists" @click="active($event)" v-show="fish">
                 <label class="mint-cell-title">
                     <span class="mint-cell-text">{{items}}</span>
                 </label>
@@ -114,23 +114,39 @@
                 let  itemText = ''
                 let lehActive = $('.leh-active')//$('.leh-active').find('.mint-cell-text')
 
+                //判断有没有选中品种
+                if(this.fish){
+                    if($('.fish-cell').hasClass('leh-active')){
+                        this.show_popup = true
+                        this.tips = '保存成功'
+                    }else{
+                        this.show_popup = true
+                        this.tips = '请选择品种'
+                        return
+                    }
+                }
+                if(this.drink){
+                    if($('.drink-cell').hasClass('leh-active')){
+                        this.show_popup = true
+                        this.tips = '保存成功'
+                    }else{
+                        this.show_popup = true
+                        this.tips = '请选择品种'
+                        return
+                    }
+                }
                 for(let i=0; i<lehActive.length; i++){
                     let items = lehActive[i]
                     if($(items).css('display')=='flex'){
                         itemText += i>0 ? '、' + $(items).find('.mint-cell-text').text() : $(items).find('.mint-cell-text').text()
-
                     }
                 }
-		            this.show_popup = true
-		            this.tips = '保存成功'
-		            setTimeout(() => {
-
-
-			            if(this.fish){
-				            itemText = itemText.substring(1);
-			            }
-			            this.$route.router.go({path: '/user/behavior', query: {'itemText': itemText,'path_item': _self.path_item,'isVariety':true},replace:true})
-		            },2000)
+                setTimeout(() => {
+                    if(this.fish){
+                        itemText = itemText.substring(1);
+                    }
+                    this.$route.router.go({path: '/user/behavior', query: {'itemText': itemText,'path_item': _self.path_item,'isVariety':true},replace:true})
+                },2000)
 
             },
             loadDrinkTake(){

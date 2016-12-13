@@ -37,7 +37,7 @@
                 </mt-translate-item>
             </mt-translate>
             <div class="page-infinite-loading document-index-load-tap" v-if="liverNum*8 < liverTotal">
-                <mt-button size="large" type="transparent" icon="load" @click="moreBloodList()" >点击加载更多</mt-button>
+                <mt-button size="large" type="transparent" icon="load" @click="moreLiverList()" >点击加载更多</mt-button>
             </div>
         </div>
     </mt-content>
@@ -87,6 +87,7 @@
 
                     if(action === 'confirm'){
                         delJson('api/liverHis/'+ ids, '', (rsp)=>{
+                            _self.liverNum = 1
                             _self.getLiverList()
                         },_self)
                     }
@@ -135,8 +136,16 @@
     .liver-list-title span.fl{margin-right: 8px;}
     .liver-main-list .mint-cell{background-color: #f6f6f6;}
     .liver-main-list .mint-cell-text{font-size: 14px;color: #919191;display: inline-block;width: 60px}
-    .liver-main-list .mint-cell-value{flex:5;font-size: 14px;color: #363636;padding-left: 8px;line-height: 20px}
+    .liver-main-list .mint-cell-value{flex:4;font-size: 14px;color: #363636;padding-left: 8px;line-height: 20px}
     .document-index-load-tap .mint-button--transparent{text-align: center;}
     .document-index-load-tap .icon-wx-load{color: #e5e5e5;}
     .document-index-load-tap .mint-button-text{font-size: 14px;}
+    .liver-list .mint-cell-label{overflow: hidden}
+    .liver-list .mint-cell-label span.leh-c-black{float: right;width: 72%;line-height: 20px;text-align: left;}
+    .liver-list .mint-cell-label span.fl{line-height: 20px;}
+    .liver-list .mint-cell-value span{width: 100%;word-wrap: break-word;display: block;position: relative}
+    .liver-list .mint-cell-value{position: relative;width: 30px}
+    .liver-list .mint-cell-title div.fr{width: 50%;overflow: hidden}
+    .liver-list .mint-cell-title div.fr span.fl{margin: 0 !important;}
+    .liver-list .mint-cell-title div.fr span:nth-of-type(2){overflow: hidden;width: 60%;float: right;word-wrap: break-word;}
 </style>

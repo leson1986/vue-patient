@@ -7,9 +7,23 @@
     </div>
     <mt-content>
         <div class="page-part drug-box">
-            <mt-field label="开始时间" type="date" istitle v-ref:drug_time>
-                <span slot="sick-item" class="iconfont icon-wx-arr-down"></span>
-            </mt-field>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">开始时间</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core leh-ipt-tap" type="date" v-model="drug_time">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                        <span class="iconfont icon-wx-arr-down"></span>
+                    </div>
+                </a>
+            </div>
             <div class="mint-field">
                 <a class="mint-cell mint-field-cell">
                     <label class="mint-cell-title">
@@ -35,9 +49,23 @@
                     </div>
                 </a>
             </div>
-            <mt-field label="吸毒频率" placeholder="请输入数字" type='number' istitle v-ref:drug_num>
-                <span slot="sick-item" class="leh-fs-twelve leh-c-grey">次/月</span>
-            </mt-field>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">吸毒频率</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core" placeholder="请输入数字" type="text" maxlength="5" v-model="drug_num" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                        <span class="leh-fs-twelve leh-c-grey">次/月</span>
+                    </div>
+                </a>
+            </div>
             <div class="mint-field">
                 <a class="mint-cell mint-field-cell">
                     <label class="mint-cell-title">
@@ -55,7 +83,7 @@
                         <span class="mint-cell-text">备注</span>
                     </label>
                     <div class="mint-cell-value">
-                        <textarea class="msg-val" placeholder="请输入备注信息" v-model="msg_val"></textarea>
+                        <textarea class="msg-val" placeholder="请输入备注信息" maxlength="45" v-model="msg_val"></textarea>
                     </div>
                 </a>
             </div>
@@ -90,14 +118,23 @@
                 drugList: optionData().drugTypes,
                 show_drug: 0,
                 drugName:'',
-                exhort:0,
+                exhort:false,
                 together:true,
                 tips:'',
                 show_popup: false,
-                notKeep:false,
+                notKeep:true,
                 msg_val:'',
                 drugItems:'',
-                id:''
+                id:'',
+                drug_time:'',
+                drug_num:'',
+                firDrug_time:'',
+                firDrugName:'',
+                firExhort:false,
+                firDrug_num:'',
+                firTogether:false,
+                firMsg_val:'',
+                keepBtn:false
             }
         },
         methods:{
@@ -110,49 +147,69 @@
                 let _self = this
                 let drug = {
                     "id": _self.id,
-                    "startTime" : $(_self.$refs.drug_time).val() || '',  //吸毒开始时间
+                    "startTime" : _self.drug_time || '',  //吸毒开始时间
                     "drugType" : _self.drugName,  //吸毒方式
                     "shared" : _self.together,      //共用注射器
-                    "drugFrequency" :  $(_self.$refs.drug_num).val() || '',     //吸毒频率
+                    "drugFrequencyUnit" :  _self.drug_num || '',     //吸毒频率
                     "isNoDrug" : _self.exhort,      //是否戒毒
                     "remark" : _self.msg_val || ''    //备注
                 }
                 if(drug.startTime == ''){
                     _self.show_popup = true
-                    _self.tips = '开始时间尚未填写完整'
+                    _self.tips = '开始时间尚未填写完整，请填写完全后再保存！'
                     return
                 }else if(drug.drugType == ''){
                     _self.show_popup = true
-                    _self.tips = '吸毒方式尚未填写完整'
+                    _self.tips = '吸毒方式尚未填写完整，请填写完全后再保存！'
                     return
-                }else if(drug.drugFrequency == ''){
+                }else if(drug.drugFrequencyUnit == ''){
                     _self.show_popup = true
-                    _self.tips = '吸毒频率尚未填写完整'
+                    _self.tips = '吸毒频率尚未填写完整，请填写完全后再保存！'
                     return
                 }
 
                 postJson('api/DrugHis',drug, (rsp, recode, msg)=>{
+                    if(recode == "1"){
+                        alert(msg)
+                        return
+                    }
                     _self.tips = '保存成功'
                     _self.show_popup = true
                     _self.notKeep = true
+                    _self.keepBtn = true
                 },_self)
             },
             getDrugList(){
                 let _self = this
                 getJson('api/drugHis/index', '', (rsp)=>{
-                    $(_self.$refs.drug_time).val(rsp.startTime)
+                    _self.drug_time = rsp.startTime
+                    _self.firDrug_time = rsp.startTime
                     _self.drugName = rsp.drugType
+                    _self.firDrugName = rsp.drugType
                     _self.together = rsp.shared
-                    $(_self.$refs.drug_num).val(rsp.drugFrequency)
+                    _self.firTogether = rsp.shared
+                    _self.drug_num = rsp.drugFrequencyUnit
+                    _self.firDrug_num = rsp.drugFrequencyUnit
                     _self.exhort = rsp.isNoDrug
+                    _self.firExhort = rsp.isNoDrug
                     _self.msg_val = rsp.remark
+                    _self.firMsg_val = rsp.remark
                     _self.id = rsp.id
-                    console.log(_self.id)
                  },_self)
-                _self.notKeep = false
             },
             msgBox () {
                 let _self = this
+                if(_self.keepBtn == false){
+                    if((_self.drug_time == _self.firDrug_time)&&(_self.drugName==_self.firDrugName)&&(_self.together==_self.firTogether)&&(_self.drug_num==_self.firDrug_num)&&(_self.exhort==_self.firExhort)&&(_self.msg_val==_self.firMsg_val)){
+                        _self.$route.router.go({path: '/user/sick',replace:true})
+                        return
+                    }else{
+                        _self.notKeep = false
+                    }
+                }else if(_self.keepBtn == true){
+                    _self.keepBtn = false
+                    _self.$route.router.go({path: '/user/sick',replace:true})
+                }
                 if(_self.notKeep == false){
                     MessageBox({
                         title: '提示',
@@ -163,9 +220,8 @@
                         _self.$route.router.go({path: '/user/sick',replace:true})
                         }
                     });
-                }else{
-                    _self.$route.router.go({path: '/user/sick',replace:true})
                 }
+
             }
         },
         watch:{
@@ -209,4 +265,5 @@
     .drug-if-box:nth-of-type(1){border-bottom-left-radius: 5px;border-top-left-radius: 5px;}
     .drug-if-box:nth-of-type(2){border-bottom-right-radius: 5px;border-top-right-radius: 5px;border-left: 0;}
     .drug-box .mint-cell-value input,.drug-box .mint-cell-value textarea{display: block}
+    .drug-box .mint-cell-value  span.leh-fs-twelve {margin-left: 10px}
 </style>

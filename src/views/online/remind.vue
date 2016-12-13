@@ -9,28 +9,29 @@
 
 	<mt-content>
 		<!--无提醒-->
-		<div class="leh-not-apply" v-if="is_visible">暂无用药提醒</div>
+		<div class="leh-not-apply" v-if="!drugList.length">暂无用药提醒</div>
 		<!--有提醒-->
-		<div class="reminds-apply" v-if="!is_visible">
+		<div class="reminds-apply">
 			<mt-translate>
 				<mt-translate-item
 						class-name="reminds-apply-list"
-						v-for="(index, item) in 3"
-						:class="{'leh-active': index%2 == 0}"
-						:name="index"
-
-						delbtn>
+						v-for="(index, items) in drugList"
+						:class="{'leh-active': items.openStatus*1}"
+						:name="items.id"
+						:delbtn="!!items.openStatus">
 					<a class="mint-cell">
-						<label class="mint-cell-title" v-link="{path: '/online/remindAdd', query: {id: index, isEdit: 1}, replace: true}">
-							<span class="mint-cell-text leh-red-dot">
-								<span>{{index}}对乙酰氨基酚片</span>
+						<label class="mint-cell-title" v-link="{path: '/online/remindAdd', query: {id: items.id, isEdit: 1, startTime: items.startTime}, replace: true}">
+							<span class="mint-cell-text" :class="{'leh-red-dot': items.unread}">
+								<span>{{ items.drugName }}</span>
 							</span>
 							<span class="mint-cell-label">
-								<p>一天一次    一次一片</p>
-								<p>8:00/14:30/22:30</p>
+								<p>{{items.days}}天{{items.repeatTime }}次 &nbsp;&nbsp; 1次{{items.useNum}}{{items.dayUse}}</p>
+								<p v-if="items.alterTimes.length == 1">{{ items.alterTimes[0]}}</p>
+								<p v-if="items.alterTimes.length == 2">{{ items.alterTimes[0]}} / {{ items.alterTimes[1]}}</p>
+								<p v-if="items.alterTimes.length == 3">{{ items.alterTimes[0]}} / {{ items.alterTimes[1]}} / {{ items.alterTimes[2]}}</p>
 							</span>
 						</label>
-						<div class="mint-cell-value">
+						<div class="mint-cell-value" @click="putDrugAlter(items.id, items.openStatus)">
 							<div class="reminds-apply-switch"></div>
 						</div>
 					</a>
@@ -38,14 +39,6 @@
 			</mt-translate>
 		</div>
 
-		<!-- 弹出窗 -->
-		<mt-popup-box v-if="ispopup">
-			<p slot="info">是否删除此提醒？</p>
-			<div slot="button">
-				<mt-button type="grey" size="small" @click="cancle">确定</mt-button>
-				<mt-button type="blue" size="small" @click="conf">确定</mt-button>
-			</div>
-		</mt-popup-box>
 	</mt-content>
 </template>
 <script>
@@ -57,11 +50,17 @@
 	import MtTranslate from '../../components/translate.vue'
 	import MtTranslateItem from '../../components/translateItem.vue'
 	import MtPopupBox from '../../components/popupBox.vue'
+	import MessageBox from 'vue-msgbox'
+	import {getJson, putJson, delJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
 		route: {
 			data ({to, next}) {
+
+
+				// 初始化数据
+				this.getDrugAlter()
 
 				next()
 			}
@@ -70,6 +69,8 @@
 			return{
 				is_visible: false,
 				ispopup: false,
+				drugList: [], // 用药提醒列表
+				alterTimes: [], // 时间列表
 				ids: ''
 			}
 		},
@@ -86,19 +87,51 @@
 			},
 			msgBox (ids) {
 
+				let _self = this
 				MessageBox({
 					title: '提示',
-					message: '是否删除此单据?',
+					message: '是否删除此提醒?',
 					showCancelButton: true
 				}).then(action => {
-					console.log('callback:', ids);
+					if(action === 'confirm'){
+						// 删除
+						delJson('api/drugAlter/'+ ids, '', (rsp)=>{
+							_self.getDrugAlter()
+						},_self)
+					}
 				});
+			},
+			getDrugAlter () {
+
+				let _self = this
+				getJson('api/drugAlter/index?pageIndex=0&pageSize=0', '', (rsp)=>{
+
+					_self.drugList = rsp.items
+
+				},_self)
+			},
+			// 修改状态
+			putDrugAlter (ids, status) {
+
+				let _self = this
+				if(status === 1) {
+
+					putJson('api/drugAlter/disable/'+ ids, '', (rsp)=>{
+
+						_self.getDrugAlter()
+					},_self)
+				}else {
+
+					putJson('api/drugAlter/enable/'+ ids, '', (rsp)=>{
+
+						_self.getDrugAlter()
+					},_self)
+				}
 			}
 		},
 
 		events: {
 			'handle-del' (e) {
-				//this.ispopup  = true
 				this.ids = $(e.target).attr('id')
 				this.msgBox(this.ids)
 			}
@@ -120,7 +153,7 @@
 <style>
 	.reminds-apply-list .mint-cell:after,.reminds-apply-list .mint-cell:before{border: 0;}
 	.reminds-apply-list .sl-content{padding: 0;}
-	.reminds-apply-list .mint-cell-text span{width: 120px;display:inline-block;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.reminds-apply-list .mint-cell-text span{max-width: 120px;display:inline-block;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
 	.reminds-apply-list .mint-cell-label{margin-top: 8px;}
 	.reminds-apply-list .mint-cell-label p{color: #363636;font-size: 12px;line-height: 20px;}
 	.reminds-apply-switch{width: 32px;height: 14px;background: url(../../assets/img/switch-btn.png) no-repeat;background-size: 100% auto;}

@@ -60,7 +60,6 @@
                         for(let j=0;j<_self.takeList.length;j++){
                             if(_self.takeList[j].riskItem == _self.lists[i]){
                                 $(".mint-cell").eq(i).addClass('leh-active')
-
                             }
                         }
                     }
@@ -85,31 +84,22 @@
             saveDanger(){
                 let _self = this
                 let text = $('.leh-active').find('.mint-cell-text')
-                if(text.text() === null) {
-                    this.show_popup = true
-                    this.tips = '请选择品种'
-                    return
-                }else{
-                    let params = []
-                    for(let i=0; i<text.length; i++) {
-                        _self.dangerList[i] = $(text[i]).text()
-                        params.push ({
-                            "riskItem" : _self.dangerList[i]
-                        })
-                    }
-
-                    postJson('api/HighRisk',JSON.stringify(params), (rsp, recode, msg)=>{
-                        if(recode == '1'){
-                            alert(msg)
-                        }else{
-                            this.show_popup = true
-                            this.tips = '保存成功'
-                        }
-                    },_self)
-                    /*this.show_popup = true
-                    this.tips = '保存成功'*/
-
+                let params = []
+                for(let i=0; i<text.length; i++) {
+                    _self.dangerList[i] = $(text[i]).text()
+                    params.push ({
+                        "riskItem" : _self.dangerList[i]
+                    })
                 }
+                postJson('api/HighRisk',JSON.stringify(params), (rsp, recode, msg)=>{
+                    if(recode == '1'){
+                        alert(msg)
+                        return
+                    }else{
+                        this.show_popup = true
+                        this.tips = '保存成功'
+                    }
+                },_self)
             }
         },
         watch: {

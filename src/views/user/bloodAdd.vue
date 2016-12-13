@@ -1,6 +1,6 @@
 <template>
     <mt-header fixed isgrey title="新增血制品">
-        <mt-button @click="msgBox" icon="arr-left" slot="left"></mt-button>
+        <mt-button @click="msgBox()" icon="arr-left" slot="left"></mt-button>
     </mt-header>
     <div class="leh-float-box">
         <mt-button type="green" @click="saveBloodAdd()">保存</mt-button>
@@ -21,19 +21,47 @@
                     </ul>
                 </a>
             </div>
-            <mt-field label="最近时间" type="date" istitle v-ref:blood_near>
-                <span slot="sick-item" class="iconfont icon-wx-arr-down"></span>
-            </mt-field>
-            <mt-field label="使用量" placeholder="请输入数字" type='number' istitle v-ref:blood_num>
-                <span slot="sick-item" class="leh-fs-twelve leh-c-grey">ml</span>
-            </mt-field>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">最近时间</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core leh-ipt-tap" type="date" v-model="blood_near">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                        <span class="iconfont icon-wx-arr-down"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">使用量</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core" placeholder="请输入数字" type="text" maxlength="5" v-model="blood_num" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                        <span class="leh-fs-twelve leh-c-grey">ml</span>
+                    </div>
+                </a>
+            </div>
             <div class="mint-field">
                 <a class="mint-cell mint-field-cell">
                     <label class="mint-cell-title">
                         <span class="mint-cell-text">备注</span>
                     </label>
                     <div class="mint-cell-value">
-                        <textarea class="msg-val" placeholder="请输入备注信息" v-model="msg_val"></textarea>
+                        <textarea class="msg-val" placeholder="请输入备注信息" maxlength="45" v-model="msg_val"></textarea>
                     </div>
                 </a>
             </div>
@@ -70,7 +98,9 @@
                 bloodName:'',
                 tips:'',
                 show_popup: false,
-                msg_val:''
+                msg_val:'',
+                blood_num:'',
+                blood_near:''
             }
         },
         methods:{
@@ -83,25 +113,29 @@
                 let _self = this
                 let bloodAdd = {
                     "bloodType" : _self.bloodName,       //血制品种类
-                    "useDate" : $(_self.$refs.blood_near).val() || '',    //最近时间
-                    "useCount" : $(_self.$refs.blood_num).val() || '',    //使用量
+                    "useDate" : _self.blood_near || '',    //最近时间
+                    "useCount" : _self.blood_num || '',    //使用量
                     "remark" : _self.msg_val || ''    //备注
                 }
                 if(bloodAdd.bloodType == ''){
                     _self.show_popup = true
-                    _self.tips = '请选择血制品种类'
+                    _self.tips = '种类尚未填写完整，请填写完全后再保存！'
                     return
                 }else if(bloodAdd.useDate == ''){
                     _self.show_popup = true
-                    _self.tips = '请填写最近时间'
+                    _self.tips = '最近时间尚未填写完整，请填写完全后再保存！'
                     return
                 }else if(bloodAdd.useCount == ''){
                     _self.show_popup = true
-                    _self.tips = '请填写使用量'
+                    _self.tips = '使用量尚未填写完整，请填写完全后再保存！'
                     return
                 }
 
                 postJson('api/BloodProduct',bloodAdd, (rsp, recode, msg)=>{
+                    if(recode == "1"){
+                        alert(msg)
+                        return
+                    }
                     _self.tips = '保存成功'
                     _self.show_popup = true
                     setTimeout(() => {
@@ -114,20 +148,25 @@
             bloodInit(){
                 let _self = this
                 _self.bloodName = ''
-                $(_self.$refs.blood_near).val('')
-                $(_self.$refs.blood_num).val('')
-                _self.msg_val = null
+               _self.blood_near = ''
+                _self.blood_num = ''
+                _self.msg_val = ''
             },
             msgBox () {
-                MessageBox({
-                    title: '提示',
-                    message: '编辑内容未保存，是否退出?',
-                    showCancelButton: true
-                }).then(action => {
-                    if(action === 'confirm'){
-                        this.$route.router.go({path: '/user/blood',replace:true})
-                    }
-                });
+                let _self = this
+                if((_self.bloodName != '')||(_self.blood_near != '')||(_self.blood_num != '')||(_self.msg_val != '')){
+                    MessageBox({
+                        title: '提示',
+                        message: '编辑内容未保存，是否退出?',
+                        showCancelButton: true
+                    }).then(action => {
+                        if(action === 'confirm'){
+                        _self.$route.router.go({path: '/user/blood',replace:true})
+                        }
+                    });
+                }else {
+                    _self.$route.router.go({path: '/user/blood', replace: true})
+                }
             }
         },
         watch:{

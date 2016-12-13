@@ -7,11 +7,49 @@
     </div>
     <mt-content>
         <div class="page-part liver-add-box">
-            <mt-field label="肝穿时间" type="date" istitle v-ref:liver_time>
-                <span slot="sick-item" class="iconfont icon-wx-arr-down"></span>
-            </mt-field>
-            <mt-field label="病理号" placeholder="请输入病理号" type='number' istitle v-ref:liver_num> </mt-field>
-            <mt-field label="病理诊断" placeholder="请输入病理诊断" type='text' istitle v-ref:liver_word> </mt-field>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">肝穿时间</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core leh-ipt-tap" type="date" v-model="liver_time">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                        <span class="iconfont icon-wx-arr-down"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">病理号</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <input class="mint-field-core" placeholder="请输入病理号" type="text" maxlength="10" v-model="liver_num" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <div class="mint-field-clear" style="display: none;">
+                            <i class="mintui mintui-field-error"></i>
+                        </div>
+							<span class="mint-field-state is-default">
+								<i class="mintui mintui-field-default"></i>
+							</span>
+                    </div>
+                </a>
+            </div>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">病理诊断</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <textarea class="word-val" placeholder="请输入病理诊断" maxlength="100" v-model="liver_word"></textarea>
+                    </div>
+                </a>
+            </div>
             <div class="mint-field">
                 <a class="mint-cell mint-field-cell">
                     <label class="mint-cell-title">
@@ -40,14 +78,23 @@
                     </ul>
                 </a>
             </div>
-            <mt-field label="伴随症状" placeholder="请输入伴随症状" type='text' istitle v-ref:liver_with> </mt-field>
+            <div class="mint-field">
+                <a class="mint-cell mint-field-cell">
+                    <label class="mint-cell-title">
+                        <span class="mint-cell-text">伴随症状</span>
+                    </label>
+                    <div class="mint-cell-value">
+                        <textarea class="with-val" placeholder="请输入伴随症状" maxlength="100" v-model="liver_with"></textarea>
+                    </div>
+                </a>
+            </div>
             <div class="mint-field">
                 <a class="mint-cell mint-field-cell">
                     <label class="mint-cell-title">
                         <span class="mint-cell-text">备注</span>
                     </label>
                     <div class="mint-cell-value">
-                        <textarea class="msg-val" placeholder="请输入备注信息" v-model="msg_val"></textarea>
+                        <textarea class="msg-val" placeholder="请输入备注信息" maxlength="100" v-model="msg_val"></textarea>
                     </div>
                 </a>
             </div>
@@ -86,7 +133,11 @@
                 fibrosisName:'',
                 tips:'',
                 show_popup: false,
-                msg_val:''
+                msg_val:'',
+                liver_with:'',
+                liver_word:'',
+                liver_num:'',
+                liver_time:''
             }
         },
         methods:{
@@ -103,25 +154,29 @@
             saveLiverAdd(){
                 let _self = this
                 let liver ={
-                    "happenTime" : $(_self.$refs.liver_time).val() || '',    //肝穿时间
-                    "diseaseNo" : $(_self.$refs.liver_num).val() || '',    //病理号
-                    "rcdResult" : $(_self.$refs.liver_word).val() || '',    //病理诊断
+                    "happenTime" : _self.liver_time || '',    //肝穿时间
+                    "diseaseNo" : _self.liver_num || '',    //病理号
+                    "rcdResult" :_self.liver_word || '',    //病理诊断
                     "inflammation" : _self.inflammationName,    //炎症
                     "fibrosis" : _self.fibrosisName,    //纤维化
-                    "followDisease" : $(_self.$refs.liver_with).val() || '',    //伴随症状
+                    "followDisease" : _self.liver_with || '',    //伴随症状
                     "remark" : _self.msg_val || ''    //备注
                 }
                 if(liver.happenTime == ''){
                     _self.show_popup = true
-                    _self.tips = '肝穿时间尚未填写完整'
+                    _self.tips = '肝穿时间尚未填写完整，请填写完全后再保存！'
                     return
                 }else if(liver.rcdResult == ''){
                     _self.show_popup = true
-                    _self.tips = '病理诊断尚未填写完整'
+                    _self.tips = '病理诊断尚未填写完整，请填写完全后再保存！'
                     return
                 }
 
                 postJson('api/LiverHis',liver, (rsp, recode, msg)=>{
+                    if(recode == "1"){
+                        alert(msg)
+                        return
+                     }
                     _self.tips = '保存成功'
                     _self.show_popup = true
                     setTimeout(() => {
@@ -132,29 +187,50 @@
             },
             liverInit(){
                 let _self = this
-                $(_self.$refs.liver_time).val('')
-                $(_self.$refs.liver_num).val('')
-                $(_self.$refs.liver_word).val('')
+                _self.liver_time = ''
+                _self.liver_num = ''
+                _self.liver_word = ''
                 _self.inflammationName = ''
                 _self.fibrosisName = ''
-                $(_self.$refs.liver_with).val('')
-                _self.msg_val = null
+                _self.liver_with = ''
+                _self.msg_val = ''
             },
             msgBox () {
-                MessageBox({
-                    title: '提示',
-                    message: '编辑内容未保存，是否退出?',
-                    showCancelButton: true
-                }).then(action => {
-                    if(action === 'confirm'){
+                let _self = this
+                if((_self.liver_time != '')||(_self.liver_num != '')||(_self.liver_word != '')||(_self.inflammationName != '')||(_self.fibrosisName != '')||(_self.liver_with != '')||(_self.msg_val != '')){
+                    MessageBox({
+                        title: '提示',
+                        message: '编辑内容未保存，是否退出?',
+                        showCancelButton: true
+                    }).then(action => {
+                        if(action === 'confirm'){
                         this.$route.router.go({path: '/user/liver',replace:true})
-                    }
-                });
+                        }
+                    });
+                }else {
+                    this.$route.router.go({path: '/user/liver',replace:true})
+                }
             }
         },
         watch:{
             'msg_val' (newVal){
                 let msgTest = $('.msg-val')
+                let scrollH = msgTest[0].scrollHeight
+                msgTest.height(scrollH)
+                if(!newVal){
+                    msgTest.height(25)
+                }
+            },
+            'liver_with' (newVal){
+                let msgTest = $('.with-val')
+                let scrollH = msgTest[0].scrollHeight
+                msgTest.height(scrollH)
+                if(!newVal){
+                    msgTest.height(25)
+                }
+            },
+            'liver_word' (newVal){
+                let msgTest = $('.word-val')
                 let scrollH = msgTest[0].scrollHeight
                 msgTest.height(scrollH)
                 if(!newVal){

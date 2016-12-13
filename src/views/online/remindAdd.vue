@@ -2,7 +2,7 @@
 	<mt-header fixed isgrey :title="title">
 		<!--v-link="{path:'/online/remind', replace: true}"-->
 		<mt-button icon="arr-left" slot="left" @click="backs()"></mt-button>
-		<mt-button slot="right" v-show="is_visible">保存</mt-button>
+		<mt-button slot="right" v-show="is_visible" @click="saveEdit">保存</mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
@@ -14,10 +14,7 @@
 			<a class="mint-cell">
 				<label class="mint-cell-title">
 					<span class="mint-cell-text leh-c-green">药品名</span>
-					<input type="text" placeholder="请输入药品名称" v-model="drug"/>
-					<mt-select-drag>
-						<mt-li-item v-for="n in 3">adsf</mt-li-item>
-					</mt-select-drag>
+					<input type="text" placeholder="请输入药品名称" v-model="drugName"/>
 				</label>
 				<div class="mint-cell-value"></div>
 			</a>
@@ -29,49 +26,40 @@
 			<div class="reminders-add-picker-up-bg"></div>
 			<div class="reminders-add-picker-down-bg"></div>
 			<!--------->
-			<mt-datetime-only :visible.sync="visible3" type="time" is-unit @confirm="handleChange" :value="value" v-ref:times></mt-datetime-only>
+			<mt-datetime-only :visible.sync="visible3" type="time" is-unit :value.sync="value" v-ref:times></mt-datetime-only>
 
 		</div>
 
 		<div class="page-cell reminders-add-tap-box">
 
-			<mt-cell title="重复" label="仅一次" is-icon icons="triangle" istitle @click="repeat"></mt-cell>
-			<mt-cell title="用量" label="3mg" is-icon icons="triangle" istitle @click="dosage"></mt-cell>
+			<mt-cell title="重复" :label="repeatVal" is-icon icons="triangle" istitle @click="repeat"></mt-cell>
+			<mt-cell title="用量" :label="dosageVal" is-icon icons="triangle" istitle @click="dosage"></mt-cell>
 		</div>
 		<p class="reminders-add-txt">温馨提示：为提高用药依从性，如同一药品同一天需多次服药，只需在“重复”框填写次数即可，系统将根据科学的时间安排给出提醒时间。</p>
 
 		<mt-popup-work title="重复" :visible.sync="visible1" class-name="repeat">
 			<div class="reminders-add-again-box">
-				<input type="number" />
+				<input type="number" v-model="days" />
 				<span>天</span>
-				<input type="number" />
+				<input type="number" v-model="repeatTime" />
 				<span>次</span>
 			</div>
 		</mt-popup-work>
 		<mt-popup-work title="用量" :visible.sync="visible2" class-name="dosage">
 			<div class="reminders-add-dosage-ipt">
-				<input type="number"/>
+				<input type="number" v-model="useNum"/>
 			</div>
 			<ul class="reminders-add-dosage-ul">
-				<li class="reminders-add-dosage-list leh-active"><span>克</span></li>
-				<li class="reminders-add-dosage-list"><span>毫克</span></li>
-				<li class="reminders-add-dosage-list"><span>丸</span></li>
-				<li class="reminders-add-dosage-list"><span>支</span></li>
-				<li class="reminders-add-dosage-list"><span>片</span></li>
-				<li class="reminders-add-dosage-list"><span>毫升</span></li>
-				<li class="reminders-add-dosage-list"><span>粒</span></li>
-				<li class="reminders-add-dosage-list"><span>瓶</span></li>
+				<li class="reminders-add-dosage-list" v-for="items in dosageList.dosage" :class="{'leh-active': dayUse === items}" @click="getDosageUtil(items)"><span>{{ items }}</span></li>
 			</ul>
 		</mt-popup-work>
-		<!-- 弹出窗 -->
-		<mt-popup-box v-if="ispopup">
-			<p slot="info">是否删除此提醒？</p>
-			<div slot="button">
-				<mt-button type="grey" size="small" @click="cancle">确定</mt-button>
-				<mt-button type="blue" size="small" @click="conf">确定</mt-button>
-			</div>
-		</mt-popup-box>
 	</mt-content>
+
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p v-text="tips"></p>
+		</mt-popup>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content'
@@ -85,7 +73,9 @@
 	import MtDatetimeOnly from '../../components/datetime-only.vue'
 	import MtPopupWork from '../../components/popupWork.vue'
 	import MtSelectDrag from '../../components/selectDrag.vue'
+	import MtPopup from '../../components/popup.vue'
 	import MtLiItem from '../../components/liItem.vue'
+	import {getJson, postJson, putJson, delJson} from 'util'
 	import $ from 'zepto'
 
 	export default{
@@ -93,15 +83,28 @@
 			data ({to, next}) {
 				let _self = this
 
+				// 初始化
+				_self.drugDetail = []
+				_self.ids = to.query.id || 0
+				_self.startTime = ''
+				_self.repeatTime = 1
+				_self.dayUse = ''
+				_self.useNum = 1
+				_self.drugName = ''
+				_self.days = 1
+
+				// 是否新增
 				_self.isEdit = to.query.isEdit
 				if(_self.isEdit == 1){
-					_self.value = '06:22'
 					_self.title = '编辑提醒'
 					_self.bgcolor = 'danger'
 					_self.active_name = '删除提醒'
 					_self.is_visible = true
-					//_self.getEdit()
+					_self.getDrugDetail(_self.ids)
+
 				}else if(_self.isEdit == 0){
+					_self.repeatVal = ''
+					_self.dosageVal = ''
 					_self.value = '00:00'
 					_self.title = '新增提醒'
 					_self.bgcolor = 'green'
@@ -109,8 +112,6 @@
 					_self.is_visible = false
 					//_self.getInit()
 				}
-				console.log(_self.is_visible)
-				console.log(_self.value)
 
 				next()
 			}
@@ -120,49 +121,94 @@
 			return{
 				is_visible: false,
 				ispopup: false,
-				visible1: false,
-				visible2: false,
+				visible1: false, //  重复弹框
+				visible2: false, //  用量弹框
+				show_popup: false, // 提示框
+				tips: '', // 提示框内容
 				title: '',
 				bgcolor: '',
 				active_name: '',
 				value: '00:00',
 				visible3: true,
 				drug: '',
-				isEdit: ''
+				isEdit: '',
+				ids: 0, // 列表ID
+				drugDetail: [], // 用药提醒明细
+				repeatVal: '', // 重复数
+				dosageVal: '', // 用量数
+				startTime: '',
+				repeatTime: '',
+				dayUse: '',
+				useNum: 1,
+				drugName: '',
+				days: '',
+				dosageList: {'dosage':['克', '毫克', '丸', '支', '片', '毫升', '粒', '瓶' ]}
 			}
 		},
 
-		ready () {
-			$('#medicineName').focus( () => {
-				console.log($('#medicineName').val())
-			});
-
-		},
 		methods: {
-			cancle () {
-				this.ispopup  = false
-			},
-			conf () {
-				alert(this.ids)
-				this.ispopup  = false
+			getDosageUtil (val) {
+				this.dayUse = val
 			},
 			save () {
-				if(this.is_visible){
-					alert('编辑')
+				let _self = this
+				let params = this.getDosageVal()
+				let isNull = this.isDosageVal()
+				if(!isNull){
+
+					this.tips = '请填写完整再进行保存'
+					this.show_popup = true
+					return
+				}
+				if(_self.is_visible){
+					delJson('api/drugAlter/'+ _self.ids, '', (rsp)=>{
+						_self.value = null //"'00:00'"
+						_self.$route.router.go({path:'/online/remind', replace: true})
+					},_self)
 				}else{
-					//alert('保存')
-					let _self = this
-					console.log(_self.$refs.times.value) // 获取更改的时间，直接_self.value只能获取到00:00
-					_self.value = null //"'00:00'"
-					console.log(_self.value)
-					_self.$route.router.go({path:'/online/remind', replace: true})
+					postJson('api/drugAlter', params, (rsp)=>{
+						_self.value = null //"'00:00'"
+						_self.$route.router.go({path:'/online/remind', replace: true})
+					},_self)
 				}
 			},
-			handleChange(value) {
-				Toast({
-					message: '已选择 ' + value.toString(),
-					position: 'bottom'
-				});
+			saveEdit () {
+				let _self = this
+				let params = this.getDosageVal()
+				let isNull = this.isDosageVal()
+				if(!isNull){
+
+					this.tips = '请填写完整再进行保存'
+					this.show_popup = true
+					return
+				}
+				putJson('api/drugAlter', params, (rsp)=>{
+					_self.value = null //"'00:00'"
+					_self.$route.router.go({path:'/online/remind', replace: true})
+				},_self)
+			},
+			getDosageVal () {
+
+				let _self = this
+				let params = {
+					"id"         : _self.ids,
+					"startTime"  : _self.value,
+					"repeatTime" : _self.repeatTime,
+					"dayUse"     : _self.dayUse,
+					"useNum"     : _self.useNum,
+					"drugName"   : _self.drugName,
+					"days"       : _self.days,
+				}
+
+				return params
+			},
+			isDosageVal () {
+
+				if(this.drugName == '' || this.repeatVal == '' || this.dosageVal == '') {
+					return false
+				}else {
+					return true
+				}
 			},
 			repeat () {
 				this.visible1 = true
@@ -171,29 +217,77 @@
 				this.visible2 = true
 			},
 			backs(){
+				this.value = null //"'00:00'"
+				this.$route.router.go({path:'/online/remind', replace: true})
+			},
+			getDrugDetail (ids) {
+
 				let _self = this
-				console.log(_self.value)
-				_self.value = null //"'00:00'"
-				console.log(_self.value)
-				_self.$route.router.go({path:'/online/remind', replace: true})
+				getJson('api/drugAlter/'+ids, '', (rsp)=>{
+					_self.drugDetail = rsp
+					_self.value = rsp.startTime
+					_self.ids = rsp.id
+					_self.startTime = rsp.startTime
+					_self.repeatTime = rsp.repeatTime
+					_self.dayUse = rsp.dayUse
+					_self.useNum = rsp.useNum
+					_self.drugName = rsp.drugName
+					_self.days = rsp.days
+
+					_self.repeatVal = _self.days + '天' + _self.repeatTime + '次'
+					_self.dosageVal = '1次' + _self.useNum + _self.dayUse
+				},_self)
 			}
 		},
 
 		events: {
 			'popup-work' (e) {
-				let _self = e;
-				if(_self.hasClass('repeat')) {
-					console.log('repeat')
+				// 重复确定
+				if(e.hasClass('repeat')) {
+					if(this.days <= '0' || this.repeatTime <= '0') {
+						this.tips = '请填写大于或等于1的正整数'
+						this.show_popup = true
+						return
+					}
+					if(this.days != '1' && this.repeatTime != '1'){
+
+						this.tips = '格式为：一天几次或几天一次'
+						this.show_popup = true
+						return
+					}else{
+
+						this.repeatVal = this.days + '天' + this.repeatTime + '次'
+						this.visible1 = false
+					}
 				}
-				if(_self.hasClass('dosage')) {
-					console.log('dosage')
+				// 用量确定
+				if(e.hasClass('dosage')) {
+					if(this.useNum <= '0'){
+
+						this.tips = '请填写大于或等于1的正整数'
+						this.show_popup = true
+						return
+					}if(this.dayUse == ''){
+
+						this.tips = '用量单位不能为空'
+						this.show_popup = true
+						return
+					}else{
+
+						this.dosageVal = '1次' + this.useNum + this.dayUse
+						this.visible2 = false
+					}
 				}
 			}
 		},
 
 		watch: {
-			drug (newVal) {
-				console.log(newVal)
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+					}, 2000);
+				}
 			}
 		},
 
@@ -208,6 +302,7 @@
 			MtPopupBox,
 			MtDatetimeOnly,
 			MtPopupWork,
+			MtPopup,
 			MtSelectDrag,
 			MtLiItem
 		}
@@ -238,12 +333,12 @@
 	.reminders-add-tap-box .mint-cell-label{font-size: 12px;}
 	.reminders-add-tap-box .mint-cell-value span{margin-left: 10px;color: #aaa;font-size: 10px;}
 	.reminders-add-dosage-ipt{padding: 0 10px;}
-	.reminders-add-dosage-ipt input{width: 100%;border: 0;border-bottom: 1px solid #2eb039;font-size: 14px;}
+	.reminders-add-dosage-ipt input{width: 100%;border: 0;border-bottom: 1px solid #2eb039;font-size: 14px;text-align: center;}
 	.reminders-add-dosage-ul{margin: 8px 0 0;overflow: hidden;}
 	.reminders-add-dosage-list{width: 25%;float: left;margin: 8px 0;text-align: center;font-size: 12px;border-right: 1px solid #E5E5E5;margin-left: -1px;}
 	.reminders-add-dosage-list.leh-active span{background-color: #e8ffea;color: #1faa2b;}
 	.reminders-add-again-box{overflow: hidden;margin-bottom: 8px;}
-	.reminders-add-again-box input{float: left;width: 27%;margin-left: 25px;border:0;border-bottom: 1px solid #1faa2b;}
+	.reminders-add-again-box input{float: left;width: 27%;margin-left: 25px;border:0;border-bottom: 1px solid #1faa2b;text-align: center;}
 	.reminders-add-again-box span{float: left;font-size: 14px;margin:0 5px;}
 	.reminders-add-txt{padding: 10px;font-size: 12px;color: #919191;line-height: 20px;}
 </style>

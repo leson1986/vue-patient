@@ -16,6 +16,9 @@ body {
 label.mint-cell-title{
 	display: block;
 }
+.mint-cell-label{
+	word-wrap: break-word
+}
 
 /*样式*/
 

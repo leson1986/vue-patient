@@ -43,7 +43,7 @@
 			confirm ($event) {
 				let $parents = $($event.target).parents('.popup-work')
 				this.$dispatch('popup-work',$parents)
-				this.visible = false
+				//this.visible = false
 			}
 		},
 

@@ -66,6 +66,7 @@
                     if(action === 'confirm'){
                         // 删除
                         delJson('api/familyHis/'+ ids, '', (rsp)=>{
+                            _self.familyNum = 1
                             _self.getFamilyList()
                         },_self)
                     }
