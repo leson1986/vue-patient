@@ -6,6 +6,7 @@
         <mt-button type="green" v-link="{path:'/user/liverAdd',replace:true}">新增肝穿情况</mt-button>
     </div>
     <mt-content class="leh-bg-grey-body">
+	      <div class="leh-not-apply" v-if="liverTotal == 0">暂无肝穿情况</div>
         <div class="liver-box">
             <mt-translate>
                 <mt-translate-item class="liver-list" v-for="items in liverList" :name="items.id" :delbtn = "!!items.id">

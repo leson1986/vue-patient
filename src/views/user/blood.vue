@@ -6,6 +6,7 @@
         <mt-button type="green" v-link="{path:'/user/bloodAdd',replace:true}">新增血制品</mt-button>
     </div>
     <mt-content>
+	      <div class="leh-not-apply" v-if="liverTotal == 0">暂无血制品</div>
         <div class="blood-box">
             <mt-translate>
                 <mt-translate-item class="blood-list" delbtn :name="items.id" v-for="items in bloodItems">

@@ -7,7 +7,7 @@
     </div>
     <mt-content class="leh-bg-grey-body">
         <!--无列表-->
-        <div class="leh-not-apply" v-if="">暂无家族病史</div>
+	      <div class="leh-not-apply" v-if="familyTotal == 0">暂无家族病史</div>
         <!--有列表-->
         <div class="family-box">
             <mt-translate>

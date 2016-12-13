@@ -119,7 +119,7 @@
                 show_drug: 0,
                 drugName:'',
                 exhort:false,
-                together:true,
+                together:false,
                 tips:'',
                 show_popup: false,
                 notKeep:true,
