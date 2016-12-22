@@ -162,17 +162,6 @@
 
 </style>
 
-<!--测试引用-->
-<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>
-
-<!--正式引用-->
-<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <body id="turn">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
@@ -231,6 +220,18 @@
 <div class="overlay" id="overlay"></div>
 
 
+
+<!--测试引用-->
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
+<!--正式引用-->
+<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <script>
 	var vue;
 	function vue_init () {
@@ -243,7 +244,9 @@
 				turnTitle: '',
 				showTips: false,
 				serverId: '', // 上传图片返回的serverId
-				photo: '' // 重新上传的图片
+				photo: '', // 重新上传的图片
+				loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
+				loadmask: '<div class="maskbox"></div>', // 加载遮罩
 			},
 			ready: function () {
 
@@ -269,7 +272,15 @@
 						data: {
 							pageurl: window.location.href
 						},
-						success: function(data){
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 							wxconfig(data);
 						}
 					});
@@ -317,7 +328,15 @@
 						type: "DELETE",
 						url: 'http://test.jk7.com/api/filecheck/'+ ids,
 						dataType: 'json',
-						success: function (res) {
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 
 							_self.getTurnList(_self.dates)
 						},
@@ -336,7 +355,15 @@
 						type: "GET",
 						url: 'http://test.jk7.com/api/filecheck/'+ dates,
 						dataType: 'json',
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
 						success: function (res) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 
 							_self.turnDatas = res.data
 						},
@@ -419,7 +446,15 @@
 								type: "PUT",
 								url: 'http://test.jk7.com/api/filecheck/reupload/'+ id + '/'+ res.serverId,
 								dataType: 'json',
+								beforeSend: function (data){
+									var moaalBody = document.body
+									$(moaalBody).append(_self.loadBox)
+									$(moaalBody).append(_self.loadmask)
+								},
 								success: function (res) {
+
+									$('.ball-beat').remove()
+									$('.maskbox').remove()
 
 									_self.getTurnList(_self.dates)
 								},

@@ -1,7 +1,7 @@
 <template>
 	<div class="leh-float-box">
 		<mt-button type="green" v-link="{path: '/mydoctor/doctorVisits', query: {id: ids}, replace: true}" :reddot="doctorItems.unread">门诊信息</mt-button>
-		<mt-button type="blue" v-link="'/online/feedback'">在线留言</mt-button>
+		<mt-button type="blue" @click="toMsgUrl">在线留言</mt-button>
 	</div>
 	<div class="leh-wrap">
 		<div class="doctor-details-head">
@@ -108,6 +108,13 @@
 		    isRatePage: false, // 是否从列表页返回
 	    }
 	  },
+		methods: {
+
+			// 跳转到留言页面
+			toMsgUrl () {
+				window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ openID;
+			}
+		},
 		components: {
 			MtContent,
 			MtButton
@@ -123,6 +130,7 @@
 	.doctor-details-head p span{font-size: 12px;}
 	.doctor-details-content{position: absolute;top: 130px;bottom: 40px;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
 	.doctor-details-list{padding: 15px 10px;overflow: hidden;color: #363636;}
+	.doctor-details-list div{word-wrap: break-word}
 	.doctor-details-list-title{overflow: hidden;margin-bottom: 10px;}
 	.doctor-details-list-title span.fr{color: #aaa;}
 	.doctor-details-list .height-normal {font-size: 14px;line-height: 20px; height: 20px; overflow: hidden}

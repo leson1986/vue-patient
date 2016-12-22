@@ -183,7 +183,7 @@
                             <span class="mint-cell-text">最近时间</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core leh-ipt-tap" type="date" v-model="fishLastEat">
+                            <input class="mint-field-core leh-ipt-tap" type="month" v-model="fishLastEat">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -200,7 +200,7 @@
                             <span class="mint-cell-text">开始时间</span>
                         </label>
                         <div class="mint-cell-value">
-                            <input class="mint-field-core leh-ipt-tap" type="date" v-model="fishStartEat">
+                            <input class="mint-field-core leh-ipt-tap" type="month" v-model="fishStartEat">
                             <div class="mint-field-clear" style="display: none;">
                                 <i class="mintui mintui-field-error"></i>
                             </div>
@@ -386,7 +386,6 @@
             saveBehavior(){
                 let _self = this
                 let behavior = {
-                    "id": _self.id,
                     "isDrink": _self.isDrink,
                     "drinkType": _self.wineText,
                     "drinkAge": _self.drinkAge,

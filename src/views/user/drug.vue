@@ -146,7 +146,6 @@
             saveDrugList(){
                 let _self = this
                 let drug = {
-                    "id": _self.id,
                     "startTime" : _self.drug_time || '',  //吸毒开始时间
                     "drugType" : _self.drugName,  //吸毒方式
                     "shared" : _self.together,      //共用注射器
@@ -182,6 +181,8 @@
             getDrugList(){
                 let _self = this
                 getJson('api/drugHis/index', '', (rsp)=>{
+
+	                  if(rsp == null) return
                     _self.drug_time = rsp.startTime
                     _self.firDrug_time = rsp.startTime
                     _self.drugName = rsp.drugType

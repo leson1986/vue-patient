@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>随访家园患者端</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="bookmark" href="/favicon.ico"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<style>
+	@import './assets/css/mint-ui.css';
+	@import './assets/css/common.css';
+	@import './assets/css/normalize.css';
+	@import './assets/css/MPreview.mobile.css';
+
+	.msg-call-ipt-box {overflow: hidden;}
+	.msg-call-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
+	.msg-call-ipt-box .mint-cell:before{transform:scaleY(1)}
+	.msg-call-ipt-box .mint-cell:after,.msg-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
+	.msg-call-ipt-box .mint-cell:before{left: 10px;}
+	.msg-call-ipt-box input,.msg-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;}
+	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;}
+	.msg-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
+	.msg-call-tap .weui_cells{margin-top: 0;}
+	.msg-call-tap .weui_cells:before,.msg-call-tap .weui_cells:after{border: 0;}
+	.msg-call-tap .weui_uploader_input_wrp,.msg-call-tap .weui_uploader_file{margin-top: 8px;}
+	.msg-call-select-doc{margin-top:10px;font-size: 14px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+
+	.msg-call-tap-box{margin-bottom: 30px;padding: 0 10px}
+	.msg-call-tap-box .weui_uploader_file{margin-right: 20px;margin-top: 20px;}
+	.msg-call-tap-box .weui_uploader_input_wrp{margin-top: 40px !important;margin-left: 20px;}
+
+	.msgbox {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate3d(-50%, -50%, 0);
+		transform: translate3d(-50%, -50%, 0);
+		background-color: #fff;
+		width: 85%;
+		border-radius: 3px;
+		font-size: 16px;
+		-webkit-user-select: none;
+		overflow: hidden;
+		opacity: 1;
+		backface-visibility: hidden;
+	}
+	.msgbox-header{
+		padding: 15px 0 0;
+		border-bottom: none;
+	}
+	.msgbox-content {
+		padding: 10px 20px;
+		min-height: 36px;
+		position: relative;
+		border-bottom: 1px solid #ddd;
+	}
+	.msgbox-close {
+		display: inline-block;
+		position: absolute;
+		top: 14px;
+		right: 15px;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		line-height: 20px;
+		text-align: center;
+	}
+	.msgbox-input > input {
+		border: 1px solid #dedede;
+		border-radius: 5px;
+		padding: 4px 5px;
+		width: 100%;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		outline: none;
+	}
+	.msgbox-errormsg {
+		color: red;
+		font-size: 12px;
+		min-height: 16px;
+	}
+	.msgbox-title {
+		padding-left: 10px;
+		font-size: 16px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 8px;
+	}
+	.msgbox-status {
+		float: left;
+		width: 36px;
+		height: 36px;
+		font-size: 36px !important;
+	}
+	.msgbox-status.icon-success {
+		color: #94c852;
+	}
+	.msgbox-status.icon-warning {
+		color: #ff9c00;
+	}
+	.msgbox-status.icon-error {
+		color: #ff4248;
+	}
+	.msgbox-message {
+		font-size: 16px;
+		line-height: 36px;
+		text-align: center;
+		color: #999;
+		margin: 0;
+	}
+	.msgbox-btns {
+		display: flex;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		font-size: 16px;
+	}
+	.msgbox-btn {
+		display: block;
+		background-color: #fff;
+		border: 0;
+		flex: 1;
+		margin: 0;
+		border-radius: 0;
+	}
+	.msgbox-btn:active {
+		background-color: #3492e9;
+		color: #fff;
+		outline: none;
+	}
+	.msgbox-btn:focus {
+		outline: none;
+	}
+	.msgbox-confirm {
+		width: 50%;
+	}
+	.msgbox-cancel {
+		width: 50%;
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-confirm-highlight,
+	.msgbox-cancel-highlight {
+		font-weight: 800;
+	}
+	.msgbox-btns-reverse {
+		-webkit-box-direction: reverse;
+	}
+	.msgbox-btns-reverse .msgbox-confirm {
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-btns-reverse .msgbox-cancel {
+		border-right: 0;
+	}
+	.pop-bounce-transition {
+		transition: .2s .1s;
+	}
+	.pop-bounce-enter {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.7);
+	}
+	.pop-bounce-leave {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.9);
+	}
+</style>
+
+<!--测试引用-->
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
+<!--正式引用-->
+<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
+<body id="msg">
+<header class="mint-header is-fixed leh-bg-grey-head">
+	<div class="mint-header-button is-left">
+		<a href="http://test.jk7.com/home">
+			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
+		</a>
+	</div>
+	<h1 class="mint-header-title leh-c-black">在线留言</h1>
+	<div class="mint-header-button is-right"> </div>
+</header>
+<div class="leh-wrap page-popup">
+	<div class="page-cell msg-call-ipt-box">
+		<a class="mint-cell">
+			<label class="mint-cell-title">
+				<span class="mint-cell-text leh-c-green"></span>
+				<div class="msg-call-select-doc" @click="show_name = !show_name" :id="doctor_id">{{ name }} <span class="leh-c-grey leh-fs-twelve">{{ docTitle }}</span></div>
+
+				<ul class="leh-select-drag-box" v-show="show_name">
+					<li v-for="items in users"  @click="getName(items.name, items.id)">{{ items.name }}</li>
+				</ul>
+			</label>
+			<div class="mint-cell-value">
+				<span class="iconfont icon-wx-arr-down"></span>
+			</div>
+		</a>
+
+		<a class="mint-cell">
+			<label class="mint-cell-title">
+				<span class="mint-cell-text leh-c-green">目前所患疾病</span>
+				<input type="text" readonly="readonly" v-model="diseaseVal"/>
+			</label>
+			<div class="mint-cell-value"></div>
+		</a>
+		<a class="mint-cell">
+			<label class="mint-cell-title">
+				<span class="mint-cell-text leh-c-green">主诉</span>
+				<span class="leh-c-grey leh-fs-twelve">（必填）</span>
+				<textarea rows="1" placeholder="请详细描述您的病情，症状以及想要获得的帮助" v-model="complain" class="complain" maxlength="200"></textarea>
+			</label>
+			<div class="mint-cell-value"></div>
+		</a>
+		<a class="mint-cell">
+			<label class="mint-cell-title">
+				<span class="mint-cell-text leh-c-green">用药记录</span>
+				<textarea rows="1" placeholder="请列举目前正在或曾服用的药品以及用法用量" v-model="drugRecord" class="drugRecord" maxlength="200"></textarea>
+			</label>
+			<div class="mint-cell-value"></div>
+		</a>
+		<a class="mint-cell">
+			<label class="mint-cell-title">
+				<span class="mint-cell-text leh-c-green">添加图片</span>
+				<span class="leh-c-grey leh-fs-twelve">（病历、检查单或与症状相关的图片，以便于医生确认）</span>
+			</label>
+			<div class="mint-cell-value"></div>
+		</a>
+	</div>
+
+	<div class="msg-call-tap-box">
+		<div class="msg-call-tap">
+			<div class="weui_cells weui_cells_form">
+				<div class="weui_cell">
+					<div class="weui_cell_bd weui_cell_primary">
+						<div class="weui_uploader">
+							<div class="weui_uploader_bd">
+								<ul class="weui_uploader_files">
+									<li class="weui_uploader_file" v-for="items in showPicItems" track-by="$index" :reddot="items.unread">
+										<img :src="items"  @click="showPic(items)"/>
+										<span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
+									</li>
+								</ul>
+								<div class="weui_uploader_input_wrp" v-if="!isUpload" @click="addPic">
+									<span class="iconfont icon-wx-camera"></span>
+								</div>
+								<div class="weui_uploader_input_wrp" v-if="isUpload && !isFull" @click="addPic">
+									<span class="iconfont icon-wx-add"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="leh-float-box">
+		<!--未选择医生时：“免费”“收费”按钮均为不可用状态（灰色，可根据设计图中免费的灰色色度），且不显示“剩余条数”，仅显示“免费和收费”并居中显示，则添加“leh-bg-grey-btn”-->
+		<button class="mint-button mint-button--green mint-button--large " :class="{'leh-bg-grey-btn': !freeQty}"  @click="saveMsgPop(true)">
+			<label class="mint-button-text" v-if="!freeWithoutLimit">免费 <span class="leh-fs-twelve">剩余{{freeQty}}</span></label>
+			<label class="mint-button-text" v-if="freeWithoutLimit">免费 <span class="leh-fs-twelve">不限制</span></label>
+		</button>
+		<button class="mint-button mint-button--blue mint-button--large" :class="{'leh-bg-grey-btn': !canOrder}"  @click="saveMsgPop(false)">
+			<label class="mint-button-text">收费 <span class="leh-fs-twelve">剩余{{chargeQty}}</span></label>
+		</button>
+	</div>
+
+</div>
+
+<!-- 用于展示插件的容器 -->
+<div class="overlay" id="overlay"></div>
+
+
+<!--提示框-->
+<div class="msgbox-wrapper" style="position: absolute; z-index: 1005; display: none" v-show="showTips">
+	<div class="msgbox pop-bounce-transition" >
+		<div class="msgbox-header">
+			<div class="msgbox-title">提示</div>
+		</div>
+		<div class="msgbox-content">
+			<div class="msgbox-status d-icon"></div>
+			<div class="msgbox-message"><p>请确认内容已填写完整，购买成功后将直接发布当前内容给医生！</p></div>
+		</div>
+		<div class="msgbox-btns">
+			<button class="msgbox-btn msgbox-cancel " @click="handleAction(0)">继续填写</button>
+			<button class="msgbox-btn msgbox-confirm " @click="handleAction(1)">去购买</button>
+		</div>
+	</div>
+</div>
+<div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
+
+<script>
+	var vue;
+	function vue_init () {
+		vue = new Vue({
+			el: "#msg",
+			data: {
+				openID: '',
+				showTips: false,
+				msg_val:'',
+				tips: '',
+				from_path: '',
+				show_name: 0,
+				name: '', // 医生名称
+				doctor_id: '', // 医生ID
+				old_name: '',
+				users: [], // 医生列表
+				showPicItems: [], // 图片数组
+				picItems: [], // 图片数组
+				serverId: '', // 上传图片返回的serverId
+				serverIds: [], // 存储多图的serverId
+				isUpload: false, // 判断是否上传图片
+				isFull: false, // 判断是否传满所有图片
+				diseaseVal: '', // 目前所患疾病
+				complain: '', // 主诉
+				drugRecord: '', // 用药记录
+				docTitle: '', // 医生职级
+				freeQty: '', // 免费留言条数
+				freeWithoutLimit: '', // 是否不限制留言
+				chargeQty: '', // 收费留言条数
+				canOrder: '', // 是否设置收费
+				loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
+				loadmask: '<div class="maskbox"></div>', // 加载遮罩
+			},
+
+			created: function () {
+
+				var _self = this
+				// 患者评价
+				$.ajax({
+					url: 'http://test.jk7.com/api/patientMessages/info',
+					type: 'GET',
+					dataType: "json",
+					contentType: 'application/x-www-form-urlencoded',
+					headers: {
+						'Authorization': 'Basic ' + btoa(_self.openID + ':')
+					},
+					beforeSend: function (data){
+						var moaalBody = document.body
+						$(moaalBody).append(_self.loadBox)
+						$(moaalBody).append(_self.loadmask)
+					},
+					success: function (data) {
+
+						$('.ball-beat').remove()
+						$('.maskbox').remove()
+
+						var rsp = data.data.doctors
+						_self.users = rsp
+						_self.name = rsp[0].name
+						_self.docTitle = rsp[0].title
+						_self.doctor_id = rsp[0].id
+						_self.diseaseVal = data.data.disease
+						_self.getName(_self.name, _self.doctor_id)
+						_self.getAllowance(_self.doctor_id)
+					}
+				});
+				
+
+			},
+			ready: function () {
+
+				// 获取URL参数
+				function getQueryString (key) {
+					var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+					var result = window.location.search.substr(1).match(reg);
+					return result?decodeURIComponent(result[2]):null;
+				}
+
+				// 初始值
+				this.isUpload = false
+				this.openID = getQueryString('openID')
+
+				// 上传图片，验证签名
+				function pageConfig() {
+
+					var _self = this
+					$.ajax({
+						url: 'http://test.jk7.com/api/valid',
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						data: {
+							pageurl: window.location.href
+						},
+						success: function (data) {
+
+							wxconfig(data);
+						}
+					});
+				}
+				pageConfig()
+
+				function wxconfig (data){
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: data.appId, // 必填，公众号的唯一标识
+						nonceStr: data.nonceStr, // 必填，生成签名的随机串
+						timestamp: data.timestamp, // 必填，生成签名的时间戳
+						signature: data.signature, // 必填，签名，见附录1
+						jsApiList: [
+							'checkJsApi',
+							'chooseImage',
+							'previewImage',
+							'uploadImage',
+							'downloadImage',
+							'translateVoice'
+						] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+				}
+
+				wx.hideMenuItems({
+					menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+				});
+			},
+			methods: {
+				getAllowance: function (ids) {
+
+					var _self = this
+					// 患者评价
+					$.ajax({
+						url: 'http://test.jk7.com/api/patientMessages/allowance/'+ ids,
+						type: 'GET',
+						dataType: "json",
+						contentType: 'application/x-www-form-urlencoded',
+						headers: {
+							'Authorization': 'Basic ' + btoa(_self.openID + ':')
+						},
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
+
+							var rsp = data.data
+							_self.freeQty = rsp.freeQty
+							_self.freeWithoutLimit = rsp.freeWithoutLimit
+							_self.chargeQty = rsp.chargeQty
+							_self.canOrder = rsp.canOrder
+						}
+					});
+				},
+				getName: function (names, ids) {
+					this.name = names
+					this.doctor_id = ids
+					this.old_name = names
+					this.show_name = 0
+
+
+					this.getAllowance(ids)
+				},
+
+				showPic: function () {
+
+					wrapPic(this.showPicItems, '在线留言') // 查看图片
+				},
+				wrapPic: function (picArr, titName) {
+
+					var wrap = document.querySelector('#overlay'),
+							title = titName || '查看图片',
+							data = [];
+
+					if(typeof(picArr) === 'string'){
+						data.push(picArr)
+					}else if(typeof(picArr) === 'object'){
+						data = picArr
+					}else {
+						console.log('图片变量类型必须为string或object' + typeof(picArr))
+					}
+					wrap.className = wrap.className + ' in';
+
+					// 延迟初始化插件是为了让CSS动画走完
+					setTimeout(function() {
+						MPreview({
+							data: data,
+							title: title,
+							direction: 'left',
+							wrap: '#overlay',
+							init: function() {
+							},
+							close: function() {
+								wrap.className = wrap.className.replace(' in', '');
+							}
+						});
+					}, 400);
+
+				},
+
+				// 添加图片
+				addPic: function () {
+
+					var _self = this
+					var len = _self.showPicItems.length
+					if(len === 5 ){
+						alert('最多仅允许上传5张照片')
+						return
+					}
+					wx.chooseImage({
+						count: 5 - len, // 默认9
+						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+						success: function(res) {
+
+							var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+							var picItems = _self.picItems.concat(localIds) // 合并分次上传的localId
+							var showPicItems = _self.showPicItems.concat(localIds) // 合并分次上传的localId
+
+							// 已经上传图片切换上传按钮
+							if(showPicItems.length > 0){
+
+								_self.isUpload = true
+							}
+
+							// 满5张隐藏上传按钮
+							if(showPicItems.length == 5 ){
+
+								_self.isFull = true
+							}
+
+							// 上传图片不能超过5张
+							if(showPicItems.length > 5 ){
+
+								alert('最多仅允许上传5张照片')
+								return
+							}else{
+								_self.showPicItems = _self.showPicItems.concat(localIds)
+								_self.picItems = _self.picItems.concat(localIds)
+							}
+
+							setTimeout(function () {
+								_self.uploadImages();
+							},100)
+
+
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				},
+
+				// 保存图片
+				saveMsgPop: function (blr) {
+
+					var _self = this
+
+					// 是否免费
+					var isFree = blr
+					// 免费非无限条数为0
+					if(isFree && !_self.freeWithoutLimit && _self.freeQty == '0') {
+						return
+					}
+					// 收费条数为0并且没设置
+					if(!isFree && !_self.canOrder && _self.chargeQty == '0') {
+						return
+					}
+
+
+					if(_self.name === ''){
+
+						alert('请先绑定专属医生才能使用留言功能，如有疑问，可致电：400-966-8838')
+						return
+					}
+
+					if(_self.complain === '') {
+						alert('请填写主诉内容')
+						return
+					}
+
+					// 收费条数为0
+					if(!isFree && _self.chargeQty == '0') {
+						_self.showTips = true
+						return
+					}
+					// 上传
+					var params = {
+						"drId": _self.doctor_id,
+						"content": _self.complain,
+						"drugUse": _self.drugRecord,
+						"isFree": isFree,
+						"serverIds": _self.serverIds
+					}
+
+					$.ajax({
+						 type: "POST",
+						 url: 'http://test.jk7.com/api/PatientMessages',
+						 data: params,
+						 dataType: 'json',
+							headers: {
+								'Authorization': 'Basic ' + btoa(_self.openID + ':')
+							},
+							beforeSend: function (data){
+								var moaalBody = document.body
+								$(moaalBody).append(_self.loadBox)
+								$(moaalBody).append(_self.loadmask)
+							},
+							success: function (res) {
+
+								$('.ball-beat').remove()
+								$('.maskbox').remove()
+
+								if(res.recode == '1'){
+									 alert(msg)
+								 }else{
+									 _self.serverIds.length = 0
+									 window.location.href='http://test.jk7.com/vue_html/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
+
+								 }
+						 },
+						 error: function (XMLHttpRequest, textStatus, errorThrown) {
+							 alert('网络出错')
+							 return;
+						 }
+					 });
+
+				},
+
+				// 上传图片
+				uploadImages: function () {
+
+					// 获取serverId
+					var _self = this
+					var localId = _self.picItems.pop();
+					wx.uploadImage({
+						localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+
+							//	_self.serverId = res.serverId; // 返回图片的服务器端ID
+							_self.serverIds.push(res.serverId)
+
+							//其他对serverId做处理的代码
+							if(_self.picItems.length > 0){
+
+								_self.uploadImages();
+							}
+
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				},
+
+				// 删除图片
+				delPic: function (ind) {
+
+					var removePic = this.showPicItems[ind]
+					var removeServerIds = this.serverIds[ind]
+					this.showPicItems.$remove(removePic)
+					this.serverIds.$remove(removeServerIds)
+
+					// 已经上传图片切换上传按钮
+					if(this.showPicItems.length == 0){
+
+						this.isUpload = false
+					}
+
+					// 不满5张显示上传按钮
+					if(this.showPicItems.length < 5 ){
+
+						this.isFull = false
+					}
+				},
+
+				// 提示框事件
+				handleAction: function (blr) {
+
+					var _self = this
+					if(blr){
+						// 确定
+						_self.showTips = false
+
+						window.location.href='http://test.jk7.com/vue_html/vue_pay_v.html?drid='
+								+_self.doctor_id
+								+'&openID='
+								+_self.openID
+								+'&content='
+								+_self.complain
+								+'&drugUse='
+								+_self.drugRecord
+								+'&isFree=false&serverIds='
+								+_self.serverIds
+
+					}else{
+						// 取消
+						_self.showTips = false
+					}
+				},
+
+			},
+			watch: {
+				// 主诉
+				complain : function (newVal) {
+					var msgTest = $('.complain')
+					var scrollH = msgTest[0].scrollHeight
+					msgTest.height(scrollH)
+					if(!newVal){
+						msgTest.height(24)
+					}
+				},
+
+				// 用药记录
+				drugRecord : function (newVal) {
+					var msgTest = $('.drugRecord')
+					var scrollH = msgTest[0].scrollHeight
+					msgTest.height(scrollH)
+					if(!newVal){
+						msgTest.height(24)
+					}
+				}
+			}
+		});
+
+	}
+	vue_init()
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

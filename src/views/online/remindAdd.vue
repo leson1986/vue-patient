@@ -88,7 +88,7 @@
 				_self.ids = to.query.id || 0
 				_self.startTime = ''
 				_self.repeatTime = 1
-				_self.dayUse = ''
+				_self.dayUse = '克'
 				_self.useNum = 1
 				_self.drugName = ''
 				_self.days = 1
@@ -138,7 +138,7 @@
 				dosageVal: '', // 用量数
 				startTime: '',
 				repeatTime: '',
-				dayUse: '',
+				dayUse: '克',
 				useNum: 1,
 				drugName: '',
 				days: '',
@@ -251,7 +251,7 @@
 					}
 					if(this.days != '1' && this.repeatTime != '1'){
 
-						this.tips = '格式为：一天几次或几天一次'
+						this.tips = '请按照以下格式填写：X日1次或者1日X次'
 						this.show_popup = true
 						return
 					}else{
@@ -267,7 +267,8 @@
 						this.tips = '请填写大于或等于1的正整数'
 						this.show_popup = true
 						return
-					}if(this.dayUse == ''){
+					}
+					if(this.dayUse == ''){
 
 						this.tips = '用量单位不能为空'
 						this.show_popup = true

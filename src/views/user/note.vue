@@ -20,7 +20,7 @@
 										<img src="../../assets/img/private.jpg" v-if="items.drPhoto === null"/>
 									</div>
 								</span>
-							<label class="mint-cell-title">
+							<label class="mint-cell-title" style="width: 80%;">
 									<span class="mint-cell-text">
 										<span>{{ items.drName }}</span>丨
 										<span class="leh-fs-fourteen">{{ items.drCustName }}</span>
@@ -80,7 +80,7 @@
 
 		methods: {
 			toNoteUrl: function (ids, isclose) {
-				window.location.href='http://test.jk7.com/vue_html/vue_note.html?id='+ ids +'&isclose='+ isclose;
+				window.location.href='http://test.jk7.com/vue_html/vue_note_v.html?id='+ ids +'&isclose='+ isclose + '&openID='+ openID;
 			},
 
 			// 获取更多医生列表信息
@@ -117,7 +117,7 @@
 	.note-list-title:after{right: 12px;top: 14px;}
 	.note-content .mint-cell:before{border: 0;}
 	.note-content .mint-cell-text{display: block;}
-	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap; height: 16px;}
 	.note-img{width: 49px;height: 49px;border-radius: 50%;overflow: hidden;margin-right: 10px;text-align: center;}
 	.note-img img{width: 100%;min-height: 100%;height: auto}
 

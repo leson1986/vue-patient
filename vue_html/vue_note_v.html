@@ -45,6 +45,145 @@
 
 	.msg-details-img img,.msg-details-content-title-img img{height: 100%;}
 
+	.msg-details-title-box .mint-cell{padding-bottom: 10px;}
+	.msg-details-title-box .mint-cell:before{left: 10px;}
+	.msg-details-title-box .mint-cell input,.msg-details-title-box .mint-cell textarea{width: 100%;margin-top: 10px;border: 0;font-size: 16px;}
+	.msg-details-title-text{width: 100%;height: 25px;line-height: 25px;font-size: 16px;margin-top: 10px;}
+
+	.msgbox {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate3d(-50%, -50%, 0);
+		transform: translate3d(-50%, -50%, 0);
+		background-color: #fff;
+		width: 85%;
+		border-radius: 3px;
+		font-size: 16px;
+		-webkit-user-select: none;
+		overflow: hidden;
+		opacity: 1;
+		backface-visibility: hidden;
+	}
+	.msgbox-header{
+		padding: 15px 0 0;
+		border-bottom: none;
+	}
+	.msgbox-content {
+		padding: 10px 20px;
+		min-height: 36px;
+		position: relative;
+		border-bottom: 1px solid #ddd;
+	}
+	.msgbox-close {
+		display: inline-block;
+		position: absolute;
+		top: 14px;
+		right: 15px;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		line-height: 20px;
+		text-align: center;
+	}
+	.msgbox-input > input {
+		border: 1px solid #dedede;
+		border-radius: 5px;
+		padding: 4px 5px;
+		width: 100%;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		outline: none;
+	}
+	.msgbox-errormsg {
+		color: red;
+		font-size: 12px;
+		min-height: 16px;
+	}
+	.msgbox-title {
+		padding-left: 10px;
+		font-size: 16px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 8px;
+	}
+	.msgbox-status {
+		float: left;
+		width: 36px;
+		height: 36px;
+		font-size: 36px !important;
+	}
+	.msgbox-status.icon-success {
+		color: #94c852;
+	}
+	.msgbox-status.icon-warning {
+		color: #ff9c00;
+	}
+	.msgbox-status.icon-error {
+		color: #ff4248;
+	}
+	.msgbox-message {
+		font-size: 16px;
+		line-height: 36px;
+		text-align: center;
+		color: #999;
+		margin: 0;
+	}
+	.msgbox-btns {
+		display: flex;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		font-size: 16px;
+	}
+	.msgbox-btn {
+		display: block;
+		background-color: #fff;
+		border: 0;
+		flex: 1;
+		margin: 0;
+		border-radius: 0;
+	}
+	.msgbox-btn:active {
+		background-color: #3492e9;
+		color: #fff;
+		outline: none;
+	}
+	.msgbox-btn:focus {
+		outline: none;
+	}
+	.msgbox-confirm {
+		width: 50%;
+	}
+	.msgbox-cancel {
+		width: 50%;
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-confirm-highlight,
+	.msgbox-cancel-highlight {
+		font-weight: 800;
+	}
+	.msgbox-btns-reverse {
+		-webkit-box-direction: reverse;
+	}
+	.msgbox-btns-reverse .msgbox-confirm {
+		border-right: 1px solid #ddd;
+	}
+	.msgbox-btns-reverse .msgbox-cancel {
+		border-right: 0;
+	}
+	.pop-bounce-transition {
+		transition: .2s .1s;
+	}
+	.pop-bounce-enter {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.7);
+	}
+	.pop-bounce-leave {
+		opacity: 0;
+		transform: translate3d(-50%, -50%, 0) scale(0.9);
+	}
 </style>
 
 <body id="note">
@@ -65,7 +204,7 @@
 <div class="msg-details-ft" v-if="!isClose">
 	<div class="msg-details-ft-type">
 		<div class="msg-details-ft-left">
-			<textarea maxlength="200" v-model="msg" id="msgbox" @focus="focusTxt"></textarea>
+			<textarea maxlength="200" v-model="msg" id="msgbox"  @focus="focusTxt"></textarea>
 		</div>
 		<div class="msg-details-ft-right">
 			<span class="iconfont icon-wx-footer-add" v-if="!addpic" @click="addPicFun"></span>
@@ -81,10 +220,35 @@
 </div>
 <div class="leh-wrap leh-bg-grey-body" id="bodybox">
 	<div class="page-cell msg-details-head">
-		<a class="mint-cell">
+
+		<div class="msg-details-title-box">
+			<a class="mint-cell">
+				<label class="mint-cell-title">
+					<span class="mint-cell-text leh-c-green">目前所患疾病</span>
+					<div class="msg-details-title-text" v-text="noteDetails.disease"></div>
+				</label>
+				<div class="mint-cell-value"></div>
+			</a>
+			<a class="mint-cell">
+				<label class="mint-cell-title">
+					<span class="mint-cell-text leh-c-green">主诉</span>
+					<div class="msg-details-title-text" v-text="noteDetails.contents"></div>
+				</label>
+				<div class="mint-cell-value"></div>
+			</a>
+			<a class="mint-cell" v-if="noteDetails.drugUse">
+				<label class="mint-cell-title">
+					<span class="mint-cell-text leh-c-green">用药记录</span>
+					<div class="msg-details-title-text"v-text="noteDetails.drugUse"></div>
+				</label>
+				<div class="mint-cell-value"></div>
+			</a>
+		</div>
+
+		<a class="mint-cell" v-if="noteDetails.urls">
 			<label class="mint-cell-title">
-				<span class="mint-cell-text">{{ noteDetails.contents }}</span>
-				<div class="msg-details-photo leh-more" v-if="noteDetails.urls">
+				<!--<span class="mint-cell-text">{{ noteDetails.contents }}</span>-->
+				<div class="msg-details-photo leh-more">
 					<ul>
 						<li class="msg-details-img" v-for="urls in noteDetails.urls" @click="showPic(noteDetails.urls)">
 							<img :src="urls"/>
@@ -128,6 +292,23 @@
 <div class="overlay" id="overlay"></div>
 
 
+<!--提示框-->
+<div class="msgbox-wrapper" style="position: absolute; z-index: 1005; display: none" v-show="showTips">
+	<div class="msgbox pop-bounce-transition" >
+		<div class="msgbox-header">
+			<div class="msgbox-title">提示</div>
+		</div>
+		<div class="msgbox-content">
+			<div class="msgbox-status d-icon"></div>
+			<div class="msgbox-message"><p>留言条数已用完，是否需要购买？</p></div>
+		</div>
+		<div class="msgbox-btns">
+			<button class="msgbox-btn msgbox-cancel " @click="handleAction(0)">取消</button>
+			<button class="msgbox-btn msgbox-confirm " @click="handleAction(1)">确定</button>
+		</div>
+	</div>
+</div>
+<div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
 
 <!--测试引用-->
 <script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
@@ -146,9 +327,12 @@
 		vue = new Vue({
 			el: "#note",
 			data: {
+				openID: '',
+				doctor_id: '',
 				msg: '', // 上传的内容
 				url: '', // 上传的图片
 				ispopup: false,
+				showTips: false,
 				ismsg: false,
 				addpic: false,
 				showpic: false,
@@ -159,6 +343,9 @@
 				message: [],
 				picItems: [], // 图片数组
 				serverId: '', // 上传图片返回的serverId
+				hasMessage: '',// 是否可以留言
+				loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
+				loadmask: '<div class="maskbox"></div>', // 加载遮罩
 			},
 			ready: function () {
 
@@ -170,6 +357,7 @@
 				}
 
 				// 初始值
+				this.openID = getQueryString('openID')
 				this.noteDetails = '';
 				this.ids = getQueryString('id')
 				if(getQueryString('isclose') === 'false'){
@@ -178,6 +366,7 @@
 					this.isClose = true
 				}
 				this.getPatientMessages(this.ids)
+
 
 				// 上传图片，验证签名
 				function pageConfig() {
@@ -190,7 +379,8 @@
 						data: {
 							pageurl: window.location.href
 						},
-						success: function(data){
+						success: function (data) {
+
 							wxconfig(data);
 						}
 					});
@@ -222,7 +412,6 @@
 			methods: {
 				focusTxt: function () {
 
-
 					setTimeout(function () {
 
 						// 主体内容跟着输入框的改变向上滚动
@@ -236,9 +425,19 @@
 						type: "GET",
 						url: 'http://test.jk7.com/api/patientMessages/'+ ids,
 						dataType: 'json',
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
 						success: function (res) {
 
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
+
 							_self.noteDetails = res.data
+							_self.hasMessage = res.data.hasMessageQuato
+							_self.doctor_id = res.data.drId
 
 							if(blr){
 
@@ -318,6 +517,11 @@
 					    scrollH = msgBox[0].scrollHeight,
 					    bdbox = $('#bodybox');
 
+					if(!_self.hasMessage){
+
+						_self.showTips = true
+					}
+
 					_self.addpic = !_self.addpic
 					msgBox.val('')  //
 					msgBox.height(30)
@@ -336,13 +540,22 @@
 						"serverId": _self.serverId
 					}
 
+
 					// 回复留言
 					$.ajax({
 						type: "POST",
 						url: 'http://test.jk7.com/api/patientMessages/reply',
 						data: params,
 						dataType: 'json',
-						success: function (res) {
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 							_self.getPatientMessages(_self.ids, true)
 						},
 						error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -392,8 +605,21 @@
 
 				// 返回留言中心
 				toFeedback: function () {
-					window.location.href='http://test.jk7.com/online/feedback';
-				}
+					window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ this.openID;
+				},
+
+				// 提示框事件
+				handleAction: function (blr) {
+
+					if(blr){
+						// 确定
+						this.showTips = false
+						window.location.href='http://test.jk7.com/vue_html/vue_pay_v.html?drid='+this.doctor_id+'&openID='+this.openID
+					}else{
+						// 取消
+						this.showTips = false
+					}
+				},
 
 			},
 			watch: {

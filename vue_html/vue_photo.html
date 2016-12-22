@@ -69,28 +69,7 @@
 	}
 </style>
 
-<!--测试引用-->
-<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>
-
-<!--正式引用-->
-<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <body id="photo">
-<header class="mint-header is-fixed leh-bg-grey-head">
-	<div class="mint-header-button is-left">
-		<!--<a @click="historyBack">-->
-		<a href="http://test.jk7.com/home">
-			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
-		</a>
-	</div>
-	<h1 class="mint-header-title leh-c-black">拍照上传</h1>
-	<div class="mint-header-button is-right"> </div>
-</header>
 <div class="leh-float-box" :class="{'leh-guide': firstUpload}" @click="uploadGuide">
 	<button class="mint-button mint-button--green mint-button--large leh-bg-grey-btn" :class="{'leh-bg-grey-btn': !is_conf}" @click="uploadPic">
 		<label class="mint-button-text">上传</label>
@@ -99,7 +78,7 @@
 		</div>
 	</button>
 </div>
-<div class="leh-wrap">
+<div class="leh-wrap" style="top: 40px;">
 	<div class="photo-img-box">
 		<img src="./assets/img/photo-img.png" />
 	</div>
@@ -149,10 +128,33 @@
 	</div>
 </div>
 
+
+<header class="mint-header is-fixed leh-bg-grey-head">
+	<div class="mint-header-button is-left">
+		<!--<a @click="historyBack">-->
+		<a href="http://test.jk7.com/home">
+			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
+		</a>
+	</div>
+	<h1 class="mint-header-title leh-c-black">拍照上传</h1>
+	<div class="mint-header-button is-right"> </div>
+</header>
 <!-- 用于展示插件的容器 -->
 <div class="overlay" id="overlay"></div>
 
 
+
+<!--测试引用-->
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
+<!--正式引用-->
+<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <script>
 	var vue;
 	function vue_init () {
@@ -168,7 +170,9 @@
 				serverId: '', // 上传图片返回的serverId
 				serverIds: [], // 存储多图的serverId
 				isUpload: false, // 判断是否上传图片
-				withDoctor: false // 是否绑定医生
+				withDoctor: false, // 是否绑定医生
+				loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
+				loadmask: '<div class="maskbox"></div>', // 加载遮罩
 			},
 			ready: function () {
 
@@ -198,7 +202,15 @@
 						data: {
 							pageurl: window.location.href
 						},
-						success: function(data){
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 
 							wxconfig(data);
 						}
@@ -213,7 +225,15 @@
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
 						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 
 							if (data.recode == '1') {
 								alert(data.msg)
@@ -241,7 +261,15 @@
 							code: code,
 							state: "STATE"
 						},
-						success: function(data){
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 							getAuthenticate(data)
 						}
 					});
@@ -256,7 +284,15 @@
 						headers: {
 							'Authorization': 'Basic ' + btoa(oID + ':')
 						},
-						success: function(data){
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (res) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 							withDoctor(oID)
 						},
 						error: function (res) {
@@ -287,7 +323,15 @@
 						headers: {
 							'Authorization': 'Basic ' + btoa(oID + ':')
 						},
-						success: function(data){
+						beforeSend: function (data){
+							var moaalBody = document.body
+							$(moaalBody).append(_self.loadBox)
+							$(moaalBody).append(_self.loadmask)
+						},
+						success: function (data) {
+
+							$('.ball-beat').remove()
+							$('.maskbox').remove()
 
 							if(data.recode == '1'){
 								alert(data.msg)
@@ -338,8 +382,8 @@
 				wrapPic: function (picArr, titName) {
 
 					var wrap = document.querySelector('#overlay'),
-							  title = titName || '查看图片',
-							  data = [];
+							title = titName || '查看图片',
+							data = [];
 
 					if(typeof(picArr) === 'string'){
 						data.push(picArr)
@@ -389,8 +433,13 @@
 						return
 					}
 
+					var len = _self.photoItems.length
+					if(len === 9 ){
+						alert('最多仅允许上传9张照片')
+						return
+					}
 					wx.chooseImage({
-						count: 9, // 默认9
+						count: 9 - len, // 默认9
 						sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 						sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 						success: function(res) {
@@ -452,7 +501,15 @@
 									url: 'http://test.jk7.com/api/filecheck/upload',
 									data: params,
 									dataType: 'json',
+									beforeSend: function (data){
+										var moaalBody = document.body
+										$(moaalBody).append(_self.loadBox)
+										$(moaalBody).append(_self.loadmask)
+									},
 									success: function (res) {
+
+										$('.ball-beat').remove()
+										$('.maskbox').remove()
 
 										if(res.recode == '1'){
 											alert(msg)

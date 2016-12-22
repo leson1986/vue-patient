@@ -149,9 +149,11 @@
 </script>
 
 <style>
-	.register-box{background-color: #1faa2b;overflow: hidden;}
+	.register-box{background-color: #1faa2b;
+		overflow-y: auto;
+		overflow-x: hidden;}
 	.register-title-img{width: 50%;margin: 8% auto;text-align: center;}
-	.register-ipt-box{width: 78%;margin: 0 auto;}
+	.register-ipt-box{width: 90%;margin: 0 auto;}
 	.register-ipt-box .mint-cell{background-color: transparent;color: #fff;}
 	.register-ipt-box .mint-cell:after{border-top: 0;}
 	.register-ipt-box .mint-cell:before{border-bottom-color: rgba(255,255,255,0.5);}
@@ -165,8 +167,8 @@
 	.register-btn{border-color: #8fd595 !important;}
 	.register-btn.leh-active{background-color: #8fd595;}
 	.register-btn .mint-button-text{color: #fff;}
-	.register-sex-box{float: left;margin-right: 20px;position: relative;}
-	.register-sex-box span{margin-right: 8px;color: rgba(255,255,255,0.5);}
+	.register-sex-box{float: left;width:40%;position: relative;}
+	.register-sex-box span{color: rgba(255,255,255,0.5);}
 	.register-sex-box.leh-active span{color: rgba(255,255,255,1);}
 	.register-sex-box .icon-wx-male,
 	.register-sex-box .icon-wx-female{font-size: 14px;}

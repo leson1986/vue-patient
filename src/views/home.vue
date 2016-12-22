@@ -304,7 +304,7 @@
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://test.jk7.com/vue_html/vue_msg.html';
+				window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ openID;
 			},
 			// 跳转到个人信息
 			toInfoUrl () {

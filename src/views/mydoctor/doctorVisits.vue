@@ -6,7 +6,7 @@
 		<div class="page-cell call-info-advertisement">
 			<a class="mint-cell">
 				<span class="leh-c-orange iconfont icon-wx-notice"></span>
-				<label class="mint-cell-title">
+				<label class="mint-cell-title" style="width: 80%">
 					<p v-if="!!lastNotice" :class="{'leh-text-ellipsis': !openmsg}">{{ lastNotice }}</p>
 					<p v-else>暂无公告</p>
 				</label>
@@ -407,7 +407,7 @@
 	.call-info-month-left-list:nth-last-of-type(1):after,
 	.call-info-month-right-item:nth-last-of-type(1):after{border: 0;}
 	.call-info-time-list .mint-cell-text{font-size: 14px;}
-	.call-info-advertisement .mint-cell p{color: #f9975c;font-size: 14px;line-height: 20px;}
+	.call-info-advertisement .mint-cell p{color: #f9975c;font-size: 14px;line-height: 20px;word-wrap: break-word}
 	.call-info-advertisement .icon-wx-notice{padding-right: 8px;line-height: 20px;}
 	.call-info-advertisement .mint-cell-value .mint-cell-text{font-size: 12px;padding-left: 10px;color: #919191;line-height: 20px;}
 	.call-info-time-list .mint-cell-label{font-size: 12px;margin-top: 10px;line-height: 20px;}
