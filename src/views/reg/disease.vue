@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="选择病种">
-		<mt-button v-link="{path: '/user/info', query: {'toinfo': true}}" icon="arr-left" slot="left" v-if="is_info"></mt-button>
+		<mt-button @click="toInfoUrl" icon="arr-left" slot="left" v-if="is_info"></mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
@@ -58,8 +58,6 @@
 
 				next()
 
-
-
 			}
 		},
 
@@ -87,14 +85,27 @@
 		    getnativePlace: ''
 	    }
 	  },
-
-		ready() {
-		},
-
-		events: {
-		},
-
 		methods: {
+			toInfoUrl: function () {
+				var _self = this
+				window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+						_self.getgender +
+						'&birthday='+
+						_self.getbirthday +
+						'&alllergicHis='+
+						_self.getalllergicHis +
+						'&photo='+
+						_self.getphoto +
+						'&serverId='+
+						_self.getserverId +
+						'&email='+
+						_self.getemail +
+						'&disease='+
+						_self.getdisease +
+						'&diseaseHis='+
+						_self.getdiseaseHis +
+						'&nativePlace='+ _self.getnativePlace;
+			},
 			// 切换病种选项
 			selected: function(listName) {
 				this.activeName = listName
@@ -124,7 +135,7 @@
 						_self.show_popup = true
 						_self.tips = '保存成功'
 						setTimeout(() => {
-							window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+							window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
 									_self.getgender +
 									'&birthday='+
 									_self.getbirthday +

@@ -138,7 +138,7 @@
 				var _self = this
 				setTimeout(() => {
 
-					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+					window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
 							_self.getgender +
 							'&birthday='+
 							_self.getbirthday +
@@ -189,7 +189,7 @@
 							_self.save()
 						}else {
 
-							window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+							window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
 									_self.getgender +
 									'&birthday='+
 									_self.getbirthday +
@@ -213,7 +213,7 @@
 					});
 				}else{
 
-					window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&gender='+
+					window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
 							_self.getgender +
 							'&birthday='+
 							_self.getbirthday +

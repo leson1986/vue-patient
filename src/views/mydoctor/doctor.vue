@@ -112,7 +112,7 @@
 
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
 			}
 		},
 		components: {

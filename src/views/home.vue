@@ -170,19 +170,6 @@
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
 							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
-							<a class="mint-cell" href="http://test.jk7.com/html/pay/pay.html" v-show="openIDS == 'oiQzTjlkhtQvz2l5fkQ3sIhsd3rU'">
-
-								<div class="mint-cell-title">
-									<i class="iconfont icon-wx-link"></i>
-									<span class="mint-cell-text">支付测试</span>
-
-								</div>
-								<div class="mint-cell-value">
-									<span></span>
-									<span class="iconfont icon-wx-arr-right"></span>
-								</div>
-
-							</a>
 
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
 						</div>
@@ -300,15 +287,15 @@
 		methods: {
 			// 跳转到拍照页面
 			toPhotoUrl () {
-				window.location.href='http://test.jk7.com/vue_html/vue_photo.html?openID=1&firstTime='+ this.firstTime;
+				window.location.href='http://wx.jk7.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
 			},
 			// 跳转到个人信息
 			toInfoUrl () {
-				window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=1&alllergicHis=&disease=';
+				window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
 			},
 			// 我的医生列表
 			getDoctors () {

@@ -140,7 +140,7 @@
 				<div class="mint-cell-value"></div>
 			</a>
 		</div>
-		<p class="call-info-txt">由于突发原因导致的出诊时间、出诊地点、门诊类型（普通、专家、特需等）一季挂号费的更改，均已医院方天公布为准，如有需要可拨打医院电话确认。</p>
+		<p class="call-info-txt">由于突发原因导致的出诊时间、出诊地点、门诊类型（普通、专家、特需等）以及挂号费的更改，均以医院当天公布为准，如有需要，可拨打医院电话确认。</p>
 	</mt-content>
 </template>
 <script>

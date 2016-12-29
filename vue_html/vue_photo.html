@@ -116,7 +116,7 @@
 										<span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
 									</li>
 								</ul>
-								<div class="weui_uploader_input_wrp" v-if="isUpload" @click="addPic">
+								<div class="weui_uploader_input_wrp" v-if="isUpload && !isFull" @click="addPic">
 									<span class="iconfont icon-wx-add"></span>
 								</div>
 							</div>
@@ -132,7 +132,7 @@
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
 		<!--<a @click="historyBack">-->
-		<a href="http://test.jk7.com/home">
+		<a href="http://wx.jk7.com/home">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -143,18 +143,11 @@
 <div class="overlay" id="overlay"></div>
 
 
-
-<!--测试引用-->
-<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
-<!--正式引用-->
-<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <script>
 	var vue;
 	function vue_init () {
@@ -171,6 +164,7 @@
 				serverIds: [], // 存储多图的serverId
 				isUpload: false, // 判断是否上传图片
 				withDoctor: false, // 是否绑定医生
+				isFull: false, // 是否满9张
 				loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
 				loadmask: '<div class="maskbox"></div>', // 加载遮罩
 			},
@@ -195,23 +189,14 @@
 				function pageConfig() {
 
 					$.ajax({
-						url: 'http://test.jk7.com/api/valid',
+						url: 'http://wx.jk7.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
 						data: {
 							pageurl: window.location.href
 						},
-						beforeSend: function (data){
-							var moaalBody = document.body
-							$(moaalBody).append(_self.loadBox)
-							$(moaalBody).append(_self.loadmask)
-						},
 						success: function (data) {
-
-							$('.ball-beat').remove()
-							$('.maskbox').remove()
-
 							wxconfig(data);
 						}
 					});
@@ -221,7 +206,7 @@
 				// 获取是否绑定医生--从首页进入
 				function withDoctorFromHome() {
 					$.ajax({
-						url: 'http://test.jk7.com/api/patient/withDoctor',
+						url: 'http://wx.jk7.com/api/patient/withDoctor',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -253,7 +238,7 @@
 
 					//获取openid
 					$.ajax({
-						url: 'http://test.jk7.com/api/UserInfo',
+						url: 'http://wx.jk7.com/api/UserInfo',
 						type: 'GET',
 						dataType: "text",
 						contentType: 'application/x-www-form-urlencoded',
@@ -261,15 +246,7 @@
 							code: code,
 							state: "STATE"
 						},
-						beforeSend: function (data){
-							var moaalBody = document.body
-							$(moaalBody).append(_self.loadBox)
-							$(moaalBody).append(_self.loadmask)
-						},
 						success: function (data) {
-
-							$('.ball-beat').remove()
-							$('.maskbox').remove()
 							getAuthenticate(data)
 						}
 					});
@@ -277,7 +254,7 @@
 				// 身份验证
 				function getAuthenticate (oID) {
 					$.ajax({
-						url: 'http://test.jk7.com/api/Authenticate',
+						url: 'http://wx.jk7.com/api/Authenticate',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -298,11 +275,11 @@
 						error: function (res) {
 							if (res.status === 401) {
 								if (res.responseText == '2') {
-									window.location.href='http://test.jk7.com/reg/bind';
+									window.location.href='http://wx.jk7.com/reg/bind';
 								} else if (res.responseText == '3') {
-									window.location.href='http://test.jk7.com/reg/register';
+									window.location.href='http://wx.jk7.com/reg/register';
 								} else if (res.responseText == '4') {
-									window.location.href='http://test.jk7.com/reg/disease';
+									window.location.href='http://wx.jk7.com/reg/disease';
 								} else {
 									alert('非法访问')
 								}
@@ -316,7 +293,7 @@
 				// 获取是否绑定医生
 				function withDoctor(oID) {
 					$.ajax({
-						url: 'http://test.jk7.com/api/patient/withDoctor',
+						url: 'http://wx.jk7.com/api/patient/withDoctor',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -454,6 +431,13 @@
 								_self.is_conf = true
 							}
 
+
+							// 满9张隐藏上传按钮
+							if(photoItems.length == 9 ){
+
+								_self.isFull = true
+							}
+
 							_self.photoItems = _self.photoItems.concat(localIds)
 
 						},
@@ -498,7 +482,7 @@
 								var params = {"items":_self.serverIds}
 								$.ajax({
 									type: "POST",
-									url: 'http://test.jk7.com/api/filecheck/upload',
+									url: 'http://wx.jk7.com/api/filecheck/upload',
 									data: params,
 									dataType: 'json',
 									beforeSend: function (data){
@@ -515,7 +499,7 @@
 											alert(msg)
 										}else{
 											_self.serverIds.length = 0
-											window.location.href='http://test.jk7.com/online/bill?actives=turn';
+											window.location.href='http://wx.jk7.com/online/bill?actives=turn';
 										}
 									},
 									error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -541,6 +525,12 @@
 
 						this.isUpload = false
 						this.is_conf = false
+					}
+
+					// 不满9张显示上传按钮
+					if(this.photoItems.length < 9 ){
+
+						this.isFull = false
 					}
 				},
 

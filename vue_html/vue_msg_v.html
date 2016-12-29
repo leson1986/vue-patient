@@ -31,9 +31,10 @@
 	.msg-call-tap .weui_uploader_input_wrp,.msg-call-tap .weui_uploader_file{margin-top: 8px;}
 	.msg-call-select-doc{margin-top:10px;font-size: 14px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
 
-	.msg-call-tap-box{margin-bottom: 30px;padding: 0 10px}
+	.msg-call-tap-box{margin-bottom: 30px;}
 	.msg-call-tap-box .weui_uploader_file{margin-right: 20px;margin-top: 20px;}
 	.msg-call-tap-box .weui_uploader_input_wrp{margin-top: 40px !important;margin-left: 20px;}
+	.msg-call-tap-box .weui_uploader_input_wrp.leh-ex{margin-top: 0 !important;margin-left: 0;}
 
 	.msgbox {
 		position: fixed;
@@ -171,21 +172,15 @@
 	}
 </style>
 
-<!--测试引用-->
-<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
-<!--正式引用-->
-<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <body id="msg">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
-		<a href="http://test.jk7.com/home">
+		<a href="http://wx.jk7.com/home">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -252,7 +247,7 @@
 										<span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
 									</li>
 								</ul>
-								<div class="weui_uploader_input_wrp" v-if="!isUpload" @click="addPic">
+								<div class="weui_uploader_input_wrp leh-ex" v-if="!isUpload" @click="addPic">
 									<span class="iconfont icon-wx-camera"></span>
 								</div>
 								<div class="weui_uploader_input_wrp" v-if="isUpload && !isFull" @click="addPic">
@@ -341,7 +336,7 @@
 				var _self = this
 				// 患者评价
 				$.ajax({
-					url: 'http://test.jk7.com/api/patientMessages/info',
+					url: 'http://wx.jk7.com/api/patientMessages/info',
 					type: 'GET',
 					dataType: "json",
 					contentType: 'application/x-www-form-urlencoded',
@@ -389,7 +384,7 @@
 
 					var _self = this
 					$.ajax({
-						url: 'http://test.jk7.com/api/valid',
+						url: 'http://wx.jk7.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -432,7 +427,7 @@
 					var _self = this
 					// 患者评价
 					$.ajax({
-						url: 'http://test.jk7.com/api/patientMessages/allowance/'+ ids,
+						url: 'http://wx.jk7.com/api/patientMessages/allowance/'+ ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -600,7 +595,7 @@
 
 					$.ajax({
 						 type: "POST",
-						 url: 'http://test.jk7.com/api/PatientMessages',
+						 url: 'http://wx.jk7.com/api/PatientMessages',
 						 data: params,
 						 dataType: 'json',
 							headers: {
@@ -620,7 +615,7 @@
 									 alert(msg)
 								 }else{
 									 _self.serverIds.length = 0
-									 window.location.href='http://test.jk7.com/vue_html/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
+									 window.location.href='http://wx.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
 
 								 }
 						 },
@@ -688,7 +683,7 @@
 						// 确定
 						_self.showTips = false
 
-						window.location.href='http://test.jk7.com/vue_html/vue_pay_v.html?drid='
+						window.location.href='http://wx.jk7.com/html/pay/vue_pay_v.html?drid='
 								+_self.doctor_id
 								+'&openID='
 								+_self.openID

@@ -48,7 +48,7 @@
 	.msg-details-title-box .mint-cell{padding-bottom: 10px;}
 	.msg-details-title-box .mint-cell:before{left: 10px;}
 	.msg-details-title-box .mint-cell input,.msg-details-title-box .mint-cell textarea{width: 100%;margin-top: 10px;border: 0;font-size: 16px;}
-	.msg-details-title-text{width: 100%;height: 25px;line-height: 25px;font-size: 16px;margin-top: 10px;}
+	.msg-details-title-text{width: 100%;padding:5px 0;line-height: 25px;font-size: 16px;margin-top: 10px;}
 
 	.msgbox {
 		position: fixed;
@@ -186,10 +186,16 @@
 	}
 </style>
 
+
+<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
 <body id="note">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
-		<a href="http://test.jk7.com/user/note">
+		<a href="http://wx.jk7.com/user/note">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -310,17 +316,6 @@
 </div>
 <div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
 
-<!--测试引用-->
-<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>
-
-<!--正式引用-->
-<!--<script type='text/javascript' src='http://wx.jk7.com/html/js//zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>-->
 <script>
 	var vue;
 	function vue_init () {
@@ -372,7 +367,7 @@
 				function pageConfig() {
 
 					$.ajax({
-						url: 'http://test.jk7.com/api/valid',
+						url: 'http://wx.jk7.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -423,7 +418,7 @@
 					var _self = this
 					$.ajax({
 						type: "GET",
-						url: 'http://test.jk7.com/api/patientMessages/'+ ids,
+						url: 'http://wx.jk7.com/api/patientMessages/'+ ids,
 						dataType: 'json',
 						beforeSend: function (data){
 							var moaalBody = document.body
@@ -544,7 +539,7 @@
 					// 回复留言
 					$.ajax({
 						type: "POST",
-						url: 'http://test.jk7.com/api/patientMessages/reply',
+						url: 'http://wx.jk7.com/api/patientMessages/reply',
 						data: params,
 						dataType: 'json',
 						beforeSend: function (data){
@@ -605,7 +600,7 @@
 
 				// 返回留言中心
 				toFeedback: function () {
-					window.location.href='http://test.jk7.com/vue_html/vue_msg_v.html?openID='+ this.openID;
+					window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ this.openID;
 				},
 
 				// 提示框事件
@@ -614,7 +609,7 @@
 					if(blr){
 						// 确定
 						this.showTips = false
-						window.location.href='http://test.jk7.com/vue_html/vue_pay_v.html?drid='+this.doctor_id+'&openID='+this.openID
+						window.location.href='http://wx.jk7.com/html/pay/vue_pay_v.html?drid='+this.doctor_id+'&openID='+this.openID
 					}else{
 						// 取消
 						this.showTips = false
