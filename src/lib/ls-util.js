@@ -51,6 +51,7 @@ export function getJson(url, options, callback, self) {
 		url: SERVER + url,
 		type: 'GET',
 		dataType: "json",
+		data: options,
 		contentType: 'application/x-www-form-urlencoded',
 		headers: {
 			'Authorization': 'Basic ' + btoa(openID + ':')

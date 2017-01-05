@@ -153,11 +153,12 @@
 <style>
 	.reminds-apply-list .mint-cell:after,.reminds-apply-list .mint-cell:before{border: 0;}
 	.reminds-apply-list .sl-content{padding: 0;}
-	.reminds-apply-list .mint-cell-text span{max-width: 120px;display:inline-block;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.reminds-apply-list .mint-cell-text span{max-width: 120px;color: #919191;display:inline-block;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
 	.reminds-apply-list .mint-cell-label{margin-top: 8px;}
-	.reminds-apply-list .mint-cell-label p{color: #363636;font-size: 12px;line-height: 20px;}
-	.reminds-apply-switch{width: 32px;height: 14px;background: url(../../assets/img/switch-btn.png) no-repeat;background-size: 100% auto;}
-	.reminds-apply-list.leh-active .mint-cell span,.reminds-apply-list.leh-active .mint-cell p{color: #919191;}
-	.reminds-apply-list.leh-active .reminds-apply-switch{background-position: bottom center;}
+	.reminds-apply-list .mint-cell-label p{color: #919191;font-size: 14px;line-height: 20px;}
+	.reminds-apply-switch{width: 48px;height: 21px;background: url(../../assets/img/switch-btn.png) no-repeat bottom center;background-size: 100% auto;}
+	.reminds-apply-list.leh-active .mint-cell span,.reminds-apply-list.leh-active .mint-cell p{color: #363636;}
+	.reminds-apply-list.leh-active .reminds-apply-switch{background-position: top center;}
+
 
 </style>

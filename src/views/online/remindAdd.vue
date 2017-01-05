@@ -314,7 +314,7 @@
 	.reminders-add-title .mint-cell{overflow: visible;}
 	.reminders-add-title .mint-cell:after,.reminders-add-title .mint-cell:before{border: 0;}
 	.reminders-add-title .mint-cell-title{position: relative;}
-	.reminders-add-title input{width: 100%;margin-top: 10px;font-size: 12px;border: 0;}
+	.reminders-add-title input{width: 100%;margin: 14px 0 0;font-size: 16px;border: 0;}
 	.reminders-add-picker-box{padding: 20px 10px 0;position: relative;}
 	.reminders-add-picker-box .mint-datetime-picker{border-bottom: 1px solid #e5e5e5;}
 	.reminders-add-picker-box .picker-items{margin-bottom: 20px;}
@@ -330,8 +330,8 @@
 	.reminders-add-tap-box .mint-cell{padding-right: 0;}
 	.reminders-add-tap-box .mint-cell:after{border: 0;}
 	.reminders-add-tap-box .mint-cell:before{left: 10px;}
-	.reminders-add-tap-box .mint-cell-text{font-size: 14px;}
-	.reminders-add-tap-box .mint-cell-label{font-size: 12px;}
+	.reminders-add-tap-box .mint-cell-text,
+	.reminders-add-tap-box .mint-cell-label{font-size: 14px;}
 	.reminders-add-tap-box .mint-cell-value span{margin-left: 10px;color: #aaa;font-size: 10px;}
 	.reminders-add-dosage-ipt{padding: 0 10px;}
 	.reminders-add-dosage-ipt input{width: 100%;border: 0;border-bottom: 1px solid #2eb039;font-size: 14px;text-align: center;}

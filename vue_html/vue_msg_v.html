@@ -23,13 +23,13 @@
 	.msg-call-ipt-box .mint-cell:before{transform:scaleY(1)}
 	.msg-call-ipt-box .mint-cell:after,.msg-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.msg-call-ipt-box .mint-cell:before{left: 10px;}
-	.msg-call-ipt-box input,.msg-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;}
+	.msg-call-ipt-box input,.msg-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 16px;}
 	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;}
 	.msg-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
 	.msg-call-tap .weui_cells{margin-top: 0;}
 	.msg-call-tap .weui_cells:before,.msg-call-tap .weui_cells:after{border: 0;}
 	.msg-call-tap .weui_uploader_input_wrp,.msg-call-tap .weui_uploader_file{margin-top: 8px;}
-	.msg-call-select-doc{margin-top:10px;font-size: 14px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.msg-call-select-doc{margin-top:10px;font-size: 16px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
 
 	.msg-call-tap-box{margin-bottom: 30px;}
 	.msg-call-tap-box .weui_uploader_file{margin-right: 20px;margin-top: 20px;}
@@ -189,10 +189,10 @@
 </header>
 <div class="leh-wrap page-popup">
 	<div class="page-cell msg-call-ipt-box">
-		<a class="mint-cell">
+		<a class="mint-cell" @click="show_name = !show_name">
 			<label class="mint-cell-title">
 				<span class="mint-cell-text leh-c-green"></span>
-				<div class="msg-call-select-doc" @click="show_name = !show_name" :id="doctor_id">{{ name }} <span class="leh-c-grey leh-fs-twelve">{{ docTitle }}</span></div>
+				<div class="msg-call-select-doc"  :id="doctor_id">{{ name }} <span class="leh-c-grey leh-fs-twelve">{{ docTitle }}</span></div>
 
 				<ul class="leh-select-drag-box" v-show="show_name">
 					<li v-for="items in users"  @click="getName(items.name, items.id)">{{ items.name }}</li>
@@ -367,7 +367,6 @@
 
 			},
 			ready: function () {
-
 				// 获取URL参数
 				function getQueryString (key) {
 					var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
