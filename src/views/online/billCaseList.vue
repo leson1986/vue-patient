@@ -76,8 +76,8 @@
 				<label class="mint-cell-title">
 					<span class="mint-cell-text">{{ items.drugName }}（{{ items.commonName }}）</span>
 					<span class="mint-cell-label">
-							<p>{{ items.useQty }}</p>
-							<p>{{ items.useType }}，每{{ items.days }}{{ items.dayUse }}次，每次{{ items.dayUseNum }}{{ items.unit }}</p>
+							<p>{{ items.standard }}</p>
+							<p>{{ items.useType }}，{{ items.days }}天{{ items.dayUse }}次，每次{{ items.dayUseNum }}{{ items.unit }}</p>
 						</span>
 				</label>
 				<div class="mint-cell-value"></div>
