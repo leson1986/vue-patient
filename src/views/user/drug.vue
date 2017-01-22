@@ -218,7 +218,8 @@
                         showCancelButton: true
                     }).then(action => {
                         if(action === 'confirm'){
-                        _self.$route.router.go({path: '/user/sick',replace:true})
+	                        _self.drug_time = ''
+                          _self.$route.router.go({path: '/user/sick',replace:true})
                         }
                     });
                 }

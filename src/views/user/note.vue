@@ -24,9 +24,10 @@
 									<span class="mint-cell-text">
 										<span>{{ items.drName }}</span>丨
 										<span class="leh-fs-fourteen">{{ items.drCustName }}</span>
-										<span class="fr leh-fs-fourteen leh-c-grey">{{ items.lastActiveTime }}</span>
 									</span>
 								<span class="mint-cell-label">{{ items.lastReplyContent || '暂无回复' }}</span>
+								<span class="leh-fs-fourteen leh-c-grey">{{ items.lastActiveTime }}</span>
+
 							</label>
 							<div class="mint-cell-value">
 								<span></span>
@@ -116,8 +117,8 @@
 	.note-list-title .icon-wx-take-round{color: #47c688;}
 	.note-list-title:after{right: 12px;top: 14px;}
 	.note-content .mint-cell:before{border: 0;}
-	.note-content .mint-cell-text{display: block;}
-	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap; height: 16px;}
+	.note-content .mint-cell-text{display: block;line-height: 22px}
+	.note-content .mint-cell-label{color: #363636;text-overflow:ellipsis; overflow:hidden; white-space:nowrap; height: 16px;margin: 8px 0;}
 	.note-img{width: 49px;height: 49px;border-radius: 50%;overflow: hidden;margin-right: 10px;text-align: center;}
 	.note-img img{width: 100%;min-height: 100%;height: auto}
 

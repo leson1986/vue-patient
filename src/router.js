@@ -212,6 +212,11 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/user/liverAdd'], resolve)
 		  }
+	  },
+	  '/online/billTrend': {
+		  component (resolve) {
+			  require(['./views/online/billTrend'], resolve)
+		  }
 	  }
   })
 

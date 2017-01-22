@@ -3,8 +3,10 @@
 		<mt-button v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}" icon="arr-left" slot="left"></mt-button>
 		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
+
 	<div class="leh-float-box">
 		<mt-button type="green" @click="showPic">查看原图</mt-button>
+		<mt-button type="blue" v-link="{path: '/online/billTrend', query: {typeid: chkTypeId, groupid: groupId}, replace: true}">趋势图</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
@@ -12,7 +14,7 @@
 				<label class="mint-cell-title">
 					<span class="iconfont icon-wx-hospital leh-c-blue"></span>
 					<span class="mint-cell-text">{{ checkData.hispitalName }}</span>
-					<p>检验目的：{{ checkData.purpose }}</span></p>
+					<p>检验目的：{{ checkData.purpose }}</p>
 					<span class="mint-cell-label">{{ checkData.reportTime }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
@@ -53,7 +55,7 @@
 						</label>
 						<div class="mint-cell-value"></div>
 					</a>
-					<mt-cell v-for="items in datas.data" :title="items.reportTime" :istitle="true" :reddot="items.unread" :blackfont="true" @click="getCheckList(items.groupId,chkTypeId)"></mt-cell>
+					<mt-cell v-for="items in datas.data" :class="{'leh-active': groupId === items.groupId}" :title="items.reportTime" :istitle="true" :reddot="items.unread" :blackfont="true" @click="getCheckList(items.groupId,chkTypeId)"></mt-cell>
 				</div>
 			</div>
 		</mt-popup>
@@ -125,6 +127,7 @@
 			getCheckList (groupId, chkTypeIds) {
 
 				let _self = this
+				_self.groupId = groupId
 				_self.closePopup()
 
 				// 获取检查单详情
@@ -138,8 +141,6 @@
 
 					},_self)
 
-					// 消除红点
-					//postJson('api/chk/hasRead/' + groupId, '', (rsp_read)=>{},_self)
 				},_self)
 			},
 
@@ -181,6 +182,10 @@
 				this.maskbox = true
 				wrapPic(this.picUrls, '我的检查单', this, true)
 			},
+
+			goTrend () {
+				// 趋势图
+			}
 
 		},
 
@@ -244,4 +249,5 @@
 	.sick-popup-content .mint-cell:before{left: 17px;}
 	.sick-popup-content .mint-cell .mint-cell-text:after{left: -13px;top: 4px;}
 
+	.sick-popup-content .mint-cell.leh-active .mint-cell-text{color: #1dadfe;font-weight: bold;}
 </style>
