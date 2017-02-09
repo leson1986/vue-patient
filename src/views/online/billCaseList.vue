@@ -5,6 +5,7 @@
 	</mt-header>
 	<div class="leh-float-box">
 		<mt-button type="green" @click="showPic">查看原图</mt-button>
+		<mt-button type="blue" v-link="{path: '/online/billCaseManage', query: { medicalId: medicalId}, replace: true}">病程记录</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
@@ -98,7 +99,7 @@
 						</label>
 						<div class="mint-cell-value"></div>
 					</a>
-					<mt-cell v-for="items in datas.data" :title="items.rcdTime" :value="items.custName" :istitle="true" :reddot="items.unread" :blackfont="true" @click="getList(items.id)"></mt-cell>
+					<mt-cell v-for="items in datas.data" :title="items.rcdTime" :class="{'leh-active': medicalId == items.id}" :value="items.custName" :istitle="true" :reddot="items.unread" :blackfont="true" @click="getList(items.id)"></mt-cell>
 				</div>
 			</div>
 		</mt-popup>
@@ -168,6 +169,7 @@
 			getList (ids) {
 
 				let _self = this
+				_self.medicalId = ids
 				_self.closePopup()
 
 				// 获取病历详情
@@ -278,4 +280,6 @@
 	.sick-popup-content .mint-cell:before{left: 17px;}
 	.sick-popup-content .mint-cell .mint-cell-text:after{left: -13px;top: 4px;}
 
+	.sick-popup-content .mint-cell.leh-active .mint-cell-text,
+	.sick-popup-content .mint-cell.leh-active .mint-cell-value .leh-c-black{color: #1dadfe;font-weight: bold;}
 </style>
