@@ -2,7 +2,7 @@
     <mt-header fixed isgrey title="病程记录">
         <mt-button v-link="{path: '/online/billCaseList', query: {id: medicalId}, replace: true}" icon="arr-left" slot="left"></mt-button>
     </mt-header>
-    <mt-content>
+    <mt-content id="bodyBox">
         <div class="sick-manage-box">
             <div class="sick-manage-box-scroolbar"></div>
             <div class="sick-manage-content page-cell">
@@ -42,8 +42,9 @@
 
                 let _self = this
                 _self.medicalId = to.query.medicalId
+                _self.medicalDate = to.query.date
+                _self.getList(_self.medicalDate)
 
-                _self.getList()
                 next()
             }
         },
@@ -51,15 +52,30 @@
             return{
                 medicalId:'',
                 medicalRecords:[],
-                activeNum:''
+                activeNum:'',
+                medicalDate:'',
+                medicalQy:''
             }
         },
         methods: {
-            getList(){
+            getList(date){
                 let _self = this
                 getJson('api/medical/medicalRecords', '', (rsp)=>{
                     _self.medicalRecords = rsp
+                    _self.medicalQy = _self.medicalRecords.length
+                    setTimeout(function(){
+                        _self.goDate( _self.medicalQy,date)
+                    },100)
                 },_self)
+            },
+            goDate(index,date){
+                for(let i=0;i<index;i++){
+                   if($('.mint-cell-title p').eq(i).text() === date){
+                       let pOffset = $('.mint-cell-title p').eq(i).offset()
+                       $("#bodyBox")[0].scrollTop = pOffset.top - 80
+                       return
+                   }
+                }
             },
             itemActive(index,active){
                 let _self = this

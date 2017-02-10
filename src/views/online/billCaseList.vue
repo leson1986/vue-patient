@@ -5,7 +5,7 @@
 	</mt-header>
 	<div class="leh-float-box">
 		<mt-button type="green" @click="showPic">查看原图</mt-button>
-		<mt-button type="blue" v-link="{path: '/online/billCaseManage', query: { medicalId: medicalId}, replace: true}">病程记录</mt-button>
+		<mt-button type="blue" v-link="{path: '/online/billCaseManage', query: { medicalId: medicalId ,date: medicalData.rcdTime}, replace: true}">病程记录</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
