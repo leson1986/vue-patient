@@ -1060,3 +1060,26 @@ label.mint-cell-title{
 .icon-wx-reduce:before {
 	content: "\e62c";
 }
+.icon-wx-wallet:before {
+	content: "\e62e";
+}
+
+.icon-wx-bill:before {
+	content: "\e62f";
+}
+
+.icon-wx-cheap:before {
+	content: "\e630";
+}
+
+.icon-wx-meal:before {
+	content: "\e631";
+}
+
+.icon-wx-pack:before {
+	content: "\e634";
+}
+
+.icon-wx-notice-thin:before {
+	content: "\e633";
+}

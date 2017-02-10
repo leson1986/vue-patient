@@ -1,10 +1,19 @@
 <template>
-	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true"></mt-header>
+	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true">
+		<mt-button icon="notice-thin" slot="right" class-name="leh-ex" :reddot="noticeNum !== 0" v-link="{path: '/online/billNotice',replace:true}"></mt-button>
+	</mt-header>
 	<mt-content class-name="page-tabbar " :class="[{'leh-bg-grey-body' : selected==='个人中心'},{'doctor-index' : selected==='我的医生'}]">
 		<div class="page-wrap consult-padding-bottom">
 			<mt-tab-container :active.sync="selected">
 				<mt-tab-container-item id="在线门诊">
 					<div class="mint-tab-container-item">
+						<div class="consult-notice-box" v-if="msgNum !== 0">
+							<div class="consult-notice-text" @click="goNote()">
+								<span class="iconfont icon-wx-mark"></span>
+								<span>你有{{ msgNum }}条未读留言，点击查看！</span>
+							</div>
+							<div class="consult-notice-close" @click="closeActive()"></div>
+						</div>
 						<div class="consult-tap-box">
 							<!--<mt-tab-item :class="{'leh-guide': firstTime}" v-link="{path: '/vue_html/vue_photo.html', query: {firsttime: firstTime, openID: 1}, replace: true}">
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
@@ -73,7 +82,10 @@
 										<span class="mint-cell-text" :class="{'leh-red-dot': unreadInfo.medicalQty !== 0}">病历</span>
 									</label>
 									<div class="consult-list-text">
-										<span>昨天转换<span v-text="recordInfo.medicalCreatedQty"></span></span>
+										<!--<span>昨天转换<span v-text="recordInfo.medicalCreatedQty"></span></span>-->
+										<span>总共　<span v-text="recordInfo.medicalCreatedQty"></span></span>
+										<span class="leh-c-grey-tint">丨</span>
+										<span>新增　<span v-text="unreadInfo.medicalQty "></span></span>
 									</div>
 									<div class="mint-cell-value">
 										<span class="iconfont icon-wx-arr-right"></span>
@@ -85,7 +97,10 @@
 										<span class="mint-cell-text" :class="{'leh-red-dot': unreadInfo.chkQty !== 0}">检查单</span>
 									</label>
 									<div class="consult-list-text">
-										<span>昨天转换<span v-text="recordInfo.chkCreatedQty"></span></span>
+										<!--<span>昨天转换<span v-text="recordInfo.chkCreatedQty"></span></span>-->
+										<span>总共　<span v-text="recordInfo.chkCreatedQty"></span></span>
+										<span class="leh-c-grey-tint">丨</span>
+										<span>新增　<span v-text="unreadInfo.chkQty"></span></span>
 									</div>
 									<div class="mint-cell-value">
 										<span class="iconfont icon-wx-arr-right"></span>
@@ -166,6 +181,9 @@
 						<p class="center-name">{{ personeInfo.patientName }}</p>
 					</div>
 					<div class="center-content">
+						<!--<div class="page-cell">
+							<mt-cell title="我的钱包" class="leh-ex" icon="wallet" icons="arr-right" istitle is-icon v-link="{path: '/user/wallet', replace: true}"></mt-cell>
+						</div>-->
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
@@ -244,6 +262,14 @@
 						// 我的医生
 						_self.pageDoctorNum = 1
 						_self.getDoctors()
+						getJson('api/systemNotices/unreadQty', '', (rsp_notice)=>{
+							//公告列表
+							_self.noticeNum = rsp_notice
+							getJson('api/patientMessages/unreadQty', '', (rsp_msg)=>{
+								//未读留言
+								_self.msgNum = rsp_msg
+							}, _self)
+						}, _self)
 					}, _self)
 				},_self)
 
@@ -273,7 +299,9 @@
 				pageDoctorTotal: 0,   // 我的医生列表总数
 				pageDoctorNum: 1,  // 我的医生列表页码
 				isDoctorPage: false, // 是否由我的医生返回
-				firstTime: false // 是否第一次进入
+				firstTime: false, // 是否第一次进入
+				noticeNum:0, //判断有多少条未读公告
+				msgNum:0, //判断有多少条未读留言
 			};
 		},
 
@@ -321,6 +349,14 @@
 					// 合并数组
 					_self.doctorItems = _self.doctorItems.concat(rsp.items)
 				},_self)
+			},
+			goNote(){
+				let _self = this
+				_self.$route.router.go({path: '/user/note',replace:true})
+				$('.consult-notice-box').css('height', '0px')
+			},
+			closeActive(){
+				$('.consult-notice-box').css('height', '0px')
 			}
 		},
 
@@ -362,7 +398,7 @@
 	.consult-tabbar-box .mint-tab-item:nth-of-type(1).is-selected .mint-tab-item-icon{background-position:0 -28px;}
 	.consult-tabbar-box .mint-tab-item:nth-of-type(2).is-selected .mint-tab-item-icon{background-position:-26px -28px;}
 	.consult-tabbar-box .mint-tab-item:nth-of-type(3).is-selected .mint-tab-item-icon{background-position:-53px -28px;}
-	.consult-tap-box{display: flex;text-align: center;background-color:#fff;padding: 10px 0;}
+	.consult-tap-box{display: flex;text-align: center;background-color:#fff;padding: 10px 0;position: static;}
 	.consult-tap-box .mint-tab-item-icon{width: 33px;height: 33px;display:inline-block;border-radius: 50%;overflow: hidden;background: url(../assets/img/consult-nav-ico.png) no-repeat;background-size: auto 33px;}
 	.consult-tap-box .mint-tab-item:nth-of-type(2) .mint-tab-item-icon{background-position-x: -39px;}
 	.consult-tap-box .mint-tab-item:nth-of-type(3) .mint-tab-item-icon{background-position-x: -79px;}
@@ -385,6 +421,14 @@
 	.consult-padding-bottom{padding-bottom: 55px;}
 	.consult-padding-bottom .mint-tab-container-wrap,.consult-container-item-hight{height: 100%;}
 	.consult-list-title .icon-wx-arr-right{color: #fff;background-color: #e5e5e5;font-size: 12px;padding: 2px 0;margin-left: 5px;}
+
+	.mint-button.leh-ex{overflow: visible;}
+	.mint-button.leh-ex .icon-wx-notice-thin{font-size: 18px;-webkit-text-stroke-width: 0px;color: #fff}
+	.mint-button.leh-ex label.mint-button-text.leh-red-dot:after{top: -5px;right:-5px;}
+	.consult-notice-box{background-color: #fefbec;height:44px;line-height:44px;padding:0 10px;font-size: 12px;color: #f64d30;overflow: hidden;position: relative; -webkit-transition: height 1s;transition: height 1s;}
+	.consult-notice-text{width: 85%;display: inline-block;}
+	.consult-notice-box .icon-wx-mark{float: left;margin-right: 12px;font-size: 17px;}
+	.consult-notice-close{position:absolute;right:10px;top:0;width:15%;height: 44px;overflow: hidden;background: url(../assets/img/notice-close.png) no-repeat right center;background-size: 15px;}
 	/*我的医生首页*/
 	.doctor-index-box .mint-cell:after{border: 0;}
 	.doctor-index-box .mint-cell:before{left: 10px;}
@@ -416,6 +460,10 @@
 	.center-content .icon-wx-disease{color: #8ad650;}
 	.center-content .icon-wx-link{color: #ffb67f;}
 	.center-content .mint-cell-value .icon-wx-arr-right{color: #aaa;}
+	.center-content .mint-cell-title{display: block;}
+	.center-content .mint-cell-title i.iconfont{margin-right: 5px}
+	.center-content .mint-cell.leh-ex:nth-last-of-type(1){margin:0 0 8px;}
+	.center-content .icon-wx-wallet{color: #f8bb0a;}
 
 	.consult-tip-img-box{display:none;position: absolute;top: 30%;left: 75%;z-index: 7;width: 200%;}
 	.consult-tap-box .mint-tab-item~.leh-black-shade{display: none;}

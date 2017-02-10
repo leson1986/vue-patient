@@ -217,7 +217,44 @@ export default function (router) {
 		  component (resolve) {
 			  require(['./views/online/billTrend'], resolve)
 		  }
-	  }
+	  },
+    //我的钱包
+    '/user/wallet': {
+      component (resolve) {
+        require(['./views/user/wallet'], resolve)
+      }
+    },
+    '/user/order': {
+      component (resolve) {
+        require(['./views/user/order'], resolve)
+      }
+    },
+    '/user/buy': {
+      component (resolve) {
+        require(['./views/user/buy'], resolve)
+      }
+    },
+    '/user/buyDetails': {
+      component (resolve) {
+        require(['./views/user/buyDetails'], resolve)
+      }
+    },
+    //病程管理
+    '/online/billCaseManage': {
+      component (resolve) {
+        require(['./views/online/billCaseManage'], resolve)
+      }
+    },
+    '/online/billNotice': {
+      component (resolve) {
+        require(['./views/online/billNotice'], resolve)
+      }
+    },
+    '/online/billNoticeContent': {
+      component (resolve) {
+        require(['./views/online/billNoticeContent'], resolve)
+      }
+    }
   })
 
   router.beforeEach(({to, from, next}) => {
