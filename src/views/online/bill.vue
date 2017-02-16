@@ -51,7 +51,7 @@
 				</mt-tab-container-item>
 				<mt-tab-container-item id="checked" :active.sync="active">
 					<div class="leh-null-data" v-if="!chkItems.length">暂无数据</div>
-					<a class="mint-cell document-index-check-list" v-for="items in chkItems" v-link="{path: '/online/billCheck', query:{gid: items.groupId, cid: items.chkTypeIds}, replace: true}">
+					<a class="mint-cell document-index-check-list" v-for="items in chkItems" v-link="{path: '/online/billCheck', query:{gid: items.groupId, cid: items.chkTypeIds,chkName:items.groupName}, replace: true}">
 						<span class="mint-cell-mask"></span>
 						<label class="mint-cell-title">
 							<span class="mint-cell-text" :class="{'leh-red-dot': items.unread}">{{ items.groupName }}</span>
@@ -139,7 +139,7 @@
 		methods: {
 			// 跳转到拍照页面
 			toTurnUrl (dates) {
-				window.location.href='http://wx.jk7.com/html/pay/vue_turn.html?dates='+ dates;
+				window.location.href='http://test.jk7.com/html/pay/vue_turn.html?dates='+ dates;
 			},
 			lehBack () {
 				$(".leh-active").removeClass('leh-active')
