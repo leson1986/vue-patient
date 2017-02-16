@@ -31,7 +31,7 @@
 		</div>
 		<div class="trend-main">
 			<span class="trend-main-text" v-show="show_trend">暂无数据</span>
-			<div id="container" style="min-width:320px;height:400px" v-show="!show_trend"></div>
+			<div id="container" style="min-width:300px;height:400px" v-show="!show_trend"></div>
 		</div>
 
 		<!--侧滑内容-->
@@ -157,10 +157,10 @@
 					},
 					xAxis: {
 						Labels: true,
-						tickWidth: 0,
+						/*tickWidth: 0,*/
 						type: 'datetime',
 						labels: {
-							step: 4,
+							step: 1,
 							formatter: function () {
 								return Highcharts.dateFormat('%Y-%m-%d', this.value);
 							}
@@ -183,12 +183,7 @@
 						{
 							connectNulls : true,
 						}
-					},
-					series: [{
-						name: 'All visits'
-					}, {
-						name: 'New visitors'
-					}]
+					}
 				});
 
 			},
