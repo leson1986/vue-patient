@@ -219,6 +219,7 @@
 				for(let i=0;i<datas.length;i++){
 					if(datas[i].unread == true){
 						_self.chkUnread = true
+						return
 					}else{
 						_self.chkUnread = false
 					}
