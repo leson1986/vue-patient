@@ -1,12 +1,14 @@
 <template>
-	<mt-header fixed isgrey title="我的检查单">
+	<mt-header fixed isgrey :title="chkName">
 		<mt-button v-link="{path: '/online/bill', query: {actives: 'checked'}, replace: true}" icon="arr-left" slot="left"></mt-button>
-		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
+		<mt-button icon="meun" slot="right" @click="showPopup" class="leh-ex">
+			<span :class="{'leh-red-dot': chkUnread}"></span>
+		</mt-button>
 	</mt-header>
 
 	<div class="leh-float-box">
 		<mt-button type="green" @click="showPic">查看原图</mt-button>
-		<mt-button type="blue" v-link="{path: '/online/billTrend', query: {typeid: chkTypeId, groupid: groupId}, replace: true}">趋势图</mt-button>
+		<mt-button type="blue" v-link="{path: '/online/billTrend', query: {typeid: chkTypeId, groupid: groupId, chkName: chkName}, replace: true}">趋势图</mt-button>
 	</div>
 	<mt-content class-name="page-popup">
 		<div class="page-cell sick-title">
@@ -14,7 +16,7 @@
 				<label class="mint-cell-title">
 					<span class="iconfont icon-wx-hospital leh-c-blue"></span>
 					<span class="mint-cell-text">{{ checkData.hispitalName }}</span>
-					<p>检验目的：{{ checkData.purpose }}</p>
+					<p>检验目的：<span v-if="checkData.purpose != ''">{{ checkData.purpose }}</span><span v-else>暂无</span></p>
 					<span class="mint-cell-label">{{ checkData.reportTime }}</span>
 				</label>
 				<div class="mint-cell-value"></div>
@@ -91,9 +93,8 @@
 				let _self = this
 				_self.groupId = to.query.gid
 				_self.chkTypeId = to.query.cid
-
+				_self.chkName = to.query.chkName
 				_self.getCheckList(_self.groupId, _self.chkTypeId)
-
 				next()
 
 			}
@@ -111,7 +112,9 @@
 				groupId: '', // 检查单ID
 				indexList: [], // 检查单索引列表
 				picUrls: [], // 图片
-				maskbox: false // 是否有查看大图遮罩
+				maskbox: false, // 是否有查看大图遮罩
+				chkName:'', //title名称
+				chkUnread:false
 			}
 		},
 
@@ -138,9 +141,9 @@
 					// 获取检查单索引
 					getJson('api/chk/index/' + chkTypeIds, '', (rsp_index)=>{
 							_self.indexList = _self.regroupArr(rsp_index)
-
+							//判断此类别的检查单是否有未读信息
+							_self.checkUnread(rsp_index)
 					},_self)
-
 				},_self)
 			},
 
@@ -169,7 +172,16 @@
 
 				return dest;
 			},
-
+			checkUnread(datas){
+				let _self = this
+				for(let i=0;i<datas.length;i++){
+					if(datas[i].unread == true){
+						_self.chkUnread = true
+					}else{
+						_self.chkUnread = false
+					}
+				}
+			},
 			// 查看原图
 			showPic (){
 
@@ -180,7 +192,7 @@
 					return
 				}
 				this.maskbox = true
-				wrapPic(this.picUrls, '我的检查单', this, true)
+				wrapPic(this.picUrls, this.chkName, this, true)
 			},
 
 			goTrend () {
@@ -233,7 +245,8 @@
 	.check-text-box{padding: 20px 10px; padding-bottom: 0;overflow: hidden;}
 	.check-text-box p{margin-top: 10px;padding: 8px;background-color:#f9f8f8;line-height: 25px;font-size:14px;border-radius: 5px;}
 	.check-arr-btn{border: 0; padding-top: 20px;text-align: center;height: 40px;}
-
+	.leh-ex.mint-button{overflow: visible;clear:both}
+	.leh-ex.mint-button span.leh-red-dot:after{top: -5px;right: -9px;}
 	.check-table-height {max-height: 200px; overflow: hidden}
 	.check-table-height-auto {height: auto}
 
@@ -250,4 +263,5 @@
 	.sick-popup-content .mint-cell .mint-cell-text:after{left: -13px;top: 4px;}
 
 	.sick-popup-content .mint-cell.leh-active .mint-cell-text{color: #1dadfe;font-weight: bold;}
+	.mint-header span.icon-wx-meun.leh-red-dot:after{top: -5px;}
 </style>

@@ -1,7 +1,9 @@
 <template>
 	<mt-header fixed isgrey title="我的病历">
 		<mt-button v-link="{path: '/online/bill', query: {tobill: true, actives: 'case'}, replace: true}" icon="arr-left" slot="left"></mt-button>
-		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
+		<mt-button icon="meun" slot="right" @click="showPopup" class="leh-ex">
+			<span :class="{'leh-red-dot': chkUnread}"></span>
+		</mt-button>
 	</mt-header>
 	<div class="leh-float-box">
 		<mt-button type="green" @click="showPic">查看原图</mt-button>
@@ -153,7 +155,8 @@
 		    medicalData: '',  // 病历详情数据
 		    indexList: [], // 病历索引列表
 		    picUrls: [], // 图片
-		    maskbox: false // 是否有查看大图遮罩
+		    maskbox: false, // 是否有查看大图遮罩
+			chkUnread:false
 	    }
 	  },
 
@@ -180,7 +183,8 @@
 					// 获取病历索引
 					getJson('api/medical/index/', '', (rsp_index)=>{
 						_self.indexList = _self.reGroupArr(rsp_index)
-
+						//判断此类别的病历是否有未读信息
+						_self.checkUnread(rsp_index)
 					},_self)
 				},_self)
 			},
@@ -210,7 +214,16 @@
 
 				return dest;
 			},
-
+			checkUnread(datas){
+				let _self = this
+				for(let i=0;i<datas.length;i++){
+					if(datas[i].unread == true){
+						_self.chkUnread = true
+					}else{
+						_self.chkUnread = false
+					}
+				}
+			},
 			// 查看原图
 			showPic (){
 
@@ -266,8 +279,8 @@
 	.sick-from-list .mint-cell-label p{line-height: 25px;}
 	.sick-list .mint-cell-text{font-size: 15px;}
 	.sick-list.leh-ex .mint-cell:before{border-bottom: 1px solid #e5e5e5;}
-
-
+	.leh-ex.mint-button{overflow: visible;clear:both}
+	.leh-ex.mint-button span.leh-red-dot:after{top: -5px;right: -9px;}
 	/*侧滑*/
 	.sick-popup-box{z-index: 10;background-color: rgba(0,0,0,0.5) !important;}
 	.sick-popup-content{width: 70%;z-index:10;position: fixed;right: 0;top: 0;bottom: 0;background-color: #fff;overflow: auto;}

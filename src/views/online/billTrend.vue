@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed isgrey title="指标趋势图">
-		<mt-button v-link="{path: '/online/billCheck', query: {cid: typeid, gid: groupid}, replace: true}" icon="arr-left" slot="left"></mt-button>
+		<mt-button v-link="{path: '/online/billCheck', query: {cid: typeid, gid: groupid, chkName: chkName}, replace: true}" icon="arr-left" slot="left"></mt-button>
 		<mt-button icon="meun" slot="right" @click="showPopup"></mt-button>
 	</mt-header>
 	<mt-content class-name="page-popup">
@@ -75,6 +75,7 @@
 
 				_self.typeid = to.query.typeid
 				_self.groupid = to.query.groupid
+				_self.chkName = to.query.chkName
 				_self.getCheckList(_self.typeid)
 				next()
 
@@ -96,6 +97,7 @@
 				lis: 0, // li 个数
 				islft: false, // 是否存有数量
 				isrgt: true, // 是否存有数量
+				chkName:''
 			}
 		},
 
