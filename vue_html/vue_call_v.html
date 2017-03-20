@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>随访家园患者端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="bookmark" href="/favicon.ico"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<style>
+    @import './assets/css/mint-ui.css';
+    @import './assets/css/common.css';
+    @import './assets/css/LArea.min.css';
+
+    .apply-call-ipt-box {overflow: hidden;}
+    .apply-call-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
+    .apply-call-ipt-box .mint-cell:before{transform:scaleY(1)}
+    .apply-call-ipt-box .mint-cell:after,.apply-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
+    .apply-call-ipt-box .mint-cell:before,.apply-title-box .mint-cell:before{left: 10px;}
+    .apply-call-ipt-box input,.apply-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;padding-left: 0;}
+    .apply-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;border:1px solid transparent;}
+    .apply-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
+    .apply-call-ipt-box .mint-cell-label p{color: #363636;line-height: 22px;margin-bottom: 5px;}
+    .apply-title-box .mint-cell:after{display: none;}
+    .apply-img{width: 50px;height: 50px;border-radius: 50%;overflow:hidden;margin:0 10px;text-align: center;}
+    .apply-img img{width: 100%;min-height: 100%;height: auto}
+    .apply-title-box .mint-cell-label{font-size: 14px;}
+    .apply-title-box .mint-cell-label span:nth-of-type(1){max-width: 65%;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;display: inline-block;}
+    .apply-title-box .mint-cell-label span:nth-of-type(2){max-width: 35%;}
+    .apply-title-box .mint-cell-text span.fr{line-height: 20px;}
+    .apply-call-ipt-ex input{width: 60% !important;}
+    .apply-call-ipt-ex button.mint-button{position:absolute;bottom:10px;right:10px;height:32px;width:94px;padding:0;font-size: 14px;background-color: transparent;border:1px solid #242424;}
+    .apply-call-tap .weui_cell{padding-left: 0;}
+    .apply-call-tap .weui_cells{margin-top: 0;}
+    .apply-call-tap .weui_cells:before,.apply-call-tap .weui_cells:after{border: 0;}
+    .apply-call-select-doc{margin-top:10px;font-size: 16px;height: 18px;line-height: 18px;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+    .apply-call-tap-box{padding: 10px 10px 20px 0;border-bottom: 1px solid #e5e5e5;margin-left: 10px;}
+    .apply-call-tap-box .weui_uploader_file{margin-right: 20px;margin-bottom: 0;}
+    .apply-call-tap-box .weui_uploader_input_wrp{margin-top: 20px !important;margin-left: 20px;}
+    .apply-call-tap-box .weui_uploader_input_wrp.leh-ex{margin: 0 auto !important;float: inherit;}
+    .apply-call-ipt-list span.icon-wx-take,
+    .apply-call-ipt-list span.icon-wx-close-thin,
+    .apply-call-ipt-ex span.icon-wx-take,
+    .apply-call-ipt-ex span.icon-wx-close-thin{position: absolute;right: 10px;bottom: 10px;height: 20px;width: 20px;line-height: 20px;text-align: center;font-size: 12px;color: #fff;border-radius: 50px;}
+    .apply-call-ipt-list span.icon-wx-take,
+    .apply-call-ipt-ex span.icon-wx-take{background-color: #1faa2b;}
+    .apply-call-ipt-list span.icon-wx-close-thin,
+    .apply-call-ipt-ex span.icon-wx-close-thin{background-color: #fc552e;display: none;}
+    .apply-call-ipt-ex span.icon-wx-take,
+    .apply-call-ipt-ex span.icon-wx-close-thin{right:110px !important;}
+
+</style>
+
+<body id="info">
+<header class="mint-header is-fixed leh-bg-grey-head">
+    <div class="mint-header-button is-left">
+        <a href="">
+            <span class="iconfont icon-wx-arr-left leh-c-green"></span>
+        </a>
+    </div>
+    <h1 class="mint-header-title leh-c-black">申请通话</h1>
+    <div class="mint-header-button is-right"> </div>
+</header>
+
+<div class="leh-float-box">
+    <button class="mint-button mint-button--blue mint-button--large">
+        <label class="mint-button-text">提交申请</label>
+    </button>
+</div>
+<div class="leh-wrap">
+    <div class="page-cell apply-title-box">
+        <a class="mint-cell">
+					<span class="mint-cell-mask">
+						<div class="apply-img">
+                            <img src="../../img/private.jpg"/>
+                        </div>
+					</span>
+            <div class="mint-cell-title">
+						<span class="mint-cell-text">
+							<span class="leh-fs-sixteen">高志良</span>
+							<span class="leh-fs-twelve leh-c-grey">主任医师</span>
+							<span class="leh-fs-fourteen fr"><span class="leh-c-blue-strong">50.00</span> 元/次</span>
+						</span>
+						<span class="mint-cell-label leh-c-black">
+							<span class="leh-c-grey">南方医科大学南方医院</span>
+							<span class="fr">通话10分钟</span>
+						</span>
+            </div>
+            <div class="mint-cell-value"></div>
+        </a>
+    </div>
+    <div class="page-cell apply-call-ipt-box">
+        <a class="mint-cell">
+            <label class="mint-cell-title apply-call-ipt-list">
+                <span class="mint-cell-text leh-c-green">接听人电话<span class="leh-c-red"> *</span></span>
+                <input type="tel" maxlength="11" placeholder="请输入11位数手机号码"/>
+                <!--判断验证码是否正确才会出现的提示图标-->
+                <span class="iconfont icon-wx-take"></span>
+                <span class="iconfont icon-wx-close-thin"></span>
+            </label>
+            <div class="mint-cell-value"></div>
+        </a>
+        <a class="mint-cell apply-call-ipt-ex">
+            <label class="mint-cell-title">
+                <span class="mint-cell-text leh-c-red leh-fs-fourteen">您填写的不是注册号码，需要验证</span>
+                <input type="tel" maxlength="6" placeholder="请输入验证码"/>
+                <!--判断验证码是否正确才会出现的提示图标-->
+                <span class="iconfont icon-wx-take"></span>
+                <span class="iconfont icon-wx-close-thin"></span>
+
+                <button class="mint-button mint-button--normal">
+                    <label class="mint-button-text">获取验证码</label>
+                </button>
+            </label>
+            <div class="mint-cell-value"></div>
+        </a>
+        <a class="mint-cell">
+            <label class="mint-cell-title">
+                <span class="mint-cell-text leh-c-green">病情描述<span class="leh-c-red"> *</span></span>
+                <textarea rows="4" placeholder="填写症状表现、检查结果、用药和希望获得的帮助" maxlength="200"></textarea>
+            </label>
+            <div class="mint-cell-value"></div>
+        </a>
+        <a class="mint-cell">
+            <label class="mint-cell-title">
+                <span class="mint-cell-text leh-c-green">相关图片</span>
+                <span class="leh-c-grey leh-fs-twelve">（选填，限3张图片）</span>
+            </label>
+            <div class="mint-cell-value"></div>
+        </a>
+    </div>
+    <div class="apply-call-tap-box">
+        <div class="apply-call-tap">
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <div class="weui_uploader">
+                            <div class="weui_uploader_bd">
+                                <ul class="weui_uploader_files">
+                                    <li class="weui_uploader_file">
+                                        <img src="../../html/vue-patient/src/assets/img/consult-nav-ico.png"/>
+                                    </li>
+                                    <li class="weui_uploader_file">
+                                        <img src="../../guide/img/how-to-bind-doctor-1.png"/>
+                                    </li>
+                                    <!--未上传图片时-->
+                                    <div class="weui_uploader_input_wrp leh-ex" style="display: none;">
+                                        <span class="iconfont icon-wx-add"></span>
+                                        <input class="weui_uploader_input" type="file" accept="image/*" multiple="">
+                                    </div>
+                                    <!--已上传一张或一张以上图片时-->
+                                    <div class="weui_uploader_input_wrp">
+                                        <span class="iconfont icon-wx-add"></span>
+                                        <input class="weui_uploader_input" type="file" accept="image/*" multiple="">
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-cell apply-call-ipt-box">
+        <a class="mint-cell">
+            <label class="mint-cell-title">
+                <span class="mint-cell-text leh-c-green">温馨提示</span>
+                <div class="mint-cell-label">
+                    <p>1. 提交申请不用付款，仅作为向医生发起预约请求。</p>
+                    <p>2. 申请通过或失败后会在随访家园公众号上通知，请留意信息。</p>
+                </div>
+            </label>
+            <div class="mint-cell-value"></div>
+        </a>
+
+    </div>
+</div>
+
+
+
+
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+<script type="text/javascript" src='./assets/js/LAreaData2.js'></script>
+<script type="text/javascript" src='./assets/js/LArea.min.js'></script>
+
+<script>
+    var vue;
+    function vue_init () {
+        vue = new Vue({
+            el: "#info",
+            data: {
+
+            },
+            created: function () {
+
+            },
+            ready: function () {
+
+            },
+            methods: {
+
+
+            }
+
+        });
+
+    }
+    vue_init()
+
+</script>
+</body>
+</html>

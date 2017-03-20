@@ -254,6 +254,22 @@ export default function (router) {
       component (resolve) {
         require(['./views/online/billNoticeContent'], resolve)
       }
+    },
+    //电话预约
+    '/online/book': {
+      component (resolve) {
+        require(['./views/online/book'], resolve)
+      }
+    },
+    '/online/bookContent': {
+      component (resolve) {
+        require(['./views/online/bookContent'], resolve)
+      }
+    },
+     '/online/bookApply': {
+      component (resolve) {
+        require(['./views/online/bookApply'], resolve)
+      }
     }
   })
 
