@@ -24,7 +24,7 @@
 	.msg-call-ipt-box .mint-cell:after,.msg-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.msg-call-ipt-box .mint-cell:before{left: 10px;}
 	.msg-call-ipt-box input,.msg-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 16px;}
-	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;}
+	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;padding-left: 0 !important;}
 	.msg-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
 	.msg-call-tap .weui_cells{margin-top: 0;}
 	.msg-call-tap .weui_cells:before,.msg-call-tap .weui_cells:after{border: 0;}
@@ -172,15 +172,15 @@
 	}
 </style>
 
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
 <body id="msg">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
-		<a href="http://wx.jk7.com/home">
+		<a href="http://test.jk7.com/home">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -195,7 +195,7 @@
 				<div class="msg-call-select-doc"  :id="doctor_id">{{ name }} <span class="leh-c-grey leh-fs-twelve">{{ docTitle }}</span></div>
 
 				<ul class="leh-select-drag-box" v-show="show_name">
-					<li v-for="items in users"  @click="getName(items.name, items.id)">{{ items.name }}</li>
+					<li v-for="items in users"  @click="getName(items.name, items.id, items.title)">{{ items.name }}</li>
 				</ul>
 			</label>
 			<div class="mint-cell-value">
@@ -336,7 +336,7 @@
 				var _self = this
 				// 患者评价
 				$.ajax({
-					url: 'http://wx.jk7.com/api/patientMessages/info',
+					url: 'http://test.jk7.com/api/patientMessages/info',
 					type: 'GET',
 					dataType: "json",
 					contentType: 'application/x-www-form-urlencoded',
@@ -359,11 +359,11 @@
 						_self.docTitle = rsp[0].title
 						_self.doctor_id = rsp[0].id
 						_self.diseaseVal = data.data.disease
-						_self.getName(_self.name, _self.doctor_id)
+						_self.getName(_self.name, _self.doctor_id, _self.docTitle)
 						_self.getAllowance(_self.doctor_id)
 					}
 				});
-				
+
 
 			},
 			ready: function () {
@@ -383,7 +383,7 @@
 
 					var _self = this
 					$.ajax({
-						url: 'http://wx.jk7.com/api/valid',
+						url: 'http://test.jk7.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -426,7 +426,7 @@
 					var _self = this
 					// 患者评价
 					$.ajax({
-						url: 'http://wx.jk7.com/api/patientMessages/allowance/'+ ids,
+						url: 'http://test.jk7.com/api/patientMessages/allowance/'+ ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -451,10 +451,11 @@
 						}
 					});
 				},
-				getName: function (names, ids) {
+				getName: function (names, ids, titles) {
 					this.name = names
 					this.doctor_id = ids
 					this.old_name = names
+					this.docTitle = titles
 
 					this.getAllowance(ids)
 				},
@@ -592,7 +593,7 @@
 
 					$.ajax({
 						 type: "POST",
-						 url: 'http://wx.jk7.com/api/PatientMessages',
+						 url: 'http://test.jk7.com/api/PatientMessages',
 						 data: params,
 						 dataType: 'json',
 							headers: {
@@ -612,7 +613,7 @@
 									 alert(msg)
 								 }else{
 									 _self.serverIds.length = 0
-									 window.location.href='http://wx.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
+									 window.location.href='http://test.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
 
 								 }
 						 },
@@ -680,7 +681,7 @@
 						// 确定
 						_self.showTips = false
 
-						window.location.href='http://wx.jk7.com/html/pay/vue_pay_v.html?drid='
+						window.location.href='http://test.jk7.com/html/pay/vue_pay_v.html?drid='
 								+_self.doctor_id
 								+'&openID='
 								+_self.openID

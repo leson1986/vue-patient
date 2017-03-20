@@ -175,7 +175,9 @@ label.mint-cell-title{
 .leh-c-blue {
 	color: #88c8ff;
 }
-
+.leh-c-blue-strong {
+	color: #1cadfe;
+}
 .leh-c-qing {
 	color: #28CF9B;
 }
@@ -199,7 +201,9 @@ label.mint-cell-title{
 .leh-c-red {
 	color: #ff6060;
 }
-
+.leh-c-red-strong {
+	color: #ff0707 !important;
+}
 .leh-c-yellow-green {
 	color: #c4de00;
 }
@@ -215,7 +219,9 @@ label.mint-cell-title{
 .leh-c-red-tint {
 	color: #ff9992;
 }
-
+.leh-c-orange-tint {
+	color: #ff9329;
+}
 .leh-bold {
 	font-weight: bold;
 }
@@ -1082,4 +1088,18 @@ label.mint-cell-title{
 
 .icon-wx-notice-thin:before {
 	content: "\e633";
+}
+.icon-wx-will-pay:before {
+	content: "\e647";
+}
+
+.icon-wx-will-call:before {
+	content: "\e648";
+}
+
+.icon-wx-phone:before {
+	content: "\e649";
+}
+.icon-wx-time:before {
+	content: "\e632";
 }
