@@ -198,7 +198,9 @@ label.mint-cell-title{
 .leh-c-red {
 	color: #ff6060;
 }
-
+.leh-c-red-strong {
+	color: #ff0707 !important;
+}
 .leh-c-yellow-green {
 	color: #c4de00;
 }

@@ -1,31 +1,31 @@
 <template>
     <mt-header fixed title="预约详情" isgrey>
-            <mt-button v-link="{path: '/online/book', query: {}, replace: true}" icon="arr-left" slot="left"></mt-button>
+            <mt-button v-link="{path: from_path ,query:{active:'book'}, replace: true}" icon="arr-left" slot="left"></mt-button>
     </mt-header>
     <div class="leh-float-box">
-        <mt-button type="grey"><span class="book-phone-btn"><span class="iconfont icon-wx-take"></span>{{bookTip}}</span></mt-button>
+        <mt-button type="grey"><span class="book-phone-btn" :class="{'leh-c-red':doctorContent.status == 4,'leh-c-black':doctorContent.status == 2}"><span class="iconfont icon-wx-take" v-if="doctorContent.status == 2"></span>{{bookTip}}</span></mt-button>
     </div>
     <mt-content>
         <div class="apply-tip-box">
-            <p style="display: none;">本次通话已结束，结束时间为：2017-03-15 10:00</p>
-            <p>预约成功，时间为：2017-03-10 09:00</p>
+            <p v-if="doctorContent.status == 4">本次通话已结束，结束时间为：<br>{{doctorContent.serviceDate}} {{doctorContent.serviceTime}}</p>
+            <p v-if="doctorContent.status == 2">预约成功，时间为：<br>{{doctorContent.serviceDate}} {{doctorContent.serviceTime}}</p>
         </div>
         <div class="page-cell apply-title-box">
             <a class="mint-cell">
 					<span class="mint-cell-mask">
 						<div class="apply-img">
-							<img src="../../assets/img/private.jpg"/>
+							<img :src="doctorContent.drPhoto"/>
 						</div>
 					</span>
                 <div class="mint-cell-title">
 						<span class="mint-cell-text">
-							<span class="leh-fs-sixteen">高志良</span>
-							<span class="leh-fs-twelve leh-c-grey">主任医师</span>
-							<span class="leh-fs-fourteen fr"><span class="leh-c-blue-strong">50.00</span> 元/次</span>
+							<span class="leh-fs-sixteen" v-text="doctorContent.drName"></span>
+							<span class="leh-fs-fourteen leh-c-grey" v-text="doctorContent.drTitle"></span>
+							<span class="leh-fs-fourteen fr"><span class="leh-c-blue-strong"  v-text="doctorContent.price"></span> 元/次</span>
 						</span>
 						<span class="mint-cell-label leh-c-black">
-							<span class="leh-c-grey">南方医科大学南方医院</span>
-							<span class="fr">通话10分钟</span>
+							<span class="leh-c-grey" v-text="doctorContent.hosipital"></span>
+							<span class="fr">通话{{doctorContent.duration}}分钟</span>
 						</span>
                 </div>
                 <div class="mint-cell-value"></div>
@@ -35,14 +35,14 @@
             <a class="mint-cell">
                 <label class="mint-cell-title">
                     <span class="mint-cell-text leh-c-green">接听人电话<span class="leh-c-red"> *</span></span>
-                    <span class="mint-cell-label leh-c-black">13500121212</span>
+                    <span class="mint-cell-label leh-c-black" v-text="doctorContent.tel"></span>
                 </label>
                 <div class="mint-cell-value"></div>
             </a>
             <a class="mint-cell">
                 <label class="mint-cell-title">
                     <span class="mint-cell-text leh-c-green">病情描述<span class="leh-c-red"> *</span></span>
-                    <span class="mint-cell-label leh-c-black">撒娇打开就爱看奥斯卡很大声卡哈萨克带回家看回到家卡上抠脚大汉看紧生得好快叫啊客户端看</span>
+                    <span class="mint-cell-label leh-c-black" v-text="doctorContent.diseaseDecription"></span>
                 </label>
                 <div class="mint-cell-value"></div>
             </a>
@@ -53,17 +53,12 @@
                 <div class="mint-cell-value"></div>
             </a>
         </div>
-        <div class="apply-call-tap-box">
+        <div class="book-not-pic" v-if="doctorContent.photos.length == 0">暂无图片</div>
+        <div class="apply-call-tap-box" v-else>
             <div class="apply-call-tap">
                 <mt-picture>
-                    <mt-pic-list @click="showPic(items.url, items.id)">
-                        <img src="../../assets/img/private.jpg"/>
-                    </mt-pic-list>
-                    <mt-pic-list @click="showPic(items.url, items.id)">
-                        <img src="../../assets/img/private.jpg"/>
-                    </mt-pic-list>
-                    <mt-pic-list @click="showPic(items.url, items.id)">
-                        <img src="../../assets/img/private.jpg"/>
+                    <mt-pic-list v-for="items in doctorContent.photos" @click="showPic()">
+                        <img :src="items"/>
                     </mt-pic-list>
                 </mt-picture>
             </div>
@@ -73,15 +68,17 @@
                 <label class="mint-cell-title">
                     <span class="mint-cell-text leh-c-green">温馨提示</span>
                     <div class="mint-cell-label">
-                        <p>1. 预约确认通过后，用户需在距预约时间10分钟前进行付款，否则付款将会关闭。</p>
+                        <p>1. 预约确认通过后，用户需在距预约时间的30分钟前进行付款，否则付款将会关闭。</p>
                         <p>2. 付款成功后，用户需在预约时间前后保持电话通畅，以免联系不到。</p>
-                        <p>3. 电话通话前，用户将接到400-966-8838。</p>
+                        <p>3. 通话开始前，您将接到400-966-8838或02126125797，此号码将是接通您和医生的第三方号码，请勿拒接。</p>
                     </div>
                 </label>
                 <div class="mint-cell-value"></div>
             </a>
         </div>
     </mt-content>
+    <!-- 用于展示插件的容器 -->
+    <div class="overlay" id="overlay"></div>
 </template>
 <script>
     import MtHeader from '../../components/header.vue'
@@ -95,24 +92,41 @@
 
     export default{
         route: {
-            data ({to, next}) {
-
-
+            data ({from, to, next}) {
+                let _self = this
+                _self.drId = to.query.id
+                _self.from_path = from.path
+                _self.getBookContent(_self.drId)
                 next()
             }
         },
 
         data () {
             return{
-                bookTip:'预约已付款'
+                bookTip:'',
+                drId:'',
+                from_path:'',
+                bookStaue:'',
+                doctorContent:'',
+                bookTime:''
             }
         },
 
         methods: {
-            showPic (urls, ids){
+            getBookContent(id){
                 let _self = this
-                wrapPic(urls, '手写病历') // 查看图片
-
+                getJson('/api/telService/info?id=' + id, '', (rsp)=>{
+                    _self.doctorContent = rsp
+                    if(_self.doctorContent.status == 4){
+                        _self.bookTip = '通话已结束'
+                    }else if(_self.doctorContent.status == 2){
+                        _self.bookTip = '预约已付款'
+                    }
+                },_self)
+            },
+            showPic (){
+                let _self = this
+                wrapPic(_self.doctorContent.photos, '预约详情') // 查看图片
             },
         },
 
@@ -129,6 +143,8 @@
 </script>
 
 <style>
+    @import '../../assets/css/normalize.css';
+    @import '../../assets/css/MPreview.mobile.css';
     .apply-call-ipt-box {overflow: hidden;}
     .apply-call-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
     .apply-call-ipt-box .mint-cell:before{transform:scaleY(1)}
@@ -151,9 +167,10 @@
     .apply-call-tap-box .weui_uploader_file{margin-right: 20px;margin-bottom: 0;}
     .apply-call-tap-box .weui_uploader_input_wrp{margin-top: 20px !important;margin-left: 20px;}
     .apply-call-tap-box .weui_uploader_input_wrp.leh-ex{margin: 0 auto !important;float: inherit;}
-    .apply-call-ipt-box .mint-cell-label.leh-c-black{line-height: 22px;}
+    .apply-call-ipt-box .mint-cell-label.leh-c-black{line-height: 22px;white-space:normal;overflow: hidden;width: 100%;}
     .apply-tip-box{padding: 10px 0;background-color: #fffad4;text-align: center;margin: 0 auto;}
     .apply-tip-box p{max-width: 80%;display: inline-block;line-height: 22px;font-size: 14px;color: #f77a66;}
+    .book-not-pic{border-bottom:1px solid #e5e5e5;margin-left:10px;padding-bottom:10px}
 
     .book-phone-btn{position: relative;}
     .book-phone-btn .icon-wx-take{position: absolute;left: -30px;top:50%;margin-top:-10px;background-color:#39b042;height: 20px;width: 20px;line-height: 20px;text-align: center;font-size: 12px;color: #bababa;border-radius: 50px;}

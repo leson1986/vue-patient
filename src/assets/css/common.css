@@ -1103,3 +1103,18 @@ label.mint-cell-title{
 .icon-wx-time:before {
 	content: "\e632";
 }
+.icon-wx-user:before {
+	content: "\e64a";
+}
+
+.icon-wx-other:before {
+	content: "\e64b";
+}
+
+.icon-wx-msg:before {
+	content: "\e64c";
+}
+
+.icon-wx-doctor:before {
+	content: "\e64d";
+}
