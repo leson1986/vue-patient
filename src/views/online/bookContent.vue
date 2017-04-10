@@ -167,7 +167,7 @@
     .apply-call-tap-box .weui_uploader_file{margin-right: 20px;margin-bottom: 0;}
     .apply-call-tap-box .weui_uploader_input_wrp{margin-top: 20px !important;margin-left: 20px;}
     .apply-call-tap-box .weui_uploader_input_wrp.leh-ex{margin: 0 auto !important;float: inherit;}
-    .apply-call-ipt-box .mint-cell-label.leh-c-black{line-height: 22px;white-space:normal;overflow: hidden;width: 100%;}
+    .apply-call-ipt-box .mint-cell-label.leh-c-black{line-height: 22px;overflow: hidden;width: 100%;word-wrap: break-word;word-break: break-all;}
     .apply-tip-box{padding: 10px 0;background-color: #fffad4;text-align: center;margin: 0 auto;}
     .apply-tip-box p{max-width: 80%;display: inline-block;line-height: 22px;font-size: 14px;color: #f77a66;}
     .book-not-pic{border-bottom:1px solid #e5e5e5;margin-left:10px;padding-bottom:10px}
