@@ -1,6 +1,6 @@
 <template>
 	<mt-header fixed :title="selected" class-name="leh-bg-green" v-if="selected==='个人中心' ? false : true">
-		<mt-button icon="notice-thin" slot="right" class-name="leh-ex" :reddot="noticeNum !== 0" v-link="{path: '/online/billNotice',replace:true}"></mt-button>
+		<mt-button icon="notice-thin" slot="right" class-name="leh-ex" :reddot="noticeNum !== 0" v-link="{path: '/online/billNotice',replace:true}" v-if="selected==='在线门诊' ? true : false"></mt-button>
 	</mt-header>
 	<mt-content class-name="page-tabbar " :class="[{'leh-bg-grey-body' : selected==='个人中心'},{'doctor-index' : selected==='我的医生'}]">
 		<div class="page-wrap consult-padding-bottom">
@@ -49,6 +49,40 @@
 								<span slot="icon"><span class="mint-tab-item-icon"></span></span>
 								留言咨询
 							</mt-tab-item>-->
+						</div>
+						<div class="consult-list-box" v-if="bookList.length !== 0">
+							<div class="leh-null-box"></div>
+							<div class="page-cell consult-list-title">
+								<a class="mint-cell">
+									<span class="mint-cell-mask"></span>
+									<div class="mint-cell-title">
+										<span class="mint-cell-text leh-c-green">我的预约</span>
+									</div>
+									<div class="mint-cell-value"></div>
+								</a>
+							</div>
+							<div class="page-cell consult-list-main">
+								<a class="mint-cell" :class="{'leh-ex-hight':items.status == 2}" v-for="items in bookList" @click="goBook(items.id,items.status)">
+									<div class="mint-cell-title">
+										<span class="mint-cell-text">{{items.drName}}　<span class="leh-fs-twelve leh-c-grey" v-text="items.drTitle"></span></span>
+									</div>
+									<div class="mint-cell-value" v-if="items.status == 1">
+										<span>待付款</span>
+										<span class="iconfont icon-wx-will-pay"></span>
+									</div>
+									<div class="mint-cell-value" v-if="items.status == 2">
+										<span>待通话</span>
+										<span class="iconfont icon-wx-will-call" ></span>
+									</div>
+									<span class="consult-list-call-time" v-if="items.status == 2">
+										<span class="leh-c-red-tint">
+											<span class="iconfont icon-wx-time"></span>
+											<span>预约时间</span>
+										</span>　
+										<span class="leh-fs-twelve leh-c-black">{{items.date}} {{items.time}}</span>
+									</span>
+								</a>
+							</div>
 						</div>
 						<div class="leh-null-box"></div>
 						<div class="consult-list-box">
@@ -166,7 +200,7 @@
 							<div class="mint-cell-value"></div>
 						</a>
 
-						<div class="page-infinite-loading document-index-load-tap" v-if="pageDoctorNum*10 <= pageDoctorTotal">
+						<div class="page-infinite-loading document-index-load-tap" v-if="pageDoctorNum*10 < pageDoctorTotal">
 							<mt-button size="large" type="transparent" icon="load" @click="moreDoctor" >点击加载更多</mt-button>
 						</div>
 					</div>
@@ -186,7 +220,8 @@
 						</div>-->
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
-							<mt-cell title="记录中心" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
+							<mt-cell title="预约记录" icon="phone" icons="arr-right" :reddot="bookNum !== 0" istitle is-icon :reddot="" v-link="{path: '/online/book',query:{active:'book'}, replace: true}"></mt-cell>
+							<mt-cell title="留言记录" icon="note" icons="arr-right" istitle is-icon :reddot="personeInfo.messageUnread" v-link="{path: '/user/note', replace: true}"></mt-cell>
 							<mt-cell title="疾病相关" icon="disease" icons="arr-right" istitle is-icon v-link="{path: '/user/sick', replace: true}"></mt-cell>
 
 							<mt-cell title="关于随访家园" icon="link" icons="arr-right" istitle is-icon v-link="{path: '/user/about', replace: true}"></mt-cell>
@@ -253,24 +288,29 @@
 					_self.recordInfo = rsp.recordInfo
 					_self.rechecks = rsp.rechecks
 					_self.firstTime = rsp.firstTime ? 1 : 0
-
-					// 个人信息
-					getJson('api/records/patientIndex', '', (rsp_info)=>{
-
-						_self.personeInfo = rsp_info
-
-						// 我的医生
-						_self.pageDoctorNum = 1
-						_self.getDoctors()
-						getJson('api/systemNotices/unreadQty', '', (rsp_notice)=>{
-							//公告列表
-							_self.noticeNum = rsp_notice
-							getJson('api/patientMessages/unreadQty', '', (rsp_msg)=>{
-								//未读留言
-								_self.msgNum = rsp_msg
+					//预约列表
+					getJson('api/telService/records?pageSize=10','',(rsp_book)=>{
+						_self.bookList = rsp_book
+						// 个人信息
+						getJson('api/records/patientIndex', '', (rsp_info)=>{
+							_self.personeInfo = rsp_info
+							// 我的医生
+							_self.pageDoctorNum = 1
+							_self.getDoctors()
+							getJson('api/systemNotices/unreadQty', '', (rsp_notice)=>{
+								//公告列表
+								_self.noticeNum = rsp_notice
+								getJson('api/patientMessages/unreadQty', '', (rsp_msg)=>{
+									//未读留言
+									_self.msgNum = rsp_msg
+									getJson('api/telService/unread', '', (rsp_tel)=>{
+										//未读预约数
+										 _self.bookNum = rsp_tel
+									}, _self)
+								}, _self)
 							}, _self)
 						}, _self)
-					}, _self)
+					},_self)
 				},_self)
 
 				next()
@@ -302,6 +342,8 @@
 				firstTime: false, // 是否第一次进入
 				noticeNum:0, //判断有多少条未读公告
 				msgNum:0, //判断有多少条未读留言
+				bookList:[], // 我的预约
+				bookNum:0  //判断有多少条未读预约
 			};
 		},
 
@@ -315,15 +357,15 @@
 		methods: {
 			// 跳转到拍照页面
 			toPhotoUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
+				window.location.href='http://test.jk7.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
 			},
 			// 跳转到个人信息
 			toInfoUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
+				window.location.href='http://test.jk7.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
 			},
 			// 我的医生列表
 			getDoctors () {
@@ -357,6 +399,16 @@
 			},
 			closeActive(){
 				$('.consult-notice-box').css('height', '0px')
+			},
+			goBook(id,type){
+				let _self = this
+				if(type == 1){
+					//跳转申请详情页
+					window.location.href='http://test.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=0';
+				}else if(type == 2){
+					//跳转预约详情页
+					_self.$route.router.go({path: '/online/bookContent', query: {id :id}, replace: true})
+				}
 			}
 		},
 
@@ -422,6 +474,13 @@
 	.consult-padding-bottom .mint-tab-container-wrap,.consult-container-item-hight{height: 100%;}
 	.consult-list-title .icon-wx-arr-right{color: #fff;background-color: #e5e5e5;font-size: 12px;padding: 2px 0;margin-left: 5px;}
 
+	.consult-list-main .mint-cell-value span:nth-of-type(1){font-size: 14px;color: #363636;}
+	.consult-list-main .mint-cell-value span.icon-wx-will-pay{font-size: 20px;color: #1dadfe;margin-left: 10px;}
+	.consult-list-main .mint-cell-value span.icon-wx-will-call{font-size: 20px;color: #39b042;margin-left: 10px;}
+	.consult-list-main .mint-cell-label span,.consult-list-call-time span{font-size: 14px;}
+	.consult-list-call-time{position: absolute;left: 10px;bottom: 10px;}
+	.consult-list-main .mint-cell.leh-ex-hight{padding-bottom: 35px;}
+
 	.mint-button.leh-ex{overflow: visible;}
 	.mint-button.leh-ex .icon-wx-notice-thin{font-size: 18px;-webkit-text-stroke-width: 0px;color: #fff}
 	.mint-button.leh-ex label.mint-button-text.leh-red-dot:after{top: -5px;right:-5px;}
@@ -443,7 +502,7 @@
 	.document-index-load-tap .mint-button--transparent{text-align: center;}
 
 	/*个人中心*/
-	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;}
+	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;z-index: 2}
 	.center-head-img{width: 65px;height: 65px;border: 1px solid #fff;border-radius: 50%;margin: 40px auto 15px;overflow: hidden;text-align: center;}
 	.center-head-img img{width: 55px;height: 55px;border-radius: 50%;margin-top: 4px;}
 	.center-name{text-align: center;font-size: 16px;color: #fff;}
@@ -458,6 +517,7 @@
 	.center-content .icon-wx-announcement{color: #ff9992;}
 	.center-content .icon-wx-note{color: #76c0ff;}
 	.center-content .icon-wx-disease{color: #8ad650;}
+	.center-content .icon-wx-phone{color: #30b03b;}
 	.center-content .icon-wx-link{color: #ffb67f;}
 	.center-content .mint-cell-value .icon-wx-arr-right{color: #aaa;}
 	.center-content .mint-cell-title{display: block;}
