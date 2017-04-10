@@ -270,6 +270,22 @@ export default function (router) {
       component (resolve) {
         require(['./views/online/bookApply'], resolve)
       }
+    },
+    //首页-三系统
+    '/homeBill': {
+      component (resolve) {
+        require(['./views/homeBill'], resolve)
+      }
+    },
+    '/homeSick': {
+      component (resolve) {
+        require(['./views/homeSick'], resolve)
+      }
+    },
+    '/homeMsg': {
+      component (resolve) {
+        require(['./views/homeMsg'], resolve)
+      }
     }
   })
 

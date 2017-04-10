@@ -15,7 +15,8 @@
 <style>
     @import './assets/css/mint-ui.css';
     @import './assets/css/common.css';
-    @import './assets/css/LArea.min.css';
+    @import './assets/css/normalize.css';
+    @import './assets/css/MPreview.mobile.css';
 
     .apply-call-ipt-box {overflow: hidden;}
     .apply-call-ipt-box .mint-cell{padding-bottom: 10px;overflow: visible;}
@@ -23,7 +24,7 @@
     .apply-call-ipt-box .mint-cell:after,.apply-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
     .apply-call-ipt-box .mint-cell:before,.apply-title-box .mint-cell:before{left: 10px;}
     .apply-call-ipt-box input,.apply-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 14px;padding-left: 0;}
-    .apply-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;border:1px solid transparent;}
+    .apply-call-ipt-box textarea{height: 32px;width: 100%;padding: 4px;border-color: #d3d3d3;border-radius: 5px;line-height: 22px;border: 1px solid transparent;padding-left: 0}
     .apply-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
     .apply-call-ipt-box .mint-cell-label p{color: #363636;line-height: 22px;margin-bottom: 5px;}
     .apply-title-box .mint-cell:after{display: none;}
@@ -50,16 +51,16 @@
     .apply-call-ipt-list span.icon-wx-take,
     .apply-call-ipt-ex span.icon-wx-take{background-color: #1faa2b;}
     .apply-call-ipt-list span.icon-wx-close-thin,
-    .apply-call-ipt-ex span.icon-wx-close-thin{background-color: #fc552e;display: none;}
+    .apply-call-ipt-ex span.icon-wx-close-thin{background-color: #fc552e;}
     .apply-call-ipt-ex span.icon-wx-take,
     .apply-call-ipt-ex span.icon-wx-close-thin{right:110px !important;}
-
+    .apply-call-tap-box .weui_cells,.apply-call-tap-box .weui_uploader_bd{clear:both;overflow: visible !important;}
 </style>
 
-<body id="info">
+<body id="call">
 <header class="mint-header is-fixed leh-bg-grey-head">
-    <div class="mint-header-button is-left">
-        <a href="">
+    <div class="mint-header-button is-left" @click="toDoctor()">
+        <a>
             <span class="iconfont icon-wx-arr-left leh-c-green"></span>
         </a>
     </div>
@@ -68,28 +69,28 @@
 </header>
 
 <div class="leh-float-box">
-    <button class="mint-button mint-button--blue mint-button--large">
+    <button class="mint-button mint-button--blue mint-button--large" @click="keep()">
         <label class="mint-button-text">提交申请</label>
     </button>
 </div>
-<div class="leh-wrap">
+<div class="leh-wrap" id="bodybox">
     <div class="page-cell apply-title-box">
         <a class="mint-cell">
-					<span class="mint-cell-mask">
-						<div class="apply-img">
-                            <img src="../../img/private.jpg"/>
-                        </div>
-					</span>
+            <span class="mint-cell-mask">
+                <div class="apply-img">
+                    <img :src="callList.drPhoto"/>
+                </div>
+            </span>
             <div class="mint-cell-title">
-						<span class="mint-cell-text">
-							<span class="leh-fs-sixteen">高志良</span>
-							<span class="leh-fs-twelve leh-c-grey">主任医师</span>
-							<span class="leh-fs-fourteen fr"><span class="leh-c-blue-strong">50.00</span> 元/次</span>
-						</span>
-						<span class="mint-cell-label leh-c-black">
-							<span class="leh-c-grey">南方医科大学南方医院</span>
-							<span class="fr">通话10分钟</span>
-						</span>
+                <span class="mint-cell-text">
+                    <span class="leh-fs-sixteen">{{callList.drName}}&nbsp;</span>
+                    <span class="leh-fs-fourteen leh-c-grey" v-text="callList.drTitle"></span>
+                    <span class="leh-fs-fourteen fr"><span class="leh-c-blue-strong" v-text="callList.price"></span> 元/次</span>
+                </span>
+                <span class="mint-cell-label leh-c-black">
+                    <span class="leh-c-grey" v-text="callList.hosipital"></span>
+                    <span class="fr">通话{{callList.duration}}分钟</span>
+                </span>
             </div>
             <div class="mint-cell-value"></div>
         </a>
@@ -98,23 +99,23 @@
         <a class="mint-cell">
             <label class="mint-cell-title apply-call-ipt-list">
                 <span class="mint-cell-text leh-c-green">接听人电话<span class="leh-c-red"> *</span></span>
-                <input type="tel" maxlength="11" placeholder="请输入11位数手机号码"/>
-                <!--判断验证码是否正确才会出现的提示图标-->
-                <span class="iconfont icon-wx-take"></span>
-                <span class="iconfont icon-wx-close-thin"></span>
+                <input type="tel" maxlength="11" @blur="telBlur()" v-model="callTel" placeholder="请输入11位数手机号码"/>
+                <!--判断手机号码是否正确才会出现的提示图标-->
+                <span class="iconfont icon-wx-take" v-if="telTake"></span>
+                <span class="iconfont icon-wx-close-thin" v-if="telClose" @click="delTelText()"></span>
             </label>
             <div class="mint-cell-value"></div>
         </a>
-        <a class="mint-cell apply-call-ipt-ex">
+        <a class="mint-cell apply-call-ipt-ex" v-if="callCode">
             <label class="mint-cell-title">
                 <span class="mint-cell-text leh-c-red leh-fs-fourteen">您填写的不是注册号码，需要验证</span>
-                <input type="tel" maxlength="6" placeholder="请输入验证码"/>
+                <input type="tel" maxlength="6" v-model="codeNum" @blur="codeBlur()" placeholder="请输入验证码"/>
                 <!--判断验证码是否正确才会出现的提示图标-->
-                <span class="iconfont icon-wx-take"></span>
-                <span class="iconfont icon-wx-close-thin"></span>
+                <span class="iconfont icon-wx-take" v-if="codeTake"></span>
+                <span class="iconfont icon-wx-close-thin" v-if="codeClose" @click="delCodeText()"></span>
 
-                <button class="mint-button mint-button--normal">
-                    <label class="mint-button-text">获取验证码</label>
+                <button class="mint-button mint-button--normal" @click="getCode()">
+                    <label class="mint-button-text" v-text="codeText"></label>
                 </button>
             </label>
             <div class="mint-cell-value"></div>
@@ -122,7 +123,7 @@
         <a class="mint-cell">
             <label class="mint-cell-title">
                 <span class="mint-cell-text leh-c-green">病情描述<span class="leh-c-red"> *</span></span>
-                <textarea rows="4" placeholder="填写症状表现、检查结果、用药和希望获得的帮助" maxlength="200"></textarea>
+                <textarea id="msgBox" v-model="callMsg" placeholder="填写症状表现、检查结果、用药和希望获得的帮助" maxlength="100"></textarea>
             </label>
             <div class="mint-cell-value"></div>
         </a>
@@ -142,22 +143,19 @@
                         <div class="weui_uploader">
                             <div class="weui_uploader_bd">
                                 <ul class="weui_uploader_files">
-                                    <li class="weui_uploader_file">
-                                        <img src="../../html/vue-patient/src/assets/img/consult-nav-ico.png"/>
+                                    <li class="weui_uploader_file" v-for="items in showPicItems" track-by="$index">
+                                        <img :src="items" @click="showPic()"/>
+                                        <span class="leh-img-del-btn iconfont icon-wx-reduce" @click="delPic($index)"></span>
                                     </li>
-                                    <li class="weui_uploader_file">
-                                        <img src="../../guide/img/how-to-bind-doctor-1.png"/>
-                                    </li>
-                                    <!--未上传图片时-->
-                                    <div class="weui_uploader_input_wrp leh-ex" style="display: none;">
-                                        <span class="iconfont icon-wx-add"></span>
-                                        <input class="weui_uploader_input" type="file" accept="image/*" multiple="">
-                                    </div>
-                                    <!--已上传一张或一张以上图片时-->
-                                    <div class="weui_uploader_input_wrp">
-                                        <span class="iconfont icon-wx-add"></span>
-                                        <input class="weui_uploader_input" type="file" accept="image/*" multiple="">
-                                    </div>
+                                </ul>
+                                <!--未上传图片时-->
+                                <div class="weui_uploader_input_wrp leh-ex" v-if="!isUpload" @click="addPic">
+                                    <span class="iconfont icon-wx-add"></span>
+                                </div>
+                                <!--已上传一张或一张以上图片时-->
+                                <div class="weui_uploader_input_wrp"  v-if="isUpload && !isFull" @click="addPic">
+                                    <span class="iconfont icon-wx-add"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,38 +174,422 @@
             </label>
             <div class="mint-cell-value"></div>
         </a>
-
     </div>
 </div>
-
-
+<!-- 用于展示插件的容器 -->
+<div class="overlay" id="overlay"></div>
 
 
 <script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
-<script type="text/javascript" src='./assets/js/LAreaData2.js'></script>
-<script type="text/javascript" src='./assets/js/LArea.min.js'></script>
 
 <script>
     var vue;
     function vue_init () {
         vue = new Vue({
-            el: "#info",
+            el: "#call",
             data: {
-
-            },
-            created: function () {
-
+                callList:[],
+                id:'', // 医生ID
+                //openID:'',
+                callTel:'', //输入号码
+                regTel:'', // 注册号码
+                codeNum:'', //输入验证码
+                callMsg:'', //描述
+                telTake:false,
+                telClose:false,
+                codeTake:false,
+                codeClose:false,
+                callCode:false, //验证码
+                callCodeBtn:false, // 验证码事件
+                codeText:'获取验证码',
+                codeTime:'',
+                showPicItems:[],
+                picItems:[],
+                serverId: '', // 上传图片返回的serverId
+                serverIds: [], // 存储多图的serverId
+                isUpload: false, // 判断是否上传图片
+                isFull: false, // 判断是否传满所有图片
+                loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
+                loadmask: '<div class="maskbox"></div>', // 加载遮罩
             },
             ready: function () {
+                // 获取URL参数
+                function getQueryString (key) {
+                    var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+                    var result = window.location.search.substr(1).match(reg);
+                    return result?decodeURIComponent(result[2]):null;
+                }
+                //this.openID = getQueryString('openID')
+                this.id = getQueryString('id')
+                this.getCallList(this.id)
+
+                // 上传图片，验证签名
+                function pageConfig() {
+                    $.ajax({
+                        url: 'http://test.jk7.com/api/valid',
+                        type: 'GET',
+                        dataType: "json",
+                        contentType: 'application/x-www-form-urlencoded',
+                        data: {
+                            pageurl: window.location.href
+                        },
+                        success: function (data) {
+
+                            wxconfig(data);
+                        }
+                    });
+                }
+                pageConfig()
+
+                function wxconfig (data){
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: data.appId, // 必填，公众号的唯一标识
+                        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                        timestamp: data.timestamp, // 必填，生成签名的时间戳
+                        signature: data.signature, // 必填，签名，见附录1
+                        jsApiList: [
+                            'checkJsApi',
+                            'chooseImage',
+                            'previewImage',
+                            'uploadImage',
+                            'downloadImage',
+                            'translateVoice'
+                        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                }
+
+                wx.hideMenuItems({
+                    menuList: ["menuItem:share:appMessage","menuItem:share:timeline","menuItem:share:qq","menuItem:share:weiboApp","menuItem:share:facebook","menuItem:share:QZone","menuItem:copyUrl","menuItem:originPage","menuItem:openWithQQBrowser","menuItem:openWithSafari"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+                });
 
             },
             methods: {
+                getCallList(id){
+                    var _self = this
+
+                    $.ajax({
+                        type: "GET",
+                        url: 'http://test.jk7.com/api/telService/serviceInfo/'+ id,
+                        dataType: 'json',
+                        beforeSend: function (data){
+                            var moaalBody = document.body
+                            $(moaalBody).append(_self.loadBox)
+                            $(moaalBody).append(_self.loadmask)
+                        },
+                        success: function (data) {
+                            var res = data.data
+                            $('.ball-beat').remove()
+                            $('.maskbox').remove()
+                            _self.callList = res
+                            _self.regTel = res.patientLoginTel
+                        },
+                        error: function () {
+                            alert('网络出错')
+                            return;
+                        }
+                    });
+                },
+
+                getCode(){
+                  var _self = this
+                    if(!_self.callCodeBtn){
+                        _self.callCodeBtn = true
+                        _self.codeTime = 60
+                        _self.codeText = "获取中" + _self.codeTime + "秒"
+                        var codeInterval = setInterval(() => {
+                            if(_self.codeTime > 1){
+                                _self.codeTime = _self.codeTime - 1
+                                _self.codeText = '获取中 ' + _self.codeTime + ' 秒'
+                            }else {
+                                _self.codeTime = 0
+                                _self.codeText = '获取验证码'
+                                _self.callCodeBtn = false
+                                clearInterval(codeInterval)
+                            }
+                        }, 1000)
+                        $.ajax({
+                            type: "GET",
+                            url: 'http://test.jk7.com/api/Authenticate/sendcode?mobileNo=' + _self.callTel,
+                            dataType: 'json',
+                            success: function (res) {
+                                if(res.recode == 1){
+                                   alert(res.msg)
+                                }
+                            }
+                        });
+                    }
+                },
+                codeBlur(){
+                    var _self = this
+                    if(_self.codeNum !== ''){
+                        $.ajax({
+                            type: "GET",
+                            url: 'http://test.jk7.com/api/Authenticate/checkCode?mobileNo=' + _self.callTel + '&code=' + _self.codeNum,
+                            dataType: 'json',
+                            success: function (res) {
+                                if(res.recode == 1){
+                                    //alert(res.msg)
+                                    _self.codeTake = false
+                                    _self.codeClose = true
+                                }else{
+                                    _self.codeTake = true
+                                    _self.codeClose = false
+                                }
+                            }
+                        });
+                    }else if(_self.codeNum == ''){
+                        _self.codeTake = false
+                        _self.codeClose = false
+                    }
+                },
+                telBlur(){
+                    var _self = this
+                    if(_self.callTel.length !== 11 && _self.callTel != ''){
+                        _self.telClose = true
+                        _self.telTake = false
+                    }
+                },
+                delTelText(){
+                    var _self = this
+                    _self.callTel = ''
+                },
+                delCodeText(){
+                    var _self = this
+                    _self.codeNum = ''
+                    _self.codeClose = false
+                },
+                keep(){
+                    var _self = this
+                    if(_self.callTel == '' ||  _self.telClose == true){
+                        alert('请填写完整的11位数手机号码')
+                        return
+                    }else if(_self.callMsg == ''){
+                        alert('请填写病情描述后再提交申请！')
+                        return
+                    }else if(_self.callCode == true && _self.codeNum == ''){
+                        alert('请先填写验证码再提交申请！')
+                        return
+                    }else if(_self.codeClose == true){
+                        alert('请先填写正确验证码再提交申请！')
+                        return
+                    }else{
+                        var params = {
+                            "drId": _self.callList.drId,
+                            "price": _self.callList.price,
+                            "duration": _self.callList.duration,
+                            "tel": _self.callTel,
+                            "code": _self.codeNum || '',
+                            "diseaseDescription": _self.callMsg || '',
+                            "photos": _self.serverIds || []
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: 'http://test.jk7.com/api/telService/apply',
+                            data: params,
+                            dataType: 'json',
+                           /* headers: {
+                                'Authorization': 'Basic ' + btoa(_self.openID + ':')
+                            },*/
+                            beforeSend: function (data){
+                                var moaalBody = document.body
+                                $(moaalBody).append(_self.loadBox)
+                                $(moaalBody).append(_self.loadmask)
+                            },
+                            success: function (res) {
+                                $('.ball-beat').remove()
+                                $('.maskbox').remove()
+                                if(res.recode == '1'){
+                                    alert(res.msg)
+                                }else{
+                                    _self.serverIds.length = 0
+                                    window.location.href='http://test.jk7.com/html/pay/vue_apply_v.html?id=' + res.data + '&isType=1';
+                                }
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert('网络出错')
+                                return;
+                            }
+                        });
 
 
+                    }
+                },
+                toDoctor(){
+                    var _self = this
+                    window.location.href='http://test.jk7.com/mydoctor/doctor?id='+ _self.callList.drId
+                },
+                showPic: function () {
+                    this.wrapPic(this.showPicItems, '申请通话') // 查看图片
+                },
+                wrapPic: function (picArr, titName) {
+
+                    var wrap = document.querySelector('#overlay'),
+                            title = titName || '查看图片',
+                            data = [];
+
+                    if(typeof(picArr) === 'string'){
+                        data.push(picArr)
+                    }else if(typeof(picArr) === 'object'){
+                        data = picArr
+                    }else {
+                        console.log('图片变量类型必须为string或object' + typeof(picArr))
+                    }
+                    wrap.className = wrap.className + ' in';
+
+                    // 延迟初始化插件是为了让CSS动画走完
+                    setTimeout(function() {
+                        MPreview({
+                            data: data,
+                            title: title,
+                            direction: 'left',
+                            wrap: '#overlay',
+                            init: function() {
+                            },
+                            close: function() {
+                                wrap.className = wrap.className.replace(' in', '');
+                            }
+                        });
+                    }, 400);
+
+                },
+                // 添加图片
+                addPic: function () {
+
+                    var _self = this
+                    var len = _self.showPicItems.length
+                    if(len === 3 ){
+                        alert('最多仅允许上传3张照片')
+                        return
+                    }
+                    wx.chooseImage({
+                        count: 3 - len, // 默认9
+                        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                        success: function(res) {
+
+                            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            var picItems = _self.picItems.concat(localIds) // 合并分次上传的localId
+                            var showPicItems = _self.showPicItems.concat(localIds) // 合并分次上传的localId
+
+                            // 已经上传图片切换上传按钮
+                            if(showPicItems.length > 0){
+
+                                _self.isUpload = true
+                            }
+
+                            // 满5张隐藏上传按钮
+                            if(showPicItems.length == 3 ){
+
+                                _self.isFull = true
+                            }
+
+                            // 上传图片不能超过3张
+                            if(showPicItems.length > 3 ){
+
+                                alert('最多仅允许上传5张照片')
+                                return
+                            }else{
+                                _self.showPicItems = _self.showPicItems.concat(localIds)
+                                _self.picItems = _self.picItems.concat(localIds)
+                            }
+
+                            setTimeout(function () {
+                                _self.uploadImages();
+                            },100)
+
+
+                        },
+                        fail: function (res) {
+                            alert(JSON.stringify(res));
+                        }
+                    });
+                },
+                // 上传图片
+                uploadImages: function () {
+
+                    // 获取serverId
+                    var _self = this
+                    var localId = _self.picItems.pop();
+                    wx.uploadImage({
+                        localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+
+                            //	_self.serverId = res.serverId; // 返回图片的服务器端ID
+                            _self.serverIds.push(res.serverId)
+
+                            //其他对serverId做处理的代码
+                            if(_self.picItems.length > 0){
+
+                                _self.uploadImages();
+                            }
+
+                        },
+                        fail: function (res) {
+                            alert(JSON.stringify(res));
+                        }
+                    });
+                },
+
+                // 删除图片
+                delPic: function (ind) {
+
+                    var removePic = this.showPicItems[ind]
+                    var removeServerIds = this.serverIds[ind]
+                    this.showPicItems.$remove(removePic)
+                    this.serverIds.$remove(removeServerIds)
+
+                    // 已经上传图片切换上传按钮
+                    if(this.showPicItems.length == 0){
+
+                        this.isUpload = false
+                    }
+
+                    // 不满5张显示上传按钮
+                    if(this.showPicItems.length < 5 ){
+
+                        this.isFull = false
+                    }
+                },
+            },
+            watch: {
+                'callTel':function(newVal){
+                    var _self = this
+                    if(newVal.length == 11 && new RegExp("^((1[0-9]))[0-9]{9,9}$").test(newVal) == false){
+                       _self.telClose = true
+                        _self.telTake = false
+                    }else if(newVal.length == 11 && new RegExp("^((1[0-9]))[0-9]{9,9}$").test(newVal) == true){
+                        _self.telClose = false
+                        _self.telTake = true
+                        //如果输入号码不等于注册号码，则需验证
+                        if(newVal != _self.regTel){
+                            _self.callCode = true
+                        }else{
+                            _self.callCode = false
+                        }
+                    }else if(newVal.length !== 11){
+                        _self.telClose = false
+                        _self.telTake = false
+                        _self.callCode = false
+                        _self.codeTake = false
+                        _self.codeClose = false
+                        _self.codeNum = ''
+                    }
+
+                },
+                'callMsg ':function(newVal){
+                    var msgTest = $('#msgBox')
+                    var scrollH = msgTest[0].scrollHeight
+                    msgTest.height(scrollH)
+                    if(!newVal){
+                        msgTest.height(32)
+                    }
+                }
             }
-
         });
 
     }
