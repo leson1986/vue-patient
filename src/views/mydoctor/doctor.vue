@@ -1,8 +1,8 @@
 <template>
-	<div class="leh-float-box">
+	<!--<div class="leh-float-box">
 		<mt-button type="green" v-link="{path: '/mydoctor/doctorVisits', query: {id: ids}, replace: true}" :reddot="doctorItems.unread">门诊信息</mt-button>
 		<mt-button type="blue" @click="toMsgUrl">在线留言</mt-button>
-	</div>
+	</div>-->
 	<div class="leh-wrap">
 		<div class="doctor-details-head">
 			<span class="iconfont icon-wx-arr-left doctor-details-head-arr" v-link="{path: '/home', query: {tohome: true}, replace: true}"></span>
@@ -65,11 +65,28 @@
 				</ul>
 			</div>
 		</div>
+		<mt-tabbar class-name="doctor-tabbar-box">
+			<mt-tab-item  v-link="{path: '/mydoctor/doctorVisits', query: {id: ids}, replace: true}">
+				<span slot="icon"><span class="mint-tab-item-icon" :class="{'leh-red-dot':doctorItems.unread}"></span></span>
+				门诊信息
+			</mt-tab-item>
+			<mt-tab-item  @click="toMsgUrl">
+				<span slot="icon"><span class="mint-tab-item-icon"></span></span>
+				在线留言
+			</mt-tab-item>
+			<mt-tab-item @click="toCallUrl">
+				<span slot="icon"><span class="mint-tab-item-icon"></span></span>
+				电话预约
+			</mt-tab-item>
+		</mt-tabbar>
+
 	</div>
 </template>
 <script>
 	import MtContent from '../../components/content'
 	import MtButton from '../../components/button.vue'
+	import MtTabbar from '../../components/tabbar.vue'
+	import MtTabItem from '../../components/tab-item.vue'
 	import {getJson} from 'util'
 
 	export default{
@@ -112,12 +129,18 @@
 
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+			},
+			// 跳转到电话预约
+			toCallUrl () {
+				window.location.href='http://test.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
 			}
 		},
 		components: {
 			MtContent,
-			MtButton
+			MtButton,
+			MtTabbar,
+			MtTabItem
 		}
 	}
 </script>
@@ -128,7 +151,7 @@
 	.doctor-details-img{width: 65px;height: 65px;margin: 20px auto 10px;border-radius:50%;overflow: hidden;}
 	.doctor-details-head p{font-size: 14px;color: #fff;text-align: center;}
 	.doctor-details-head p span{font-size: 12px;}
-	.doctor-details-content{position: absolute;top: 130px;bottom: 40px;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
+	.doctor-details-content{position: absolute;top: 130px;bottom: 53px;left:0;right:0;overflow-y: auto;overflow-x: hidden;}
 	.doctor-details-list{padding: 15px 10px;overflow: hidden;color: #363636;}
 	.doctor-details-list div{word-wrap: break-word}
 	.doctor-details-list-title{overflow: hidden;margin-bottom: 10px;}
@@ -144,6 +167,13 @@
 	.doctor-details-comment-list-bd{margin-top: 10px;overflow: hidden;}
 	.doctor-details-comment-list-bd span{color: #919191;font-size: 12px;}
 	.doctor-details-content .icon-wx-arr-right{font-size:12px;color: #fff;background-color: #e5e5e5;padding: 3px 0;margin-left: 5px;}
+
+	.doctor-tabbar-box,.doctor-tabbar-box>.mint-tab-item:nth-last-of-type(1){border: 0 !important;background-color: #1faa2b;}
+	.doctor-tabbar-box>.mint-tab-item,.doctor-tabbar-box>.mint-tab-item.is-selected{background-color: #1faa2b;margin: 7px 0;padding: 0;border-right: 1px solid rgba(255,255,255,0.6);}
+	.doctor-tabbar-box>.mint-tab-item .mint-tab-item-label{color: #fff;}
+	.doctor-tabbar-box>.mint-tab-item .mint-tab-item-icon{background: url(../../assets/img/doctor-nav.png) no-repeat;background-size: 75px auto;display: inline-block;margin-bottom: 0}
+	.doctor-tabbar-box .mint-tab-item:nth-of-type(2) .mint-tab-item-icon{background-position:-26px 0;}
+	.doctor-tabbar-box .mint-tab-item:nth-of-type(3) .mint-tab-item-icon{background-position:-53px 0;}
 
 	.doctor-details-list .height-auto {height: auto; overflow: auto}
 
