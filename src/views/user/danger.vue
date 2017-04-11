@@ -56,6 +56,8 @@
                 let _self = this
                 getJson('api/highRisk/index', '', (rsp)=>{
                     _self.takeList = rsp
+                    //初始化
+                    $(".mint-cell").removeClass('leh-active')
                     for(let i=0;i<_self.lists.length;i++){
                         for(let j=0;j<_self.takeList.length;j++){
                             if(_self.takeList[j].riskItem == _self.lists[i]){
