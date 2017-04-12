@@ -4,9 +4,9 @@
 			<div class="mint-header-button is-left" @click="lehBack">
 				<i class="iconfont icon-wx-arr-left leh-c-white"></i>
 			</div>
-			<mt-button size="small" @click.prevent="active = 'case'" :class="{'leh-active' : selected === 'case'}">病历</mt-button>
-			<mt-button size="small" @click.prevent="active = 'checked'" :class="{'leh-active' : selected === 'checked'}">检查单</mt-button>
-			<mt-button size="small" @click.prevent="active = 'turn'" :class="{'leh-active' : selected === 'turn'}">转换中</mt-button>
+			<mt-button size="small" @click.prevent="active = 'case'" :class="{'leh-active' : active === 'case'}">病历</mt-button>
+			<mt-button size="small" @click.prevent="active = 'checked'" :class="{'leh-active' : active === 'checked'}">检查单</mt-button>
+			<mt-button size="small" @click.prevent="active = 'turn'" :class="{'leh-active' : active === 'turn'}">转换中</mt-button>
 		</div>
 		<div class="page-tab-container">
 			<mt-tab-container class="page-tabbar-tab-container" :active.sync="active">
