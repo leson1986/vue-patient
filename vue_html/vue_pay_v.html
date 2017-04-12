@@ -265,7 +265,7 @@
 		</div>
 		<div class="msgbox-content">
 			<div class="msgbox-status d-icon"></div>
-			<div class="msgbox-message"><p>已选择{{activeName}}元/{{qty=='1'? '' : qty}}条，数量为{{nums}}，总金额为{{total_fee}}元，是否继续购买？</p></div>
+			<div class="msgbox-message"><p>已选择{{activeName}}元/{{qty=='1'? '' : qty}}条，数量为{{qtys}}，总金额为{{total_fee}}元，是否继续购买？</p></div>
 		</div>
 		<div class="msgbox-btns">
 			<button class="msgbox-btn msgbox-cancel " @click="handleAction(0)">取消</button>
@@ -298,7 +298,8 @@
 				drcustName: '', // 医生专科
 				msg_visit_id: '', // 留言包ID
 				total_fee: '', // 订单金额
-				qty: '', // 购买数量
+				qty: 1, // 购买数量
+				qtys: 1, // 购买总数量
 				typeM: {},
 				getdrid: '',
 				getcontent:'',
@@ -360,6 +361,8 @@
 								_self.activeName = rsp.visits[0].price // 初始化默认选中第一条
 								_self.total_fee = rsp.visits[0].price*1 // 初始化默认选一条的总额
 								_self.msg_visit_id = rsp.visits[0].id // 初始化默认选一条的ID
+								_self.qty = rsp.visits[0].qty // 初始化默认条数
+								_self.qtys = rsp.visits[0].qty // 初始化默认总条数
 
 							}
 						}
@@ -385,7 +388,7 @@
 					var _self = this
 					var promise = $.ajax({
 						//需要参数：openid, total_fee（订单金额）,drid(医生ID)，msg_visit_id（留言包ID）,qty（购买数量）,patientid（患者ID）
-						url: 'http://120.76.42.106/wxpay/payrequest.aspx?openid='+_self.openID+'&total_fee='+_self.total_fee+'&drid='+_self.drid+'&msg_visit_id='+_self.msg_visit_id+'&qty='+_self.nums+'&patientid='+_self.patientId+'&drname='+_self.drname,
+						url: 'http://120.76.42.106/wxpay/payrequest.aspx?openid='+_self.openID+'&total_fee='+_self.total_fee+'&drid='+_self.drid+'&msg_visit_id='+_self.msg_visit_id+'&qty='+_self.qtys+'&patientid='+_self.patientId+'&drname='+_self.drname,
 						type: 'get',
 						dataType: "text",
 						contentType: 'application/x-www-form-urlencoded',
@@ -472,14 +475,15 @@
 					});
 				},
 
-				selected: function(names, ids, qtys) {
+				selected: function(names, ids, qty) {
 					if(this.activeName !== names){
 						this.nums = 1
 					}
 					this.activeName = names
 					this.msg_visit_id = ids
 					this.total_fee = (names*1)*(this.nums*1)
-					this.qty = qtys
+					this.qty = qty
+					this.qtys = (this.nums*1)*(qty*1)
 				},
 
 				addorminus: function (type) {

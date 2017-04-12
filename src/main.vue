@@ -8,7 +8,7 @@
         <bar-item path="/more" label="更多" icon="more"></bar-item>
       </bar>-->
 
-      <router-view transition="fade" transition-mode="out-in" keep-alive></router-view>
+      <router-view keep-alive></router-view>
   </div>
 </template>
 
