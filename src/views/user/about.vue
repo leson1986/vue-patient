@@ -22,7 +22,7 @@
 	export default{
 	  data () {
 	    return{
-	      version:'v1.2'
+	      version:'v1.4'
 	    }
 	  },
 		components: {

@@ -463,7 +463,7 @@
 					});
 				}
 
-				// 获取是否绑定医生
+				// 直接进入，获取个人信息
 				function myinfo(oID) {
 					$.ajax({
 						url: 'http://wx.jk7.com/api/patient/myinfo',
@@ -483,6 +483,7 @@
 							$('.ball-beat').remove()
 							$('.maskbox').remove()
 							var rsp = data.data
+
 							_self.name = rsp.name
 							_self.mobile = rsp.mobile
 							_self.gender = rsp.gender
@@ -493,6 +494,19 @@
 							_self.disease = rsp.disease
 							_self.diseaseHis = rsp.diseaseHis
 							_self.nativePlace = rsp.nativePlace
+
+							if(_self.openID == '2'){
+
+								_self.gender = getQueryString('gender')*1
+								_self.birthday = getQueryString('birthday')
+								_self.notAlllergicHis = getQueryString('alllergicHis')
+								_self.photo = getQueryString('photo')
+								_self.email = getQueryString('email')
+								_self.disease = getQueryString('disease')
+								_self.diseaseHis = getQueryString('diseaseHis')
+								_self.nativePlace = getQueryString('nativePlace')
+								_self.serverId = getQueryString('serverId')
+							}
 
 							// 超过10个字加省略号
 							if(_self.notAlllergicHis.length > 10) {
