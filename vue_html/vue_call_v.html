@@ -83,7 +83,8 @@
         <a class="mint-cell">
             <span class="mint-cell-mask">
                 <div class="apply-img">
-                    <img :src="callList.drPhoto"/>
+                    <img :src="callList.drPhoto" v-if="!isImg"/>
+                    <img src="./assets/img/private.jpg" v-if="isImg">
                 </div>
             </span>
             <div class="mint-cell-title">
@@ -216,6 +217,7 @@
                 isFull: false, // 判断是否传满所有图片
                 loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
                 loadmask: '<div class="maskbox"></div>', // 加载遮罩
+                isImg:true
             },
             ready: function () {
                 // 获取URL参数
@@ -285,10 +287,10 @@
                         success: function (data) {
                             var res = data.data
                             if(data.recode == 1){
-                                alert(res.msg)
-                                $('.ball-beat').remove()
-                                $('.maskbox').remove()
-                                window.location.href='http://test.jk7.com/mydoctor/doctor?id=' + id
+                                alert(data.msg)
+                               /* $('.ball-beat').remove()
+                                 $('.maskbox').remove()
+                                 window.location.href='http://test.jk7.com/mydoctor/doctor?id=' + id*/
                                 return
                             }
                             $('.ball-beat').remove()
@@ -297,6 +299,11 @@
                             _self.price = res.price
                             _self.duration = res.duration
                             _self.regTel = res.patientLoginTel
+                            if(res.drPhoto !== null){
+                                _self.isImg = false
+                            }else{
+                                _self.isImg = true
+                            }
                         },
                         error: function () {
                             alert('网络出错')
@@ -312,7 +319,7 @@
                         _self.codeTime = 60
                         _self.codeText = "获取中" + _self.codeTime + "秒"
                         var codeInterval = setInterval(() => {
-                                    if(_self.codeTime > 1){
+                         if(_self.codeTime > 1){
                             _self.codeTime = _self.codeTime - 1
                             _self.codeText = '获取中 ' + _self.codeTime + ' 秒'
                         }else {
