@@ -357,15 +357,15 @@
 		methods: {
 			// 跳转到拍照页面
 			toPhotoUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
+				window.location.href='http://test.jk7.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
 			},
 			// 跳转到个人信息
 			toInfoUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
+				window.location.href='http://test.jk7.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
 			},
 			// 我的医生列表
 			getDoctors () {
@@ -404,10 +404,10 @@
 				let _self = this
 				if(type == 1){
 					//跳转申请详情页
-					window.location.href='http://wx.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=0';
+					window.location.href='http://test.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=0';
 				}else if(type == 2){
 					//跳转预约详情页
-					_self.$route.router.go({path: '/online/bookContent', query: {id :id}, replace: true})
+					_self.$route.router.go({path: '/online/bookContent', query: {id :id,isType:0}, replace: true})
 				}
 			}
 		},

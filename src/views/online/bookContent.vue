@@ -1,6 +1,6 @@
 <template>
     <mt-header fixed title="预约详情" isgrey>
-            <mt-button v-link="{path: from_path ,query:{active:'book'}, replace: true}" icon="arr-left" slot="left"></mt-button>
+            <mt-button @click="toBack()" icon="arr-left" slot="left"></mt-button>
     </mt-header>
     <div class="leh-float-box">
         <mt-button type="grey"><span class="book-phone-btn" :class="{'leh-c-red':doctorContent.status == 4,'leh-c-black':doctorContent.status == 2}"><span class="iconfont icon-wx-take" v-if="doctorContent.status == 2"></span>{{bookTip}}</span></mt-button>
@@ -92,11 +92,12 @@
 
     export default{
         route: {
-            data ({from, to, next}) {
+            data ({to, next}) {
                 let _self = this
-                _self.drId = to.query.id
-                _self.from_path = from.path
-                _self.getBookContent(_self.drId)
+                _self.id = to.query.id
+                _self.isType = to.query.isType
+                _self.getBookContent(_self.id)
+                console.log(_self.isType)
                 next()
             }
         },
@@ -104,8 +105,8 @@
         data () {
             return{
                 bookTip:'',
-                drId:'',
-                from_path:'',
+                id:'',
+                isType:'',
                 bookStaue:'',
                 doctorContent:'',
                 bookTime:''
@@ -117,12 +118,20 @@
                 let _self = this
                 getJson('/api/telService/info?id=' + id, '', (rsp)=>{
                     _self.doctorContent = rsp
-                    if(_self.doctorContent.status == 4){
+                    if(rsp.status == 4){
                         _self.bookTip = '通话已结束'
-                    }else if(_self.doctorContent.status == 2){
+                    }else if(rsp.status == 2){
                         _self.bookTip = '预约已付款'
                     }
                 },_self)
+            },
+            toBack(){
+               let _self = this
+                if(_self.isType == 1){
+                    _self.$route.router.go({path: '/online/book', query: {active:'book'}, replace: true})
+                }else if(_self.isType == 0){
+                    _self.$route.router.go({path: '/home', replace: true})
+                }
             },
             showPic (){
                 let _self = this
