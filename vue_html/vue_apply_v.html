@@ -12,6 +12,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='./assets/js/vue.min.js'></script>
+
 <style>
     @import './assets/css/mint-ui.css';
     @import './assets/css/common.css';
@@ -73,8 +78,8 @@
         <span class="iconfont icon-wx-will-pay"></span>
         <span>待支付：{{applyContent.price}}元</span>
     </div>
-    <button class="mint-button mint-button--blue mint-button--large" v-if="applyContent.status==1">
-        <label class="mint-button-text" @click="payrequest()">付款</label>
+    <button class="mint-button mint-button--blue mint-button--large" v-if="applyContent.status==1" @click="payrequest()">
+        <label class="mint-button-text">付款</label>
     </button>
 </div>
 <div class="leh-wrap" id="bodybox">
@@ -162,12 +167,6 @@
 <!-- 用于展示插件的容器 -->
 <div class="overlay" id="overlay"></div>
 
-
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='./assets/js/vue.min.js'></script>
-
 <script>
     var vue;
     function vue_init () {
@@ -200,7 +199,7 @@
                 // 上传图片，验证签名
                 function pageConfig() {
                     $.ajax({
-                        url: 'http://wx.jk7.com/api/valid',
+                        url: 'http://test.jk7.com/api/valid',
                         type: 'GET',
                         dataType: "json",
                         contentType: 'application/x-www-form-urlencoded',
@@ -243,7 +242,7 @@
                     var _self = this
                     $.ajax({
                         type: "GET",
-                        url: 'http://wx.jk7.com/api/telService/info?id=' + id,
+                        url: 'http://test.jk7.com/api/telService/info?id=' + id,
                         dataType: 'json',
                         beforeSend: function (data){
                             var moaalBody = document.body
@@ -270,9 +269,9 @@
                 toBack(){
                     var _self = this
                     if(_self.isType == 1){
-                        window.location.href='http://wx.jk7.com/online/book?active=apply'
+                        window.location.href='http://test.jk7.com/online/book?active=apply'
                     }else if(_self.isType == 0){
-                        window.location.href='http://wx.jk7.com/home'
+                        window.location.href='http://test.jk7.com/home'
                     }
                 },
                 showPic: function () {
@@ -336,7 +335,7 @@
 
                                         if(res.err_msg == "get_brand_wcpay_request:ok") {
                                             //支付成功
-                                            window.location.href='http://wx.jk7.com/online/bookContent?id='+ _self.id
+                                            window.location.href='http://test.jk7.com/online/bookContent?id='+ _self.id + '&isType=1'
                                             return
                                         }
                                         else if(res.err_msg == "-1") {
@@ -374,5 +373,6 @@
     vue_init()
 
 </script>
+
 </body>
 </html>

@@ -12,7 +12,7 @@
                 <mt-tab-container-item id="book">
                     <div class="leh-null-data" v-if="!bookList.length">暂无数据</div>
                     <div class="page-cell phone-admin-content">
-                        <a class="mint-cell" v-for="items in bookList" :class="{'leh-phone-red':items.status==4, 'leh-phone-blue':items.status==2}" v-link="{path: '/online/bookContent', query: {id :items.id}, replace: true}">
+                        <a class="mint-cell" v-for="items in bookList" :class="{'leh-phone-red':items.status==4, 'leh-phone-blue':items.status==2}" v-link="{path: '/online/bookContent', query: {id :items.id ,isType:1}, replace: true}">
                             <span class="mint-cell-mask">
                                 <div class="phone-admin-img">
                                     <img :src="items.drPhoto"/>
@@ -154,7 +154,7 @@
             goApplyContent(id){
                 //跳转申请详情页
                 //$(".leh-active").removeClass('leh-active')
-                window.location.href='http://wx.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=1';
+                window.location.href='http://test.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=1';
             }
         },
 
