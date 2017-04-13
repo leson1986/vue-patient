@@ -286,13 +286,6 @@
                         },
                         success: function (data) {
                             var res = data.data
-                            if(data.recode == 1){
-                                alert(data.msg)
-                               /* $('.ball-beat').remove()
-                                 $('.maskbox').remove()
-                                 window.location.href='http://test.jk7.com/mydoctor/doctor?id=' + id*/
-                                return
-                            }
                             $('.ball-beat').remove()
                             $('.maskbox').remove()
                             _self.callList = res
