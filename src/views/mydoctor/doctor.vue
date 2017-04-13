@@ -81,12 +81,19 @@
 		</mt-tabbar>
 
 	</div>
+	<div class="page-popup">
+		<mt-popup v-show="show_popup" position="top" class="mint-popup-2" :modal="false">
+			<p>医生没有设置电话预约</p>
+		</mt-popup>
+		<div v-show="show_popup" class="maskbox"></div>
+	</div>
 </template>
 <script>
 	import MtContent from '../../components/content'
 	import MtButton from '../../components/button.vue'
 	import MtTabbar from '../../components/tabbar.vue'
 	import MtTabItem from '../../components/tab-item.vue'
+	import MtPopup from '../../components/popup.vue'
 	import {getJson} from 'util'
 
 	export default{
@@ -102,7 +109,11 @@
 				// 医生详情
 				getJson('api/doctors/detail/'+ _self.ids, '', (rsp)=>{
 					_self.doctorItems = rsp
-
+					if(rsp.hasTelService == true){
+						_self.isPhone = true
+					}else{
+						_self.isPhone = false
+					}
 					// 患者评价
 					getJson('api/assess/'+ _self.ids +'?pageIndex=1&pageSize=5', '', (rsp)=>{
 						_self.doctorRateItems = rsp.items
@@ -123,24 +134,43 @@
 		    doctorItems: '', // 医生详情
 		    doctorRateItems: '', // 患者评价
 		    isRatePage: false, // 是否从列表页返回
+			isPhone:false,
+			show_popup:false
 	    }
 	  },
 		methods: {
 
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
 			},
 			// 跳转到电话预约
 			toCallUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
+				let _self = this
+				if(_self.isPhone == true){
+					window.location.href='http://test.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
+				}else{
+					_self.show_popup = true
+					return
+				}
+
+			}
+		},
+		watch:{
+			show_popup(val) {
+				if (val) {
+					setTimeout(() => {
+						this.show_popup = false;
+				}, 2000);
+				}
 			}
 		},
 		components: {
 			MtContent,
 			MtButton,
 			MtTabbar,
-			MtTabItem
+			MtTabItem,
+			MtPopup
 		}
 	}
 </script>

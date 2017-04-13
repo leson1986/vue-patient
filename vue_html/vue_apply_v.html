@@ -91,7 +91,8 @@
         <a class="mint-cell">
             <span class="mint-cell-mask">
                 <div class="apply-img">
-                    <img :src="applyContent.drPhoto"/>
+                    <img :src="applyContent.drPhoto" v-if="!isImg"/>
+                    <img src="./assets/img/private.jpg" v-if="isImg">
                 </div>
             </span>
             <div class="mint-cell-title">
@@ -182,6 +183,7 @@
                 total_fee:'',
                 loadBox: '<div class="ball-beat"><div></div><div></div><div></div></div>', // 加载主体
                 loadmask: '<div class="maskbox"></div>', // 加载遮罩
+                isImg:true
             },
             ready: function () {
                 // 获取URL参数
@@ -258,7 +260,11 @@
                             _self.drid = res.drId
                             _self.total_fee = res.price
                             _self.orderid = res.orderId
-
+                            if(res.drPhoto !== null){
+                                _self.isImg = false
+                            }else{
+                                _self.isImg = true
+                            }
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             alert('网络出错')

@@ -14,7 +14,8 @@
             <a class="mint-cell">
 					<span class="mint-cell-mask">
 						<div class="apply-img">
-							<img :src="doctorContent.drPhoto"/>
+							<img :src="doctorContent.drPhoto" v-if="!isImg"/>
+                            <img src="../../assets/img/private.jpg" v-if="isImg">
 						</div>
 					</span>
                 <div class="mint-cell-title">
@@ -109,7 +110,8 @@
                 isType:'',
                 bookStaue:'',
                 doctorContent:'',
-                bookTime:''
+                bookTime:'',
+                isImg:true
             }
         },
 
@@ -122,6 +124,11 @@
                         _self.bookTip = '通话已结束'
                     }else if(rsp.status == 2){
                         _self.bookTip = '预约已付款'
+                    }
+                    if(rsp.drPhoto !== null){
+                        _self.isImg = false
+                    }else{
+                        _self.isImg = true
                     }
                 },_self)
             },
