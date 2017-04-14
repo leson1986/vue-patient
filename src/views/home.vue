@@ -502,11 +502,11 @@
 	.document-index-load-tap .mint-button--transparent{text-align: center;}
 
 	/*个人中心*/
-	.center-head{height: 165px;width:100%;background-color:#1faa2b;position: fixed;left: 0;z-index: 2}
-	.center-head-img{width: 65px;height: 65px;border: 1px solid #fff;border-radius: 50%;margin: 40px auto 15px;overflow: hidden;text-align: center;}
+	.center-head{height: 165px;width:100%;background-color:#1faa2b;padding-top: 40px}
+	.center-head-img{width: 65px;height: 65px;border: 1px solid #fff;border-radius: 50%;margin: 0px auto 15px;overflow: hidden;text-align: center;}
 	.center-head-img img{width: 55px;height: 55px;border-radius: 50%;margin-top: 4px;}
 	.center-name{text-align: center;font-size: 16px;color: #fff;}
-	.center-content{padding-top: 165px;}
+	/*.center-content{padding-top: 165px;}*/
 	.center-content .mint-cell:after,
 	.center-content .mint-cell:nth-last-of-type(1):before,
 	.center-content .mint-cell:nth-last-of-type(2):before{border: 0;}
