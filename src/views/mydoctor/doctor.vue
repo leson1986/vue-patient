@@ -108,7 +108,12 @@
 
 				// 医生详情
 				getJson('api/doctors/detail/'+ _self.ids, '', (rsp)=>{
+
+					// 初始化
 					_self.doctorItems = rsp
+					_self.drName = rsp.name
+					_self.drTitle = rsp.title
+
 					if(rsp.hasTelService == true){
 						_self.isPhone = true
 					}else{
@@ -131,24 +136,26 @@
 		    updown2: false,
 		    updown3: false,
 		    ids: '', // ID
+		    drName: '',
+		    drTitle: '',
 		    doctorItems: '', // 医生详情
 		    doctorRateItems: '', // 患者评价
 		    isRatePage: false, // 是否从列表页返回
-			isPhone:false,
-			show_popup:false
+				isPhone:false,
+				show_popup:false
 	    }
 	  },
 		methods: {
 
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID + '&drID=' + this.ids + '&drName=' + this.drName + '&drTitle=' + this.drTitle;
 			},
 			// 跳转到电话预约
 			toCallUrl () {
 				let _self = this
 				if(_self.isPhone == true){
-					window.location.href='http://test.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
+					window.location.href='http://wx.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
 				}else{
 					_self.show_popup = true
 					return

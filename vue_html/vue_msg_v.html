@@ -24,7 +24,7 @@
 	.msg-call-ipt-box .mint-cell:after,.msg-call-ipt-box .mint-cell:nth-last-of-type(1):before{border: 0;}
 	.msg-call-ipt-box .mint-cell:before{left: 10px;}
 	.msg-call-ipt-box input,.msg-call-ipt-box textarea{width: 100%;margin-top: 15px;border: 0;font-size: 16px;}
-	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;}
+	.msg-call-ipt-box textarea{line-height: 20px;overflow-y: hidden;min-height: 24px;height: 24px;border:1px solid transparent;padding: 0;}
 	.msg-call-ipt-box .mint-cell .mint-cell-value span{padding-left: 10px;color: #aaa;}
 	.msg-call-tap .weui_cells{margin-top: 0;}
 	.msg-call-tap .weui_cells:before,.msg-call-tap .weui_cells:after{border: 0;}
@@ -180,7 +180,7 @@
 <body id="msg">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
-		<a href="http://wx.jk7.com/home">
+		<a @click="back">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -304,6 +304,9 @@
 			el: "#msg",
 			data: {
 				openID: '',
+				drID: '', // 医生进口传医生ID
+				drName: '',
+				drTitle: '',
 				showTips: false,
 				msg_val:'',
 				tips: '',
@@ -359,8 +362,16 @@
 						_self.docTitle = rsp[0].title
 						_self.doctor_id = rsp[0].id
 						_self.diseaseVal = data.data.disease
-						_self.getName(_self.name, _self.doctor_id, _self.docTitle)
-						_self.getAllowance(_self.doctor_id)
+
+						if(_self.drID != '0') {
+
+							_self.getName(_self.drName, _self.drID, _self.drTitle)
+						//	_self.getAllowance(_self.drID)
+						}else {
+
+							_self.getName(_self.name, _self.doctor_id, _self.docTitle)
+						//	_self.getAllowance(_self.doctor_id)
+						}
 					}
 				});
 				
@@ -377,6 +388,9 @@
 				// 初始值
 				this.isUpload = false
 				this.openID = getQueryString('openID')
+				this.drID = getQueryString('drID')
+				this.drName = getQueryString('drName')
+				this.drTitle = getQueryString('drTitle')
 
 				// 上传图片，验证签名
 				function pageConfig() {
@@ -682,7 +696,7 @@
 						_self.showTips = false
 
 						window.location.href='http://wx.jk7.com/html/pay/vue_pay_v.html?drid='
-								+_self.doctor_id
+								+ _self.doctor_id
 								+'&openID='
 								+_self.openID
 								+'&content='
@@ -697,6 +711,18 @@
 						_self.showTips = false
 					}
 				},
+
+				// 返回
+				back: function () {
+
+					if(this.drID != '0') {
+						window.location.href='http://wx.jk7.com/mydoctor/doctor?id=' + this.drID;
+						return
+					}else {
+						window.location.href='http://wx.jk7.com/home';
+						return
+					}
+				}
 
 			},
 			watch: {
