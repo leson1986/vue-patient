@@ -30,7 +30,7 @@
 					<span>({{ items.itemCode }})</span>
 				</label>
 				<div class="mint-cell-value">
-					<span>{{ items.value }}</span>
+					<span>{{(isNaN(items.value*1) == false && items.value*1 >= 10) ? (items.value*1).toExponential().toString().replace('+', '') : (items.value)}}</span>
 					<span class="fr">{{ items.unit }}</span>
 				</div>
 			</a>
@@ -117,7 +117,6 @@
 				chkUnread:false
 			}
 		},
-
 		methods: {
 			showPopup () {
 				this.popup_visible = true;
