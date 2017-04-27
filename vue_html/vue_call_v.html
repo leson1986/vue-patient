@@ -502,7 +502,7 @@
                             // 上传图片不能超过3张
                             if(showPicItems.length > 3 ){
 
-                                alert('最多仅允许上传5张照片')
+                                alert('最多仅允许上传3张照片')
                                 return
                             }else{
                                 _self.showPicItems = _self.showPicItems.concat(localIds)
@@ -561,8 +561,8 @@
                         this.isUpload = false
                     }
 
-                    // 不满5张显示上传按钮
-                    if(this.showPicItems.length < 5 ){
+                    // 不满3张显示上传按钮
+                    if(this.showPicItems.length < 3 ){
 
                         this.isFull = false
                     }

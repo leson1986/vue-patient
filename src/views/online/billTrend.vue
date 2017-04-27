@@ -11,8 +11,10 @@
 			<div class="trend-title-list-box">
 				<ul>
 					<li class="trend-title-list"  v-for="items in chk_list" :id="items.code"  :class="{'leh-active': items.code == codes}">
-						<span>{{items.name}}</span>
-						<span v-if="items.code">({{items.code}})</span>
+						<div class="trend-title-tip-box">
+							<span>{{items.name}}</span>
+							<span v-if="items.code">({{items.code}})</span>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -288,8 +290,9 @@
 	.trend-title-list-box{position: absolute;left: 15%;width: 70%;height: 50px;top: 0;overflow: hidden;}
 	.trend-title-list{height: 50px;line-height: 50px;text-align: center;font-size: 16px;display: none;}
 	.trend-title-list.leh-active{display: block;}
-	.trend-title-list span:nth-of-type(1){max-width: 112px;display:inline-block;position:relative;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
-	.trend-title-list span:nth-of-type(2){display: inline-block;position: relative;top: -20px;}
+	.trend-title-tip-box{margin: 0 auto;display: inline-block;}
+	.trend-title-list span:nth-of-type(1){max-width: 112px;float:left;text-overflow:ellipsis; overflow:hidden; white-space:nowrap}
+	.trend-title-list span:nth-of-type(2){float: left;}
 	.trend-nav{border-bottom: 1px solid #1dadfe;border-top: 1px solid #1dadfe;overflow: hidden;}
 	.trend-nav-list{float: left;width: 25%;text-align: center;font-size: 14px;line-height: 35px;border-left: 1px solid #1dadfe;}
 	.trend-nav-list:nth-of-type(1){border-left: 0;}

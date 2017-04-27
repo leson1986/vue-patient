@@ -361,7 +361,7 @@
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID;
+				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID + '&drID=0';
 			},
 			// 跳转到个人信息
 			toInfoUrl () {
