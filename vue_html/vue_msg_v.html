@@ -172,8 +172,8 @@
 	}
 </style>
 
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
@@ -312,6 +312,7 @@
 				tips: '',
 				from_path: '',
 				show_name: 0,
+				toHome: '',
 				name: '', // 医生名称
 				doctor_id: '', // 医生ID
 				old_name: '',
@@ -339,7 +340,7 @@
 				var _self = this
 				// 患者评价
 				$.ajax({
-					url: 'http://wx.jk7.com/api/patientMessages/info',
+					url: 'http://test.jk7.com/api/patientMessages/info',
 					type: 'GET',
 					dataType: "json",
 					contentType: 'application/x-www-form-urlencoded',
@@ -363,7 +364,7 @@
 						_self.doctor_id = rsp[0].id
 						_self.diseaseVal = data.data.disease
 
-						if(_self.drID != '0') {
+						if(_self.toHome == 'doctor' || _self.toHome == 'pay') {
 
 							_self.getName(_self.drName, _self.drID, _self.drTitle)
 						//	_self.getAllowance(_self.drID)
@@ -388,6 +389,7 @@
 				// 初始值
 				this.isUpload = false
 				this.openID = getQueryString('openID')
+				this.toHome = getQueryString('toHome')
 				this.drID = getQueryString('drID')
 				this.drName = getQueryString('drName')
 				this.drTitle = getQueryString('drTitle')
@@ -397,7 +399,7 @@
 
 					var _self = this
 					$.ajax({
-						url: 'http://wx.jk7.com/api/valid',
+						url: 'http://test.jk7.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -440,7 +442,7 @@
 					var _self = this
 					// 患者评价
 					$.ajax({
-						url: 'http://wx.jk7.com/api/patientMessages/allowance/'+ ids,
+						url: 'http://test.jk7.com/api/patientMessages/allowance/'+ ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -607,7 +609,7 @@
 
 					$.ajax({
 						 type: "POST",
-						 url: 'http://wx.jk7.com/api/PatientMessages',
+						 url: 'http://test.jk7.com/api/PatientMessages',
 						 data: params,
 						 dataType: 'json',
 							headers: {
@@ -627,7 +629,7 @@
 									 alert(msg)
 								 }else{
 									 _self.serverIds.length = 0
-									 window.location.href='http://wx.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
+									 window.location.href='http://test.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
 
 								 }
 						 },
@@ -695,7 +697,7 @@
 						// 确定
 						_self.showTips = false
 
-						window.location.href='http://wx.jk7.com/html/pay/vue_pay_v.html?drid='
+						window.location.href='http://test.jk7.com/html/pay/vue_pay_v.html?drid='
 								+ _self.doctor_id
 								+'&openID='
 								+_self.openID
@@ -705,6 +707,8 @@
 								+_self.drugRecord
 								+'&isFree=false&serverIds='
 								+_self.serverIds
+								+'&toHome='
+								+_self.toHome
 
 					}else{
 						// 取消
@@ -715,11 +719,11 @@
 				// 返回
 				back: function () {
 
-					if(this.drID != '0') {
-						window.location.href='http://wx.jk7.com/mydoctor/doctor?id=' + this.drID;
+					if(this.toHome == 'doctor') {
+						window.location.href='http://test.jk7.com/mydoctor/doctor?id=' + this.drID;
 						return
 					}else {
-						window.location.href='http://wx.jk7.com/home';
+						window.location.href='http://test.jk7.com/home';
 						return
 					}
 				}

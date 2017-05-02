@@ -275,8 +275,8 @@
 </div>
 <div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
 
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://test.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
@@ -287,6 +287,7 @@
 			el: "#pay",
 			data: {
 				openID: '',
+				toHome: '',
 				activeName: '',
 				showTips: false,
 				nums: 1, // 默认条数
@@ -326,12 +327,13 @@
 				_self.getdrugUse = getQueryString('drugUse')
 				_self.getisfree = getQueryString('isFree')
 				_self.getserverid = getQueryString('serverIds')
+				_self.toHome = getQueryString('toHome')
 
 				// 医生信息
 				function getSignup() {
 					var ids = getQueryString('drid')
 					$.ajax({
-						url: 'http://wx.jk7.com/api/patientMessages/signup/'+ids,
+						url: 'http://test.jk7.com/api/patientMessages/signup/'+ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -377,7 +379,12 @@
 
 				// 跳转到拍照页面
 				toMsgUrl: function () {
-					window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle;
+					if(this.toHome == 'doctor') {
+						window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=doctor';
+					}else {
+						window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=pay';
+					}
+
 				},
 				paycomform: function () {
 
@@ -420,7 +427,7 @@
 
 											$.ajax({
 												type: "POST",
-												url: 'http://wx.jk7.com/api/PatientMessages',
+												url: 'http://test.jk7.com/api/PatientMessages',
 												data: params,
 												dataType: 'json',
 												beforeSend: function (data){
@@ -436,7 +443,7 @@
 													if(res.recode == '1'){
 														alert(msg)
 													}else{
-														window.location.href='http://wx.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+ _self.openID
+														window.location.href='http://test.jk7.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+ _self.openID
 
 													}
 												},
