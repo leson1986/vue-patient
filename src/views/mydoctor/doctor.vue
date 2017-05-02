@@ -149,13 +149,13 @@
 
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.jk7.com/html/pay/vue_msg_v.html?openID='+ openID + '&drID=' + this.ids + '&drName=' + this.drName + '&drTitle=' + this.drTitle;
+				window.location.href='http://test.jk7.com/html/pay/vue_msg_v.html?openID='+ openID + '&drID=' + this.ids + '&drName=' + this.drName + '&drTitle=' + this.drTitle + '&toHome=doctor';
 			},
 			// 跳转到电话预约
 			toCallUrl () {
 				let _self = this
 				if(_self.isPhone == true){
-					window.location.href='http://wx.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
+					window.location.href='http://test.jk7.com/html/pay/vue_call_v.html?id='+this.ids;
 				}else{
 					_self.show_popup = true
 					return
