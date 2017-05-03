@@ -138,7 +138,7 @@
 				var _self = this
 				setTimeout(() => {
 
-					window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+					window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=2&gender='+
 							_self.getgender +
 							'&birthday='+
 							_self.getbirthday +
@@ -156,8 +156,6 @@
 							_self.getdiseaseHis +
 							'&nativePlace='+ _self.getnativePlace;
 
-				//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?openID=2&alllergicHis='+alllergiVal+'&disease='+this.diseaseinfo+'&toinfo=true&infoMail='+this.infoMail;
-				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: alllergiVal, disease: this.diseaseinfo}})
 				},2000)
 			},
 
@@ -189,7 +187,7 @@
 							_self.save()
 						}else {
 
-							window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+							window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=2&gender='+
 									_self.getgender +
 									'&birthday='+
 									_self.getbirthday +
@@ -207,13 +205,11 @@
 									_self.getdiseaseHis +
 									'&nativePlace='+ _self.getnativePlace;
 
-						//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
-						//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 						}
 					});
 				}else{
 
-					window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+					window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=2&gender='+
 							_self.getgender +
 							'&birthday='+
 							_self.getbirthday +
@@ -231,8 +227,6 @@
 							_self.getdiseaseHis +
 							'&nativePlace='+ _self.getnativePlace;
 
-				//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+this.allHis+'&disease='+this.diseaseinfo+'&openID=2&infoMail='+this.infoMail;
-				//	this.$route.router.go({path: '/user/info', query: {toinfo: true, alllergicHis: this.allHis, disease: this.diseaseinfo}})
 				}
 
 			},

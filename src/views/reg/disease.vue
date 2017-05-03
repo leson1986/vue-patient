@@ -88,7 +88,7 @@
 		methods: {
 			toInfoUrl: function () {
 				var _self = this
-				window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+				window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=2&gender='+
 						_self.getgender +
 						'&birthday='+
 						_self.getbirthday +
@@ -135,7 +135,7 @@
 						_self.show_popup = true
 						_self.tips = '保存成功'
 						setTimeout(() => {
-							window.location.href='http://wx.jk7.com/html/pay/vue_info.html?openID=2&gender='+
+							window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=2&gender='+
 									_self.getgender +
 									'&birthday='+
 									_self.getbirthday +
@@ -154,8 +154,6 @@
 									'&nativePlace='+ _self.getnativePlace;
 
 
-						//	window.location.href='http://test.jk7.com/vue_html/vue_info.html?alllergicHis='+_self.allHis+'&disease='+_self.disease+'&openID=2&infoMail='+_self.infoMail;
-						//	_self.$route.router.go({path: '/user/info', query: {'toinfo': true, 'disease': _self.disease, 'alllergicHis': _self.allHis}, replace: true})
 						},2000)
 					}
 					if(_self.is_conf && !_self.is_info){

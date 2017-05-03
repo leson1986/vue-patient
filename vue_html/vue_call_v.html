@@ -12,9 +12,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
 <style>
@@ -233,7 +233,7 @@
                 // 上传图片，验证签名
                 function pageConfig() {
                     $.ajax({
-                        url: 'http://wx.jk7.com/api/valid',
+                        url: 'http://wx.leerhuo.com/api/valid',
                         type: 'GET',
                         dataType: "json",
                         contentType: 'application/x-www-form-urlencoded',
@@ -277,7 +277,7 @@
 
                     $.ajax({
                         type: "GET",
-                        url: 'http://wx.jk7.com/api/telService/serviceInfo/'+ id,
+                        url: 'http://wx.leerhuo.com/api/telService/serviceInfo/'+ id,
                         dataType: 'json',
                         beforeSend: function (data){
                             var moaalBody = document.body
@@ -324,7 +324,7 @@
                     }, 1000)
                         $.ajax({
                             type: "GET",
-                            url: 'http://wx.jk7.com/api/Authenticate/sendcode?mobileNo=' + _self.callTel,
+                            url: 'http://wx.leerhuo.com/api/Authenticate/sendcode?mobileNo=' + _self.callTel,
                             dataType: 'json',
                             success: function (res) {
                                 if(res.recode == 1){
@@ -339,7 +339,7 @@
                     if(_self.codeNum !== ''){
                         $.ajax({
                             type: "GET",
-                            url: 'http://wx.jk7.com/api/Authenticate/checkCode?mobileNo=' + _self.callTel + '&code=' + _self.codeNum,
+                            url: 'http://wx.leerhuo.com/api/Authenticate/checkCode?mobileNo=' + _self.callTel + '&code=' + _self.codeNum,
                             dataType: 'json',
                             success: function (res) {
                                 if(res.recode == 1){
@@ -399,7 +399,7 @@
                         }
                         $.ajax({
                             type: "POST",
-                            url: 'http://wx.jk7.com/api/telService/apply',
+                            url: 'http://wx.leerhuo.com/api/telService/apply',
                             data: params,
                             dataType: 'json',
                             /* headers: {
@@ -418,7 +418,7 @@
                                     return
                                 }else{
                                     _self.serverIds.length = 0
-                                    window.location.href='http://wx.jk7.com/html/pay/vue_apply_v.html?id=' + res.data + '&isType=1';
+                                    window.location.href='http://wx.leerhuo.com/html/pay/vue_apply_v.html?id=' + res.data + '&isType=1';
                                 }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -432,7 +432,7 @@
                 },
                 toDoctor(){
                     var _self = this
-                    window.location.href='http://wx.jk7.com/mydoctor/doctor?id='+ _self.id
+                    window.location.href='http://wx.leerhuo.com/mydoctor/doctor?id='+ _self.id
                 },
                 showPic: function () {
                     this.wrapPic(this.showPicItems, '申请通话') // 查看图片

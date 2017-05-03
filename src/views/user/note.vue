@@ -81,7 +81,7 @@
 
 		methods: {
 			toNoteUrl: function (ids, isclose) {
-				window.location.href='http://wx.jk7.com/html/pay/vue_note_v.html?id='+ ids +'&isclose='+ isclose + '&openID='+ openID;
+				window.location.href='http://wx.leerhuo.com/html/pay/vue_note_v.html?id='+ ids +'&isclose='+ isclose + '&openID='+ openID;
 			},
 
 			// 获取更多医生列表信息

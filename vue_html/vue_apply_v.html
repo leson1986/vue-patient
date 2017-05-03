@@ -12,9 +12,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
-<script type='text/javascript' src='http://wx.jk7.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.jk7.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
 <style>
@@ -201,7 +201,7 @@
                 // 上传图片，验证签名
                 function pageConfig() {
                     $.ajax({
-                        url: 'http://wx.jk7.com/api/valid',
+                        url: 'http://wx.leerhuo.com/api/valid',
                         type: 'GET',
                         dataType: "json",
                         contentType: 'application/x-www-form-urlencoded',
@@ -244,7 +244,7 @@
                     var _self = this
                     $.ajax({
                         type: "GET",
-                        url: 'http://wx.jk7.com/api/telService/info?id=' + id,
+                        url: 'http://wx.leerhuo.com/api/telService/info?id=' + id,
                         dataType: 'json',
                         beforeSend: function (data){
                             var moaalBody = document.body
@@ -275,9 +275,9 @@
                 toBack(){
                     var _self = this
                     if(_self.isType == 1){
-                        window.location.href='http://wx.jk7.com/online/book?active=apply'
+                        window.location.href='http://wx.leerhuo.com/online/book?active=apply'
                     }else if(_self.isType == 0){
-                        window.location.href='http://wx.jk7.com/home'
+                        window.location.href='http://wx.leerhuo.com/home'
                     }
                 },
                 showPic: function () {
@@ -341,7 +341,7 @@
 
                                         if(res.err_msg == "get_brand_wcpay_request:ok") {
                                             //支付成功
-                                            window.location.href='http://wx.jk7.com/online/bookContent?id='+ _self.id + '&isType=1'
+                                            window.location.href='http://wx.leerhuo.com/online/bookContent?id='+ _self.id + '&isType=1'
                                             return
                                         }
                                         else if(res.err_msg == "-1") {
