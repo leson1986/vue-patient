@@ -139,7 +139,7 @@
 		methods: {
 			// 跳转到拍照页面
 			toTurnUrl (dates) {
-				window.location.href='http://wx.jk7.com/html/pay/vue_turn.html?dates='+ dates;
+				window.location.href='http://wx.leerhuo.com/html/pay/vue_turn.html?dates='+ dates;
 			},
 			lehBack () {
 				$(".leh-active").removeClass('leh-active')

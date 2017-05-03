@@ -33,7 +33,7 @@ export function pageConfig() {
 	let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
 	$.ajax({
-		url: 'http://wx.jk7.com/api/valid',
+		url: 'http://wx.leerhuo.com/api/valid',
 		type: 'GET',
 		dataType: "json",
 		contentType: 'application/x-www-form-urlencoded',

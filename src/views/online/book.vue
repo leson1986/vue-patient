@@ -154,7 +154,7 @@
             goApplyContent(id){
                 //跳转申请详情页
                 //$(".leh-active").removeClass('leh-active')
-                window.location.href='http://wx.jk7.com/html/pay/vue_apply_v.html?id=' + id + '&isType=1';
+                window.location.href='http://wx.leerhuo.com/html/pay/vue_apply_v.html?id=' + id + '&isType=1';
             }
         },
 
