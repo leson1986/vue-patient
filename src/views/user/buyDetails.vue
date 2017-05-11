@@ -26,7 +26,7 @@
         <div class="mint-tab-container buy-details-tap-content">
             <mt-tab-container class="mint-tab-container-wrap" :active.sync="selected">
                 <mt-tab-container-item id="used">
-                    <p class="leh-null-data" v-if="usedList.length == 0">暂无数据</p>
+                    <p class="leh-null-data" v-if="usedList.length == 0">暂无使用记录</p>
                     <a class="mint-cell" v-for="items in usedList">
                         <div class="mint-cell-left"></div>
                         <div class="mint-cell-wrapper">
@@ -50,7 +50,7 @@
                     </div>
                 </mt-tab-container-item>
                 <mt-tab-container-item id="buy">
-                    <p class="leh-null-data" v-if="buyList.length == 0">暂无数据</p>
+                    <p class="leh-null-data" v-if="buyList.length == 0">暂无购买记录</p>
                     <a class="mint-cell" v-for="items in buyList">
                         <div class="mint-cell-left"></div>
                         <div class="mint-cell-wrapper">
@@ -96,6 +96,7 @@
                 this.drid = to.query.id
                 this.usedNum = 1
                 this.buyNum = 1
+                this.residueNum = "0"
                 this.getList(this.drid)
                 next()
             }
@@ -103,7 +104,7 @@
         data () {
             return{
                 selected: 'used',
-                residueNum:'',  //剩余条数
+                residueNum:'0',  //剩余条数
                 docName:'',     //医生名称
                 drid:'',         //医生id
                 usedList:[],     //已使用列表
