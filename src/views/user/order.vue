@@ -22,12 +22,13 @@
                     <div class="page-cell">
                         <a class="mint-cell">
                             <label class="mint-cell-title">
-                                <span class="mint-cell-text leh-fs-fourteen" v-if="items.service_type == 2">收费留言</span>
-                                <span class="mint-cell-text leh-fs-fourteen" v-if="items.service_type == 1">加号</span>
+                                <span class="mint-cell-text leh-fs-fourteen" v-if="items.service_type == 2">电话预约</span>
+                                <span class="mint-cell-text leh-fs-fourteen" v-if="items.service_type == 1">收费留言</span>
                             </label>
                             <div class="mint-cell-value">
                                 <span class="leh-c-orange-tint leh-fs-fourteen" v-if="items.pay_status == 1">支付成功</span>
                                 <span class="leh-c-orange-tint leh-fs-fourteen" v-if="items.pay_status == 0">已关闭</span>
+                                <span class="leh-c-orange-tint leh-fs-fourteen" v-if="items.pay_status == 2">已完成</span>
                             </div>
                         </a>
                         <a class="mint-cell">

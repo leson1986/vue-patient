@@ -165,7 +165,7 @@
 <body id="turn">
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
-		<a href="http://wx.leerhuo.com/online/bill?actives=turn">
+		<a href="http://test.leerhuo.com/online/bill?actives=turn">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -219,9 +219,9 @@
 <!-- 用于展示插件的容器 -->
 <div class="overlay" id="overlay"></div>
 
-<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://wx.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
-<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://test.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://test.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
 <script>
@@ -257,7 +257,7 @@
 				function pageConfig() {
 
 					$.ajax({
-						url: 'http://wx.leerhuo.com/api/valid',
+						url: 'http://test.leerhuo.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -310,7 +310,7 @@
 					var _self = this
 					$.ajax({
 						type: "DELETE",
-						url: 'http://wx.leerhuo.com/api/filecheck/'+ ids,
+						url: 'http://test.leerhuo.com/api/filecheck/'+ ids,
 						dataType: 'json',
 						beforeSend: function (data){
 							var moaalBody = document.body
@@ -337,7 +337,7 @@
 					var _self = this
 					$.ajax({
 						type: "GET",
-						url: 'http://wx.leerhuo.com/api/filecheck/'+ dates,
+						url: 'http://test.leerhuo.com/api/filecheck/'+ dates,
 						dataType: 'json',
 						beforeSend: function (data){
 							var moaalBody = document.body
@@ -428,7 +428,7 @@
 							_self.serverId = res.serverId; // 返回图片的服务器端ID
 							$.ajax({
 								type: "PUT",
-								url: 'http://wx.leerhuo.com/api/filecheck/reupload/'+ id + '/'+ res.serverId,
+								url: 'http://test.leerhuo.com/api/filecheck/reupload/'+ id + '/'+ res.serverId,
 								dataType: 'json',
 								beforeSend: function (data){
 									var moaalBody = document.body
