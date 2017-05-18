@@ -215,9 +215,9 @@
 						<p class="center-name">{{ personeInfo.patientName }}</p>
 					</div>
 					<div class="center-content">
-						<!--<div class="page-cell">
+						<div class="page-cell">
 							<mt-cell title="我的钱包" class="leh-ex" icon="wallet" icons="arr-right" istitle is-icon v-link="{path: '/user/wallet', replace: true}"></mt-cell>
-						</div>-->
+						</div>
 						<div class="page-cell">
 							<mt-cell title="医生公告" icon="announcement" icons="arr-right" istitle is-icon :reddot="personeInfo.drNoticeUnread" v-link="{path: '/user/notice', replace: true}"></mt-cell>
 							<mt-cell title="预约记录" icon="phone" icons="arr-right" :reddot="bookNum !== 0" istitle is-icon :reddot="" v-link="{path: '/online/book',query:{active:'book'}, replace: true}"></mt-cell>
@@ -357,15 +357,15 @@
 		methods: {
 			// 跳转到拍照页面
 			toPhotoUrl () {
-				window.location.href='http://wx.leerhuo.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
+				window.location.href='http://test.leerhuo.com/html/pay/vue_photo.html?openID=1&firstTime='+ this.firstTime;
 			},
 			// 跳转到留言页面
 			toMsgUrl () {
-				window.location.href='http://wx.leerhuo.com/html/pay/vue_msg_v.html?openID='+ openID + '&toHome=home';
+				window.location.href='http://test.leerhuo.com/html/pay/vue_msg_v.html?openID='+ openID + '&toHome=home';
 			},
 			// 跳转到个人信息
 			toInfoUrl () {
-				window.location.href='http://wx.leerhuo.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
+				window.location.href='http://test.leerhuo.com/html/pay/vue_info.html?openID=1&alllergicHis=&disease=';
 			},
 			// 我的医生列表
 			getDoctors () {
@@ -404,7 +404,7 @@
 				let _self = this
 				if(type == 1){
 					//跳转申请详情页
-					window.location.href='http://wx.leerhuo.com/html/pay/vue_apply_v.html?id=' + id + '&isType=0';
+					window.location.href='http://test.leerhuo.com/html/pay/vue_apply_v.html?id=' + id + '&isType=0';
 				}else if(type == 2){
 					//跳转预约详情页
 					_self.$route.router.go({path: '/online/bookContent', query: {id :id,isType:0}, replace: true})
