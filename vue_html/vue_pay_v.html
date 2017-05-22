@@ -222,8 +222,8 @@
 	<div class="page-cell pay-list">
 		<a class="mint-cell"
 		   v-for="items in typeM"
-		   @click="selected(items.price, items.id, items.qty)"
-		   :class="{'leh-active': activeName == items.price}">
+		   @click="selected($index, items.price, items.id, items.qty)"
+		   :class="{'leh-active': activeName == $index}">
 			<label class="mint-cell-title">
 				<span class="mint-cell-text">{{items.price}}元/{{items.qty=='1'? '' : items.qty}}条</span>
 			</label>
@@ -265,7 +265,7 @@
 		</div>
 		<div class="msgbox-content">
 			<div class="msgbox-status d-icon"></div>
-			<div class="msgbox-message"><p>已选择{{activeName}}元/{{qty=='1'? '' : qty}}条，数量为{{qtys}}，总金额为{{total_fee}}元，是否继续购买？</p></div>
+			<div class="msgbox-message"><p>已选择{{activePrices}}元/{{qty=='1'? '' : qty}}条，数量为{{qtys}}，总金额为{{total_fee}}元，是否继续购买？</p></div>
 		</div>
 		<div class="msgbox-btns">
 			<button class="msgbox-btn msgbox-cancel " @click="handleAction(0)">取消</button>
@@ -288,7 +288,8 @@
 			data: {
 				openID: '',
 				toHome: '',
-				activeName: '',
+				activeName: '0',
+				activePrices: '', // 选中金额
 				showTips: false,
 				nums: 1, // 默认条数
 				patientId: '', // 患者ID
@@ -360,7 +361,8 @@
 								_self.drtitle = rsp.doctorInfo.title
 								_self.drcustName = rsp.doctorInfo.custName
 								_self.typeM = rsp.visits
-								_self.activeName = rsp.visits[0].price // 初始化默认选中第一条
+								_self.activeName = 0
+								_self.activePrices = rsp.visits[0].price // 初始化默认选中第一条
 								_self.total_fee = rsp.visits[0].price*1 // 初始化默认选一条的总额
 								_self.msg_visit_id = rsp.visits[0].id // 初始化默认选一条的ID
 								_self.qty = rsp.visits[0].qty // 初始化默认条数
@@ -482,13 +484,14 @@
 					});
 				},
 
-				selected: function(names, ids, qty) {
-					if(this.activeName !== names){
+				selected: function(inds, prices, ids, qty) {
+					if(this.activeName !== inds){
 						this.nums = 1
 					}
-					this.activeName = names
+					this.activeName = inds
+					this.activePrices = prices
 					this.msg_visit_id = ids
-					this.total_fee = (names*1)*(this.nums*1)
+					this.total_fee = (prices*1)*(this.nums*1)
 					this.qty = qty
 					this.qtys = (this.nums*1)*(qty*1)
 				},
