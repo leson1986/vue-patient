@@ -238,7 +238,7 @@
 <header class="mint-header is-fixed leh-bg-grey-head">
 	<div class="mint-header-button is-left">
 		<!--<a @click="historyBack">-->
-		<a href="http://test.leerhuo.com/home">
+		<a href="http://wx.leerhuo.com/home">
 			<span class="iconfont icon-wx-arr-left leh-c-green"></span>
 		</a>
 	</div>
@@ -252,7 +252,7 @@
 	</button>
 </div>
 
-<script type='text/javascript' src='http://test.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 <script type="text/javascript" src='./assets/js/LAreaData2.js'></script>
@@ -327,7 +327,7 @@
 				function pageConfig() {
 
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/valid',
+						url: 'http://wx.leerhuo.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -344,7 +344,7 @@
 				// 获取个人信息--从首页进入
 				function myinfoFromHome() {
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/patient/myinfo',
+						url: 'http://wx.leerhuo.com/api/patient/myinfo',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -403,7 +403,7 @@
 
 					//获取openid
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/UserInfo',
+						url: 'http://wx.leerhuo.com/api/UserInfo',
 						type: 'GET',
 						dataType: "text",
 						contentType: 'application/x-www-form-urlencoded',
@@ -427,7 +427,7 @@
 				// 身份验证
 				function getAuthenticate (oID) {
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/Authenticate',
+						url: 'http://wx.leerhuo.com/api/Authenticate',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -448,11 +448,11 @@
 						error: function (res) {
 							if (res.status === 401) {
 								if (res.responseText == '2') {
-									window.location.href='http://test.leerhuo.com/reg/bind';
+									window.location.href='http://wx.leerhuo.com/reg/bind';
 								} else if (res.responseText == '3') {
-									window.location.href='http://test.leerhuo.com/reg/register';
+									window.location.href='http://wx.leerhuo.com/reg/register';
 								} else if (res.responseText == '4') {
-									window.location.href='http://test.leerhuo.com/reg/disease';
+									window.location.href='http://wx.leerhuo.com/reg/disease';
 								} else {
 									alert('非法访问')
 								}
@@ -466,7 +466,7 @@
 				// 直接进入，获取个人信息
 				function myinfo(oID) {
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/patient/myinfo',
+						url: 'http://wx.leerhuo.com/api/patient/myinfo',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -551,7 +551,7 @@
 			methods: {
 				toDiseaseUrl: function () {
 
-					window.location.href='http://test.leerhuo.com/reg/disease?info=true&gender='+
+					window.location.href='http://wx.leerhuo.com/reg/disease?info=true&gender='+
 							this.gender +
 							'&birthday='+
 							this.birthday +
@@ -571,7 +571,7 @@
 				},
 				toIrritabilityUrl: function () {
 
-					window.location.href='http://test.leerhuo.com/user/irritability?info=true&gender='+
+					window.location.href='http://wx.leerhuo.com/user/irritability?info=true&gender='+
 							this.gender +
 							'&birthday='+
 							this.birthday +
@@ -623,7 +623,7 @@
 
 					$.ajax({
 						type: "PUT",
-						url: 'http://test.leerhuo.com/api/patient/myinfo',
+						url: 'http://wx.leerhuo.com/api/patient/myinfo',
 						data: params,
 						dataType: 'json',
 						beforeSend: function (data){

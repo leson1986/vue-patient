@@ -173,8 +173,8 @@
 
 </style>
 
-<script type='text/javascript' src='http://test.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
@@ -340,7 +340,7 @@
 				var _self = this
 				// 患者评价
 				$.ajax({
-					url: 'http://test.leerhuo.com/api/patientMessages/info',
+					url: 'http://wx.leerhuo.com/api/patientMessages/info',
 					type: 'GET',
 					dataType: "json",
 					contentType: 'application/x-www-form-urlencoded',
@@ -399,7 +399,7 @@
 
 					var _self = this
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/valid',
+						url: 'http://wx.leerhuo.com/api/valid',
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -442,7 +442,7 @@
 					var _self = this
 					// 患者评价
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/patientMessages/allowance/'+ ids,
+						url: 'http://wx.leerhuo.com/api/patientMessages/allowance/'+ ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -609,7 +609,7 @@
 
 					$.ajax({
 						 type: "POST",
-						 url: 'http://test.leerhuo.com/api/PatientMessages',
+						 url: 'http://wx.leerhuo.com/api/PatientMessages',
 						 data: params,
 						 dataType: 'json',
 							headers: {
@@ -629,7 +629,7 @@
 									 alert(msg)
 								 }else{
 									 _self.serverIds.length = 0
-									 window.location.href='http://test.leerhuo.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
+									 window.location.href='http://wx.leerhuo.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+_self.openID;
 
 								 }
 						 },
@@ -697,7 +697,7 @@
 						// 确定
 						_self.showTips = false
 
-						window.location.href='http://test.leerhuo.com/html/pay/vue_pay_v.html?drid='
+						window.location.href='http://wx.leerhuo.com/html/pay/vue_pay_v.html?drid='
 								+ _self.doctor_id
 								+'&openID='
 								+_self.openID
@@ -720,10 +720,10 @@
 				back: function () {
 
 					if(this.toHome == 'doctor') {
-						window.location.href='http://test.leerhuo.com/mydoctor/doctor?id=' + this.drID;
+						window.location.href='http://wx.leerhuo.com/mydoctor/doctor?id=' + this.drID;
 						return
 					}else {
-						window.location.href='http://test.leerhuo.com/home';
+						window.location.href='http://wx.leerhuo.com/home';
 						return
 					}
 				}

@@ -275,8 +275,8 @@
 </div>
 <div class="v-modal" style="z-index: 1004;" v-show="showTips"></div>
 
-<script type='text/javascript' src='http://test.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
-<script type="text/javascript" src='http://test.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://wx.leerhuo.com/html/js/zepto-v1.2.0-min.js' charset='utf-8'></script>
+<script type="text/javascript" src='http://wx.leerhuo.com/html/js/MPreview.mobile.min.js' charset='utf-8'></script>
 <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' charset='utf-8'></script>
 <script type="text/javascript" src='./assets/js/vue.min.js'></script>
 
@@ -334,7 +334,7 @@
 				function getSignup() {
 					var ids = getQueryString('drid')
 					$.ajax({
-						url: 'http://test.leerhuo.com/api/patientMessages/signup/'+ids,
+						url: 'http://wx.leerhuo.com/api/patientMessages/signup/'+ids,
 						type: 'GET',
 						dataType: "json",
 						contentType: 'application/x-www-form-urlencoded',
@@ -382,9 +382,9 @@
 				// 跳转到拍照页面
 				toMsgUrl: function () {
 					if(this.toHome == 'doctor') {
-						window.location.href='http://test.leerhuo.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=doctor';
+						window.location.href='http://wx.leerhuo.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=doctor';
 					}else {
-						window.location.href='http://test.leerhuo.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=pay';
+						window.location.href='http://wx.leerhuo.com/html/pay/vue_msg_v.html?openID='+ this.openID + '&drID=' + this.getdrid + '&drName=' + this.drname + '&drTitle=' + this.drtitle + '&toHome=pay';
 					}
 
 				},
@@ -429,7 +429,7 @@
 
 											$.ajax({
 												type: "POST",
-												url: 'http://test.leerhuo.com/api/PatientMessages',
+												url: 'http://wx.leerhuo.com/api/PatientMessages',
 												data: params,
 												dataType: 'json',
 												beforeSend: function (data){
@@ -445,7 +445,7 @@
 													if(res.recode == '1'){
 														alert(msg)
 													}else{
-														window.location.href='http://test.leerhuo.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+ _self.openID
+														window.location.href='http://wx.leerhuo.com/html/pay/vue_note_v.html?isclose=false&id='+res.data+'&openID='+ _self.openID
 
 													}
 												},
